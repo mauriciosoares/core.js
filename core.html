@@ -13,7 +13,13 @@
     Core.register('search', function(sandbox) {
       return {
         init: function() {
-          console.log('init search');
+          sandbox.notify({
+            type: 'new-tweet',
+            data: {
+              author: 'Mauricio Soares',
+              text: 'Hey, this is core.js, and is really cool'
+            }
+          });
         },
 
         destroy: function() {
@@ -22,7 +28,7 @@
       }
     });
 
-    Core.register('tweet', function(sandbox) {
+    Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
           console.log('init tweet');
@@ -35,7 +41,6 @@
     });
 
     Core.startAll();
-    Core.stopAll();
   </script>
 </body>
 </html>
