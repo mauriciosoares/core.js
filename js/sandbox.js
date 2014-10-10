@@ -1,16 +1,18 @@
 (function(root) {
   var Sandbox = function() {
-    this.notifications = [];
+
   };
 
-  Sandbox.notifications = [];
+  Sandbox.notifications = {};
 
   Sandbox.prototype.notify = function(notification) {
-    Sandbox.notifications.push(notification);
+    Sandbox.notifications[notification.type] = notification.data;
   };
 
-  Sandbox.prototype.listen = function(notifications, callback, context) {
+  Sandbox.prototype.listen = function(notification, callback, context) {
+    if(Sandbox.notifications[notification]) {
 
+    }
   };
 
   root.Sandbox = Sandbox;

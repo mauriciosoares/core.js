@@ -9,8 +9,23 @@
   <script src="js/core.js"></script>
   <script src="js/sandbox.js"></script>
   <script>
+    Core.register('tweet-list', function(sandbox) {
+      return {
+        init: function() {
+          sandbox.listen('new-tweet', this.handleTweet, this);
+        },
 
-    Core.register('search', function(sandbox) {
+        handleTweet: function(data) {
+          console.log(data);
+        },
+
+        destroy: function() {
+          console.log('destroy tweet');
+        }
+      }
+    });
+
+    Core.register('tweet', function(sandbox) {
       return {
         init: function() {
           sandbox.notify({
@@ -24,18 +39,6 @@
 
         destroy: function() {
           console.log('destroy search');
-        }
-      }
-    });
-
-    Core.register('tweet-list', function(sandbox) {
-      return {
-        init: function() {
-          console.log('init tweet');
-        },
-
-        destroy: function() {
-          console.log('destroy tweet');
         }
       }
     });
