@@ -1,6 +1,6 @@
 (function(root) {
   var Sandbox = function() {
-
+    this.notifications = {};
   };
 
   Sandbox.prototype.notify = function(notification) {
