@@ -13,7 +13,7 @@
   Core.prototype.start = function(module) {
     var module = this.modules[module];
 
-    module.instance = new module.constructor();
+    module.instance = new module.constructor(new Sandbox());
     module.instance.init();
   };
 
