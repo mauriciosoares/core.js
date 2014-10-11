@@ -17,14 +17,6 @@
     module.instance.init && module.instance.init();
   };
 
-  Core.prototype.startAll = function() {
-    for(var module in this.modules) {
-      if(this.modules.hasOwnProperty(module) && !this.modules[module].instance) {
-        this.start(module);
-      }
-    }
-  };
-
   Core.prototype.stop = function(module) {
     var module = this.modules[module];
 
@@ -32,10 +24,18 @@
     module.instance = null;
   };
 
+  Core.prototype.startAll = function() {
+    this.xAll('start');
+  };
+
   Core.prototype.stopAll = function() {
+    this.xAll('stop');
+  };
+
+  Core.prototype.xAll = function(method) {
     for(var module in this.modules) {
       if(this.modules.hasOwnProperty(module)) {
-        this.stop(module);
+        this[method](module);
       }
     }
   };
