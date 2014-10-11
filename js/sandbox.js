@@ -6,7 +6,10 @@
   Sandbox.notifications = {};
 
   Sandbox.prototype.notify = function(notification) {
-    // Sandbox.notifications[notification.type] = notification.data;
+    var listening = Sandbox.notifications[notification.type];
+    if(listening) {
+      listening.callback.call(listening.context, notification.data);
+    }
   };
 
   Sandbox.prototype.listen = function(notification, callback, context) {
