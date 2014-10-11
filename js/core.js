@@ -14,7 +14,7 @@
     var module = this.modules[module];
 
     module.instance = new module.constructor(new Sandbox());
-    module.instance.init();
+    module.instance.init && module.instance.init();
   };
 
   Core.prototype.startAll = function() {
@@ -28,7 +28,7 @@
   Core.prototype.stop = function(module) {
     var module = this.modules[module];
 
-    module.instance.destroy();
+    module.instance.destroy && module.instance.destroy();
     module.instance = null;
   };
 
