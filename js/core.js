@@ -19,7 +19,7 @@
 
   Core.prototype.startAll = function() {
     for(var module in this.modules) {
-      if(this.modules.hasOwnProperty(module)) {
+      if(this.modules.hasOwnProperty(module) && !this.modules[module].instance) {
         this.start(module);
       }
     }

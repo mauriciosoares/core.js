@@ -12,6 +12,7 @@
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
+          console.log('init tweetlist');
           sandbox.listen('new-tweet', this.handleTweet, this);
         },
 
@@ -28,6 +29,7 @@
     Core.register('tweet', function(sandbox) {
       return {
         init: function() {
+          console.log('init tweet');
           sandbox.notify({
             type: 'new-tweet',
             data: {
@@ -42,6 +44,8 @@
         }
       }
     });
+
+    Core.start('tweet-list');
 
     Core.startAll();
   </script>
