@@ -1,4 +1,4 @@
-/** core.js - v0.0.1 - 2014-10-13
+/** core.js - v0.0.2 - 2014-10-13
 * Copyright (c) 2014 Mauricio Soares;
 * Licensed MIT 
 */
@@ -36,6 +36,8 @@
       cModule.instance.destroy();
     }
     cModule.instance = null;
+
+    delete this.modules[module];
   };
 
   Core.prototype.startAll = function() {

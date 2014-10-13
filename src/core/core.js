@@ -31,6 +31,8 @@
       cModule.instance.destroy();
     }
     cModule.instance = null;
+
+    delete this.modules[module];
   };
 
   Core.prototype.startAll = function() {

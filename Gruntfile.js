@@ -98,6 +98,19 @@ module.exports = function(grunt) {
   }
 
   // =============================================
+  // jasmine
+  config.jasmine = {};
+  config.jasmine.pivotal = {
+    src: [
+      'src/core/core.js',
+      'src/sandbox/sandbox.js'
+    ],
+    options: {
+      specs: 'tests/**/*Spec.js'
+    }
+  }
+
+  // =============================================
   // config
   grunt.initConfig(config);
 
