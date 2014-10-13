@@ -23,4 +23,4 @@
   };
 
   root.Sandbox = Sandbox;
-} (window));
+} (this));

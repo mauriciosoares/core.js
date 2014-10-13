@@ -13,6 +13,10 @@
   Core.prototype.start = function(module) {
     var cModule = this.modules[module];
 
+    if(cModule.instance) {
+      return;
+    }
+
     cModule.instance = new cModule.constructor(new Sandbox());
 
     if(cModule.instance.init) {
@@ -46,4 +50,4 @@
   };
 
   root.Core = new Core();
-} (window));
+} (this));
