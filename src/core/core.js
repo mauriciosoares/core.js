@@ -16,7 +16,7 @@
     if(cModule.instance) {
       return;
     }
-
+    // debugger;
     cModule.instance = new cModule.constructor(new Sandbox());
 
     if(cModule.instance.init) {
@@ -26,6 +26,10 @@
 
   Core.prototype.stop = function(module) {
     var cModule = this.modules[module];
+
+    if(!cModule.instance) {
+      return;
+    }
 
     if(cModule.instance.destroy) {
       cModule.instance.destroy();
