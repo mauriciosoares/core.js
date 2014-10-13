@@ -38,4 +38,24 @@ module.exports = function(grunt) {
     pushTo: 'https://github.com/msodeveloper/core.js.git',
     gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
   };
+
+  // =============================================
+  // jshint
+  config.jshint = {};
+  config.jshint.all = ['src/**/*.js'];
+
+  // =============================================
+  // concat
+  config.concat = {
+    options: {
+      banner: '<%= banner.full %>'
+    },
+    dist: {
+      src: [
+        'src/core/core.js',
+        'src/sandbox/sandbox.js'
+      ],
+      dest: 'dist/core.js'
+    }
+  }
 };
