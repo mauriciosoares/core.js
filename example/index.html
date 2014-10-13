@@ -6,12 +6,12 @@
 </head>
 <body>
 
-  <script src="js/core.js"></script>
-  <script src="js/sandbox.js"></script>
+  <script src="../dist/core.js"></script>
   <script>
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
+          console.log('hue');
           sandbox.listen('new-tweet', this.handleTweet, this);
         },
 

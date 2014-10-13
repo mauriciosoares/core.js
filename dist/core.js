@@ -16,17 +16,22 @@
   };
 
   Core.prototype.start = function(module) {
-    var module = this.modules[module];
+    var cModule = this.modules[module];
 
-    module.instance = new module.constructor(new Sandbox());
-    module.instance.init && module.instance.init();
+    cModule.instance = new cModule.constructor(new Sandbox());
+
+    if(cModule.instance.init) {
+      cModule.instance.init();
+    }
   };
 
   Core.prototype.stop = function(module) {
-    var module = this.modules[module];
+    var cModule = this.modules[module];
 
-    module.instance.destroy && module.instance.destroy();
-    module.instance = null;
+    if(cModule.instance.destroy) {
+      cModule.instance.destroy();
+    }
+    cModule.instance = null;
   };
 
   Core.prototype.startAll = function() {
