@@ -57,5 +57,12 @@ module.exports = function(grunt) {
       ],
       dest: 'dist/core.js'
     }
-  }
+  };
+
+  // =============================================
+  // config
+  grunt.initConfig(config);
+
+  // Load all tasks
+  tasks.forEach(grunt.loadNpmTasks);
 };
