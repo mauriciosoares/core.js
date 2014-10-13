@@ -1,0 +1,25 @@
+{
+  "name": "core.js",
+  "version": "0.0.1",
+  "description": "Lightweight framework for scalable applications",
+  "author": "Mauricio Soares",
+  "homepage": "https://github.com/msodeveloper/core.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/msodeveloper/core.js.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt jasmine"
+  },
+  "bugs": {
+    "url": "https://github.com/msodeveloper/core.js/issues"
+  },
+  "keywords": [
+    "Framework",
+    "core.js",
+    "lightweight",
+    "scalable"
+  ]
+}
