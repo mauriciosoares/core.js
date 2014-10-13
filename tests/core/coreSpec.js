@@ -1,5 +1,5 @@
 describe('Testing Core', function() {
-  beforeEach(function() {
+  afterEach(function() {
     Core.stopAll();
   });
   it('Should create a new module', function() {
@@ -9,6 +9,6 @@ describe('Testing Core', function() {
   });
 
   it('Should should trigger a callback when the init method is declared', function() {
-
+    expect(true).toEqual(true);
   });
 });

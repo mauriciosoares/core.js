@@ -8,6 +8,13 @@
 
   <script src="../dist/core.js"></script>
   <script>
+    Core.register('test', function(sandbox) {
+
+    });
+
+    Core.start('test')
+    Core.stop('test')
+
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
