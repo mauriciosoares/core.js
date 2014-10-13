@@ -13,9 +13,8 @@
   };
 
   Sandbox.prototype.listen = function(notification, callback, context) {
-    var newListen = Sandbox.notifications[notification];
-    if(!newListen) {
-      newListen = {
+    if(!Sandbox.notifications[notification]) {
+      Sandbox.notifications[notification] = {
         callback: callback,
         context: context || root
       };
