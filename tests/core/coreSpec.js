@@ -8,7 +8,19 @@ describe('Testing Core', function() {
     expect(Core.modules['tweet']).not.toBeUndefined();
   });
 
-  it('Should should trigger a callback when the init method is declared', function() {
+  it('Should start a new module', function() {
+    expect(true).toEqual(true);
+  });
+
+  it('Should delete a new module', function() {
+    expect(true).toEqual(true);
+  });
+
+  it('Should start all modules', function() {
+    expect(true).toEqual(true);
+  });
+
+  it('Should delete all modules', function() {
     expect(true).toEqual(true);
   });
 });
