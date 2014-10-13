@@ -42,6 +42,9 @@ module.exports = function(grunt) {
   // =============================================
   // jshint
   config.jshint = {};
+  config.jshint.options = {
+    debug: true
+  };
   config.jshint.all = ['src/**/*.js'];
 
   // =============================================
