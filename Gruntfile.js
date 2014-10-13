@@ -60,6 +60,41 @@ module.exports = function(grunt) {
   };
 
   // =============================================
+  // watch
+  config.watch = {};
+  config.watch.scripts = {
+    files: ['src/**/*.js'],
+    tasks: ['jshint', 'concat'],
+    options: {
+      spawn: false,
+    }
+  }
+
+  // =============================================
+  // uglify
+  config.uglify = {};
+  config.uglify.all = {
+    files: {
+      'dist/core.min.js': [ 'dist/core.js' ]
+    },
+    options: {
+      preserveComments: false,
+      sourceMap: 'dist/core.min.map',
+      sourceMappingURL: 'core.min.map',
+      report: 'min',
+      beautify: {
+        ascii_only: true
+      },
+      banner: '<%= banner.full %>',
+      compress: {
+        hoist_funs: false,
+        loops: false,
+        unused: false
+      }
+    }
+  }
+
+  // =============================================
   // config
   grunt.initConfig(config);
 
