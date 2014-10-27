@@ -32,6 +32,11 @@
   Core.prototype.stop = function(module) {
     var cModule = this.modules[module];
 
+    if(!cModule) {
+      this.helpers.Error('There is no module called: ' + module);
+      return;
+    }
+
     if(!cModule.instance) {
       return;
     }
