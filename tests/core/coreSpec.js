@@ -12,7 +12,7 @@ describe('Testing Core', function() {
     expect(true).toEqual(true);
   });
 
-  it('Should delete a new module', function() {
+  it('Should stop a new module', function() {
     expect(true).toEqual(true);
   });
 
@@ -20,7 +20,19 @@ describe('Testing Core', function() {
     expect(true).toEqual(true);
   });
 
-  it('Should delete all modules', function() {
+  it('Should stop all modules', function() {
+    expect(true).toEqual(true);
+  });
+
+  it('Should throw an error when a module is not defined', function() {
+    expect(true).toEqual(true);
+  });
+
+  it('Should trigger init when the module is started', function() {
+    expect(true).toEqual(true);
+  });
+
+  it('Should trigger destroy when module is stoped', function() {
     expect(true).toEqual(true);
   });
 });

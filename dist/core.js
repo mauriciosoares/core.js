@@ -1,4 +1,4 @@
-/** core.js - v0.0.2 - 2014-10-13
+/** core.js - v0.0.2 - 2014-10-27
 * Copyright (c) 2014 Mauricio Soares;
 * Licensed MIT 
 */
