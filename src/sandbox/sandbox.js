@@ -1,6 +1,6 @@
 (function(root) {
-  var Sandbox = function() {
-
+  var Sandbox = function(module) {
+    this.module = module;
   };
 
   Sandbox.notifications = {};

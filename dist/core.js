@@ -27,7 +27,7 @@
       return;
     }
     // debugger;
-    cModule.instance = new cModule.constructor(new Sandbox());
+    cModule.instance = new cModule.constructor(new Sandbox(module));
 
     if(cModule.instance.init) {
       cModule.instance.init();
@@ -76,8 +76,8 @@
 } (this.Core));
 
 (function(root) {
-  var Sandbox = function() {
-
+  var Sandbox = function(module) {
+    this.module = module;
   };
 
   Sandbox.notifications = {};

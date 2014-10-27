@@ -22,7 +22,7 @@
       return;
     }
     // debugger;
-    cModule.instance = new cModule.constructor(new Sandbox());
+    cModule.instance = new cModule.constructor(new Sandbox(module));
 
     if(cModule.instance.init) {
       cModule.instance.init();

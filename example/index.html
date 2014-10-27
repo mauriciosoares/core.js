@@ -35,13 +35,15 @@
     Core.register('tweet', function(sandbox) {
       return {
         init: function() {
-          sandbox.notify({
-            type: 'new-tweet',
-            data: {
-              author: 'Mauricio Soares',
-              text: 'Hey, this is core.js, and is really cool'
-            }
-          });
+          setInterval(function() {
+            sandbox.notify({
+              type: 'new-tweet',
+              data: {
+                author: 'Mauricio Soares',
+                text: 'Hey, this is core.js, and is really cool'
+              }
+            });
+          }, 5000);
         },
 
         destroy: function() {
