@@ -56,6 +56,7 @@ module.exports = function(grunt) {
     dist: {
       src: [
         'src/core/core.js',
+        'src/helpers/*.js',
         'src/sandbox/sandbox.js'
       ],
       dest: 'dist/core.js'
