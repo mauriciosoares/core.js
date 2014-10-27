@@ -13,6 +13,11 @@
   Core.prototype.start = function(module) {
     var cModule = this.modules[module];
 
+    if(!cModule) {
+      this.helpers.Error('There is no module called: ' + module);
+      return;
+    }
+
     if(cModule.instance) {
       return;
     }
@@ -35,8 +40,6 @@
       cModule.instance.destroy();
     }
     cModule.instance = null;
-
-    delete this.modules[module];
   };
 
   Core.prototype.startAll = function() {

@@ -18,6 +18,11 @@
   Core.prototype.start = function(module) {
     var cModule = this.modules[module];
 
+    if(!cModule) {
+      this.helpers.Error('There is no module called: ' + module);
+      return;
+    }
+
     if(cModule.instance) {
       return;
     }
@@ -40,8 +45,6 @@
       cModule.instance.destroy();
     }
     cModule.instance = null;
-
-    delete this.modules[module];
   };
 
   Core.prototype.startAll = function() {
@@ -62,6 +65,15 @@
 
   root.Core = new Core();
 } (this));
+
+(function(Core) {
+  var Error = function(message) {
+    console.error(message);
+  };
+
+  Core.helpers = Core.helpers || {};
+  Core.helpers.Error = Error;
+} (this.Core));
 
 (function(root) {
   var Sandbox = function() {
