@@ -13,7 +13,6 @@
   };
 
   Sandbox.prototype.listen = function(notification, callback, context) {
-    debugger;
     if(!Sandbox.notifications[this.module] || !Sandbox.notifications[this.module][notification]) {
       Sandbox.notifications[this.module] = Sandbox.notifications[this.module] || {};
       Sandbox.notifications[this.module][notification] = {
