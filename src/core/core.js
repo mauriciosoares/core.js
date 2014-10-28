@@ -10,40 +10,30 @@
     };
   };
 
+  Core.prototype.moduleExist = function(module, destroy) {
+    // this.helpers.Error('!module', module);
+    if(destroy) return !module || !module.instance;
+
+    return !module || module.instance;
+  };
+
   Core.prototype.start = function(module) {
     var cModule = this.modules[module];
 
-    if(!cModule) {
-      this.helpers.Error('!module', module);
-      return;
-    }
+    if(this.moduleExist(cModule)) return;
 
-    if(cModule.instance) {
-      return;
-    }
-    // debugger;
     cModule.instance = new cModule.constructor(new Sandbox(module));
 
-    if(cModule.instance.init) {
-      cModule.instance.init();
-    }
+    if(cModule.instance.init) cModule.instance.init();
   };
 
   Core.prototype.stop = function(module) {
     var cModule = this.modules[module];
 
-    if(!cModule) {
-      this.helpers.Error('!module', module);
-      return;
-    }
+    if(this.moduleExist(cModule, true)) return;
 
-    if(!cModule.instance) {
-      return;
-    }
+    if(cModule.instance.destroy) cModule.instance.destroy();
 
-    if(cModule.instance.destroy) {
-      cModule.instance.destroy();
-    }
     cModule.instance = null;
   };
 
