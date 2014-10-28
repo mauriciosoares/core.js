@@ -15,41 +15,33 @@
     };
   };
 
+  Core.prototype.moduleExist = function(module, destroy) {
+    // this.helpers.Error('!module', module);
+    if(destroy) return !module || !module.instance;
+
+    return !module || module.instance;
+  };
+
   Core.prototype.start = function(module) {
     var cModule = this.modules[module];
 
-    if(!cModule) {
-      this.helpers.Error('!module', module);
-      return;
-    }
+    if(this.moduleExist(cModule)) return;
 
-    if(cModule.instance) {
-      return;
-    }
-    // debugger;
-    cModule.instance = new cModule.constructor(new Sandbox(module));
+    cModule.instance = new cModule.constructor(new root.Sandbox(module));
 
-    if(cModule.instance.init) {
-      cModule.instance.init();
-    }
+    if(cModule.instance.init) cModule.instance.init();
   };
 
   Core.prototype.stop = function(module) {
     var cModule = this.modules[module];
 
-    if(!cModule) {
-      this.helpers.Error('!module', module);
-      return;
-    }
+    if(this.moduleExist(cModule, true)) return;
 
-    if(!cModule.instance) {
-      return;
-    }
+    if(cModule.instance.destroy) cModule.instance.destroy();
 
-    if(cModule.instance.destroy) {
-      cModule.instance.destroy();
-    }
     cModule.instance = null;
+
+    root.Sandbox.clearNotifications(module);
   };
 
   Core.prototype.startAll = function() {
@@ -91,16 +83,23 @@
 
   Sandbox.notifications = {};
 
+  Sandbox.clearNotifications = function(module) {
+    delete Sandbox.notifications[module];
+  };
+
   Sandbox.prototype.notify = function(notification) {
-    var listening = Sandbox.notifications[notification.type];
-    if(listening) {
-      listening.callback.call(listening.context, notification.data);
+    for(var module in Sandbox.notifications) {
+      var listening = Sandbox.notifications[module][notification.type];
+      if(listening) {
+        listening.callback.call(listening.context, notification.data);
+      }
     }
   };
 
   Sandbox.prototype.listen = function(notification, callback, context) {
-    if(!Sandbox.notifications[notification]) {
-      Sandbox.notifications[notification] = {
+    if(!Sandbox.notifications[this.module] || !Sandbox.notifications[this.module][notification]) {
+      Sandbox.notifications[this.module] = Sandbox.notifications[this.module] || {};
+      Sandbox.notifications[this.module][notification] = {
         callback: callback,
         context: context || root
       };
