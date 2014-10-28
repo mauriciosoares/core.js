@@ -14,7 +14,7 @@
     var cModule = this.modules[module];
 
     if(!cModule) {
-      this.helpers.Error('There is no module called: ' + module);
+      this.helpers.Error('!module', module);
       return;
     }
 
@@ -33,7 +33,7 @@
     var cModule = this.modules[module];
 
     if(!cModule) {
-      this.helpers.Error('There is no module called: ' + module);
+      this.helpers.Error('!module', module);
       return;
     }
 

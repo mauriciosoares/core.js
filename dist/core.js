@@ -1,4 +1,4 @@
-/** core.js - v0.0.2 - 2014-10-27
+/** core.js - v0.0.2 - 2014-10-28
 * Copyright (c) 2014 Mauricio Soares;
 * Licensed MIT 
 */
@@ -19,7 +19,7 @@
     var cModule = this.modules[module];
 
     if(!cModule) {
-      this.helpers.Error('There is no module called: ' + module);
+      this.helpers.Error('!module', module);
       return;
     }
 
@@ -38,7 +38,7 @@
     var cModule = this.modules[module];
 
     if(!cModule) {
-      this.helpers.Error('There is no module called: ' + module);
+      this.helpers.Error('!module', module);
       return;
     }
 
@@ -72,8 +72,12 @@
 } (this));
 
 (function(Core) {
-  var Error = function(message) {
-    console.error(message);
+  var Error = function(error, message) {
+    console.error(Error.messages[error], message);
+  };
+
+  Error.messages = {
+    '!module': 'There\'s no module called: '
   };
 
   Core.helpers = Core.helpers || {};

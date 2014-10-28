@@ -1,6 +1,10 @@
 (function(Core) {
-  var Error = function(message) {
-    console.error(message);
+  var Error = function(error, message) {
+    console.error(Error.messages[error], message);
+  };
+
+  Error.messages = {
+    '!module': 'There\'s no module called: '
   };
 
   Core.helpers = Core.helpers || {};
