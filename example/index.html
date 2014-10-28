@@ -8,13 +8,6 @@
 
   <script src="../dist/core.js"></script>
   <script>
-    Core.register('test', function(sandbox) {
-
-    });
-
-    Core.start('test')
-    Core.stop('test')
-
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
@@ -43,7 +36,7 @@
                 text: 'Hey, this is core.js, and is really cool'
               }
             });
-          }, 15000);
+          }, 500);
         },
 
         destroy: function() {
@@ -55,6 +48,10 @@
     Core.start('tweet-list');
 
     Core.startAll();
+
+    setTimeout(function() {
+      Core.stop('tweet-list');
+    }, 5000);
   </script>
 </body>
 </html>
