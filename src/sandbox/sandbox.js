@@ -10,9 +10,11 @@
   };
 
   Sandbox.prototype.notify = function(notification) {
-    var listening = Sandbox.notifications[notification.type];
-    if(listening) {
-      listening.callback.call(listening.context, notification.data);
+    for(var module in Sandbox.notifications) {
+      var listening = Sandbox.notifications[module][notification.type];
+      if(listening) {
+        listening.callback.call(listening.context, notification.data);
+      }
     }
   };
 
