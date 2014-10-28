@@ -5,6 +5,10 @@
 
   Sandbox.notifications = {};
 
+  Sandbox.clearNotifications = function(module) {
+    delete Sandbox.notifications[module];
+  };
+
   Sandbox.prototype.notify = function(notification) {
     var listening = Sandbox.notifications[notification.type];
     if(listening) {

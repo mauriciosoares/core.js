@@ -22,7 +22,7 @@
 
     if(this.moduleExist(cModule)) return;
 
-    cModule.instance = new cModule.constructor(new Sandbox(module));
+    cModule.instance = new cModule.constructor(new root.Sandbox(module));
 
     if(cModule.instance.init) cModule.instance.init();
   };
@@ -35,6 +35,8 @@
     if(cModule.instance.destroy) cModule.instance.destroy();
 
     cModule.instance = null;
+
+    root.Sandbox.clearNotifications(module);
   };
 
   Core.prototype.startAll = function() {
