@@ -12,11 +12,15 @@
       return {
         init: function() {
           sandbox.listen('new-tweet', this.handleTweet, this);
+          sandbox.listen('new-tweet', this.destroy, this);
+          sandbox.listen('new-tweet', this.destroy, this);
+          sandbox.listen('new-tweet', this.destroy, this, true);
+          sandbox.listen('new-tweet2', this.destroy, this);
         },
 
         handleTweet: function(data) {
-          console.log(this);
-          console.log(data);
+          // console.log(this);
+          // console.log(data);
         },
 
         destroy: function() {
@@ -36,7 +40,7 @@
                 text: 'Hey, this is core.js, and is really cool'
               }
             });
-          }, 500);
+          }, 1000);
         },
 
         destroy: function() {
@@ -49,9 +53,9 @@
 
     Core.startAll();
 
-    setTimeout(function() {
-      Core.stop('tweet-list');
-    }, 5000);
+    // setTimeout(function() {
+    //   Core.stop('tweet-list');
+    // }, 5000);
   </script>
 </body>
 </html>
