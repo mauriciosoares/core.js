@@ -92,6 +92,17 @@
   Core.helpers.toArray = toArray;
 } (this.Core));
 
+(function(Core) {
+  'use strict';
+
+  Core.ex = {};
+
+  var extend = function(name, implementation) {
+    Core.ex[name] = implementation;
+  };
+
+} (this.Core));
+
 (function(root, helpers) {
   var Sandbox = function(module) {
     this.module = module;
