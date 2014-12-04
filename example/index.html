@@ -8,6 +8,9 @@
 
   <script src="../dist/core.js"></script>
   <script>
+    var underscore = {aMethod: function() { return true; }};
+    Core.extend('_', underscore);
+
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
@@ -48,7 +51,7 @@
                 text: 'Hey, this is core.js, and is really cool'
               }
             });
-          }, 2 * 1000);
+          }, 2 * 1000 * 60);
         },
 
         destroy: function() {
