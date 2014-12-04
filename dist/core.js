@@ -83,6 +83,15 @@
   Core.helpers.isArray = isArray;
 } (this.Core));
 
+(function(Core) {
+  var toArray = function(obj) {
+    return Array.prototype.slice.call(obj);
+  };
+
+  Core.helpers = Core.helpers || {};
+  Core.helpers.toArray = toArray;
+} (this.Core));
+
 (function(root, helpers) {
   var Sandbox = function(module) {
     this.module = module;
@@ -104,10 +113,12 @@
   };
 
   Sandbox.prototype.listen = function(notification) {
+    var args = helpers.toArray(arguments);
     if(!helpers.isArray(notification)) return this.addNotification.apply(this, arguments);
 
-    for(var n in notification) {
-      console.log(n);
+    for(var i = 0, len = notification.length; i < len; i += 1) {
+      args[0] = notification[i];
+      this.addNotification.apply(this, args);
     }
   };
 

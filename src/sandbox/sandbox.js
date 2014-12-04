@@ -19,10 +19,12 @@
   };
 
   Sandbox.prototype.listen = function(notification) {
+    var args = helpers.toArray(arguments);
     if(!helpers.isArray(notification)) return this.addNotification.apply(this, arguments);
 
-    for(var n in notification) {
-      console.log(n);
+    for(var i = 0, len = notification.length; i < len; i += 1) {
+      args[0] = notification[i];
+      this.addNotification.apply(this, args);
     }
   };
 

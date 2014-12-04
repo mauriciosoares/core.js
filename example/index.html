@@ -15,11 +15,12 @@
           // sandbox.listen('new-tweet', this.destroy, this, true);
           // sandbox.listen('new-tweet2', this.destroy, this);
           sandbox.listen(['new-tweet', 'new-tweet2'], this.destroy, this);
+          sandbox.listen('new-tweet2', this.handleTweet, this, true);
         },
 
         handleTweet: function(data) {
-          // console.log(this);
-          // console.log(data);
+          console.log(this);
+          console.log(data);
         },
 
         destroy: function() {
