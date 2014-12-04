@@ -1,4 +1,4 @@
-(function(root) {
+(function(root, helpers) {
   var Sandbox = function(module) {
     this.module = module;
   };
@@ -18,7 +18,15 @@
     }
   };
 
-  Sandbox.prototype.listen = function(notification, callback, context, replace) {
+  Sandbox.prototype.listen = function(notification) {
+    if(!helpers.isArray(notification)) return this.addNotification.apply(this, arguments);
+
+    for(var n in notification) {
+      console.log(n);
+    }
+  };
+
+  Sandbox.prototype.addNotification = function(notification, callback, context, replace) {
     var notifications = Sandbox.notifications,
       addNotification = false;
 
@@ -40,4 +48,4 @@
   };
 
   root.Sandbox = Sandbox;
-} (this));
+} (this, this.Core.helpers));

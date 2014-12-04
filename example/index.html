@@ -11,11 +11,10 @@
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
-          sandbox.listen('new-tweet', this.handleTweet, this);
-          sandbox.listen('new-tweet', this.destroy, this);
-          sandbox.listen('new-tweet', this.destroy, this);
-          sandbox.listen('new-tweet', this.destroy, this, true);
-          sandbox.listen('new-tweet2', this.destroy, this);
+          // sandbox.listen('new-tweet', this.handleTweet, this);
+          // sandbox.listen('new-tweet', this.destroy, this, true);
+          // sandbox.listen('new-tweet2', this.destroy, this);
+          sandbox.listen(['new-tweet', 'new-tweet2'], this.destroy, this);
         },
 
         handleTweet: function(data) {
@@ -40,7 +39,15 @@
                 text: 'Hey, this is core.js, and is really cool'
               }
             });
-          }, 1000);
+
+            sandbox.notify({
+              type: 'new-tweet2',
+              data: {
+                author: 'Mauricio Soares',
+                text: 'Hey, this is core.js, and is really cool'
+              }
+            });
+          }, 2 * 1000);
         },
 
         destroy: function() {

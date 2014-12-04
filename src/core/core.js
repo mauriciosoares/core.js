@@ -49,9 +49,7 @@
 
   Core.prototype.xAll = function(method) {
     for(var module in this.modules) {
-      if(this.modules.hasOwnProperty(module)) {
-        this[method](module);
-      }
+      if(this.modules.hasOwnProperty(module)) this[method](module);
     }
   };
 

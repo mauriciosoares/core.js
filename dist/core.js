@@ -1,4 +1,4 @@
-/** core.js - v0.0.3 - 2014-11-27
+/** core.js - v0.0.3 - 2014-12-04
 * Copyright (c) 2014 Mauricio Soares;
 * Licensed MIT 
 */
@@ -54,9 +54,7 @@
 
   Core.prototype.xAll = function(method) {
     for(var module in this.modules) {
-      if(this.modules.hasOwnProperty(module)) {
-        this[method](module);
-      }
+      if(this.modules.hasOwnProperty(module)) this[method](module);
     }
   };
 
@@ -76,7 +74,16 @@
   Core.helpers.Error = Error;
 } (this.Core));
 
-(function(root) {
+(function(Core) {
+  var isArray = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
+  };
+
+  Core.helpers = Core.helpers || {};
+  Core.helpers.isArray = isArray;
+} (this.Core));
+
+(function(root, helpers) {
   var Sandbox = function(module) {
     this.module = module;
   };
@@ -96,7 +103,15 @@
     }
   };
 
-  Sandbox.prototype.listen = function(notification, callback, context, replace) {
+  Sandbox.prototype.listen = function(notification) {
+    if(!helpers.isArray(notification)) return this.addNotification.apply(this, arguments);
+
+    for(var n in notification) {
+      console.log(n);
+    }
+  };
+
+  Sandbox.prototype.addNotification = function(notification, callback, context, replace) {
     var notifications = Sandbox.notifications,
       addNotification = false;
 
@@ -118,4 +133,4 @@
   };
 
   root.Sandbox = Sandbox;
-} (this));
+} (this, this.Core.helpers));
