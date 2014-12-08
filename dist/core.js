@@ -110,7 +110,7 @@
 
 } (this.Core));
 
-(function(root, helpers) {
+(function(root, Core, helpers) {
   var Sandbox = function(module) {
     this.module = module;
   };
@@ -161,5 +161,9 @@
     }
   };
 
+  Sandbox.prototype.x = function(extension) {
+    return Core.getExtension(extension);
+  };
+
   root.Sandbox = Sandbox;
-} (this, this.Core.helpers));
+} (this, this.Core, this.Core.helpers));

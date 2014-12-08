@@ -8,9 +8,13 @@
 
   <script src="../dist/core.js"></script>
   <script>
+    Core.extend('$', function() {
+      return true;
+    });
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
+          console.log(sandbox.x('$'));
           // sandbox.listen('new-tweet', this.handleTweet, this);
           // sandbox.listen('new-tweet', this.destroy, this, true);
           // sandbox.listen('new-tweet2', this.destroy, this);
@@ -48,7 +52,7 @@
                 text: 'Hey, this is core.js, and is really cool'
               }
             });
-          }, 2 * 10000);
+          }, 2 * 100000);
         },
 
         destroy: function() {
