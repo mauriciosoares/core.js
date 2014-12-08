@@ -7,4 +7,6 @@
     Core.ex[name] = implementation;
   };
 
+  Core.extend = extend;
+
 } (this.Core));

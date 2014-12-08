@@ -1,4 +1,4 @@
-/** core.js - v0.0.3 - 2014-12-04
+/** core.js - v0.0.3 - 2014-12-07
 * Copyright (c) 2014 Mauricio Soares;
 * Licensed MIT 
 */
@@ -100,6 +100,8 @@
   var extend = function(name, implementation) {
     Core.ex[name] = implementation;
   };
+
+  Core.extend = extend;
 
 } (this.Core));
 
