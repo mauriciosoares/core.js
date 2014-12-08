@@ -1,12 +1,17 @@
 (function(Core) {
   'use strict';
 
-  Core.ex = {};
+  var extensions = {};
 
   var extend = function(name, implementation) {
-    Core.ex[name] = implementation;
+    extensions[name] = implementation;
+  };
+
+  var getExtension = function(extension) {
+    return extensions[extension] || null;
   };
 
   Core.extend = extend;
+  Core.getExtension = getExtension;
 
 } (this.Core));
