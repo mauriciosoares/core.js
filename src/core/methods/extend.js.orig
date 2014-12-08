@@ -7,10 +7,16 @@
     extensions[name] = implementation;
   };
 
+<<<<<<< HEAD
+  Core.extend = extend;
+||||||| merged common ancestors
+=======
   var getExtension = function(extension) {
     return extensions[extension] || null;
   };
 
   Core.extend = extend;
   Core.getExtension = getExtension;
+
+>>>>>>> f550fcf1eec08411f016e6d3889b9cd2660e08ca
 } (this.Core));

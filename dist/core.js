@@ -1,4 +1,4 @@
-/** core.js - v0.0.3 - 2014-12-04
+/** core.js - v0.0.3 - 2014-12-08
 * Copyright (c) 2014 Mauricio Soares;
 * Licensed MIT 
 */
@@ -95,16 +95,21 @@
 (function(Core) {
   'use strict';
 
-  Core.ex = {};
+  var extensions = {};
 
   var extend = function(name, implementation) {
-    Core.ex[name] = implementation;
+    extensions[name] = implementation;
+  };
+
+  var getExtension = function(extension) {
+    return extensions[extension] || null;
   };
 
   Core.extend = extend;
+  Core.getExtension = getExtension;
 } (this.Core));
 
-(function(root, helpers) {
+(function(root, Core, helpers) {
   var Sandbox = function(module) {
     this.module = module;
   };
@@ -155,5 +160,9 @@
     }
   };
 
+  Sandbox.prototype.x = function(extension) {
+    return Core.getExtension(extension);
+  };
+
   root.Sandbox = Sandbox;
-} (this, this.Core.helpers));
+} (this, this.Core, this.Core.helpers));

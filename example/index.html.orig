@@ -8,9 +8,16 @@
 
   <script src="../dist/core.js"></script>
   <script>
+<<<<<<< HEAD
+    var underscore = {aMethod: function() { return true; }};
+    Core.extend('_', underscore);
+
+||||||| merged common ancestors
+=======
     Core.extend('$', function() {
       return true;
     });
+>>>>>>> f550fcf1eec08411f016e6d3889b9cd2660e08ca
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
@@ -52,7 +59,13 @@
                 text: 'Hey, this is core.js, and is really cool'
               }
             });
+<<<<<<< HEAD
+          }, 2 * 1000 * 60);
+||||||| merged common ancestors
+          }, 2 * 1000);
+=======
           }, 2 * 100000);
+>>>>>>> f550fcf1eec08411f016e6d3889b9cd2660e08ca
         },
 
         destroy: function() {
