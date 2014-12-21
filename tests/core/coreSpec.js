@@ -8,31 +8,21 @@ describe('Testing Core', function() {
     expect(Core.modules['tweet']).not.toBeUndefined();
   });
 
-  it('Should start a new module', function() {
-    expect(true).toEqual(true);
-  });
+  it('Should start a new module');
 
-  it('Should stop a new module', function() {
-    expect(true).toEqual(true);
-  });
+  it('Should stop a new module');
 
-  it('Should start all modules', function() {
-    expect(true).toEqual(true);
-  });
+  it('Should start all modules');
 
-  it('Should stop all modules', function() {
-    expect(true).toEqual(true);
-  });
+  it('Should stop all modules');
 
-  it('Should throw an error when a module is not defined', function() {
-    expect(true).toEqual(true);
-  });
+  it('Should throw an error when a module is not defined');
 
-  it('Should trigger init when the module is started', function() {
-    expect(true).toEqual(true);
-  });
+  it('Should trigger init when the module is started');
 
-  it('Should trigger destroy when module is stoped', function() {
-    expect(true).toEqual(true);
-  });
+  it('Should trigger destroy when module is stoped');
+
+  it('Should extend a different component into Core extensions');
+
+  it('Should return the registered extension');
 });
