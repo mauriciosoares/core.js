@@ -20,7 +20,11 @@ describe('Testing Core', function() {
 
   it('Should trigger init when the module is started');
 
+  it('Should trigger init from the modules that where started');
+
   it('Should trigger destroy when module is stoped');
+
+  it('Should trigger destroy from the modules that where stoped');
 
   it('Should extend a different component into Core extensions');
 
