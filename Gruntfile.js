@@ -105,6 +105,7 @@ module.exports = function(grunt) {
   config.jasmine.pivotal = {
     src: [
       'src/core/core.js',
+      'src/core/methods/extend.js',
       'src/sandbox/sandbox.js'
     ],
     options: {

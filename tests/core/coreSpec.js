@@ -178,7 +178,14 @@ describe('Testing Core', function() {
     expect(spying.tweet3).toHaveBeenCalled();
   });
 
-  it('Should extend a different component into Core extensions');
+  it('Should extend and return a different component from Core extensions', function() {
+    var jQuery = {};
+    Core.extend('$', jQuery);
 
-  it('Should return the registered extension');
+    expect(Core.getExtension('$')).toBe(jQuery);
+  });
+
+  it('Should return null if the extension doesn\'t exists into Core extensions', function() {
+    expect(Core.getExtension('foo')).toBeNull();
+  });
 });
