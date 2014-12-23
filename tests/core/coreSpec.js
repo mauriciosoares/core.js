@@ -49,11 +49,67 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet3.instance).toBeNull();
   });
 
-  it('Should throw an error when a module is not defined');
+  it('Should trigger init when the module is started', function() {
+    var spying = {
+      tweet: function() {}
+    };
 
-  it('Should trigger init when the module is started');
+    spyOn(spying, 'tweet');
+    Core.register('tweet', function() {
+      return {
+        init: function() {
+          spying.tweet();
+        }
+      };
+    });
 
-  it('Should trigger init from the modules that where started');
+    Core.start('tweet');
+
+    expect(spying.tweet).toHaveBeenCalled();
+  });
+
+  it('Should trigger init from the modules that where started', function() {
+    var spying = {
+      tweet1: function() {},
+      tweet2: function() {},
+      tweet3: function() {}
+    };
+
+    spyOn(spying, 'tweet1');
+    spyOn(spying, 'tweet2');
+    spyOn(spying, 'tweet3');
+
+    Core.register('tweet1', function() {
+      return {
+        init: function() {
+          spying.tweet1();
+        }
+      };
+    });
+
+    Core.register('tweet2', function() {
+      return {
+        init: function() {
+          spying.tweet2();
+        }
+      };
+    });
+
+    Core.register('tweet3', function() {
+      return {
+        init: function() {
+          spying.tweet3();
+        }
+      };
+    });
+
+    Core.start('tweet1');
+    Core.start('tweet3');
+
+    expect(spying.tweet1).toHaveBeenCalled();
+    expect(spying.tweet2).not.toHaveBeenCalled();
+    expect(spying.tweet3).toHaveBeenCalled();
+  });
 
   it('Should trigger destroy when module is stoped');
 
