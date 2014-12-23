@@ -111,9 +111,72 @@ describe('Testing Core', function() {
     expect(spying.tweet3).toHaveBeenCalled();
   });
 
-  it('Should trigger destroy when module is stoped');
+  it('Should trigger destroy when module is stoped', function() {
+    var spying = {
+      tweet: function() {}
+    };
 
-  it('Should trigger destroy from the modules that where stoped');
+    spyOn(spying, 'tweet');
+    Core.register('tweet', function() {
+      return {
+        destroy: function() {
+          spying.tweet();
+        }
+      };
+    });
+
+    Core.start('tweet');
+    Core.stop('tweet');
+
+    expect(spying.tweet).toHaveBeenCalled();
+  });
+
+  it('Should trigger destroy from the modules that where stoped', function() {
+    var spying = {
+      tweet1: function() {},
+      tweet2: function() {},
+      tweet3: function() {}
+    };
+
+    spyOn(spying, 'tweet1');
+    spyOn(spying, 'tweet2');
+    spyOn(spying, 'tweet3');
+
+    Core.register('tweet1', function() {
+      return {
+        destroy: function() {
+          spying.tweet1();
+        }
+      };
+    });
+
+    Core.register('tweet2', function() {
+      return {
+        destroy: function() {
+          spying.tweet2();
+        }
+      };
+    });
+
+    Core.register('tweet3', function() {
+      return {
+        destroy: function() {
+          spying.tweet3();
+        }
+      };
+    });
+
+    Core.start('tweet1');
+    Core.start('tweet2');
+    Core.start('tweet3');
+
+    Core.stop('tweet1');
+    Core.stop('tweet3');
+
+    expect(spying.tweet1).toHaveBeenCalled();
+    expect(spying.tweet2).not.toHaveBeenCalled();
+    expect(spying.tweet3).toHaveBeenCalled();
+  });
 
   it('Should extend a different component into Core extensions');
 
