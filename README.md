@@ -210,7 +210,7 @@ Core.stopAll();
 Extends Core functionalities
 
 - `newExtension` (string): The name of the extension
-- `implementation` (function|string|number|boolean): The implementation of the extension
+- `implementation` (function|string|number|boolean|array): The implementation of the extension
 
 __Usage__
 
@@ -218,6 +218,12 @@ __Usage__
 Core.extend('$', jQuery);
 ```
 
+#### sandbox.listen( notification, callback, context, force )
+Listens to other modules notifications
+
+- `notification` (string | array): The name of the notification you are listening to
+- `callback` (function): The callback when the notification is triggered
+- `context` (object):
 
 
 ## Maintainer
