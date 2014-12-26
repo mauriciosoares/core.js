@@ -287,5 +287,18 @@ describe('Testing Sandbox', function() {
     Core.start('tweet');
   });
 
-  it('Should give access to a extension inside a module');
+  it('Should give access to a extension inside a module', function() {
+    var jQuery = {};
+    Core.extend('$', jQuery);
+
+    Core.register('tweet', function(sandbox) {
+      return {
+        init: function() {
+          expect(sandbox.x('$')).toBe(jQuery);
+        }
+      }
+    });
+
+    Core.start('tweet');
+  });
 });
