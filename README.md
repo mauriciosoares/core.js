@@ -154,19 +154,71 @@ This is basically how Core.js works, below there's the documentation of methods 
 ## Docs
 
 #### Core.register( moduleName, constructor )
+Register a new module.
 
 - `moduleName` (string): The name of the module
 - `constructor` (function): The implementation of the module
 
+__Usage__
+
+```js
+Core.register('module', function() {})
+```
+
 #### Core.start( moduleName )
+Starts the given module.
+
+- `moduleName` (string): The name of the module
+
+__Usage__
+
+```js
+Core.start('module');
+```
+
 
 #### Core.stop( moduleName )
+Stops the given module.
+
+- `moduleName` (string): The name of the module
+
+__Usage__
+
+```js
+Core.stop('module');
+```
 
 #### Core.startAll()
+Starts all modules.
+
+__Usage__
+
+```js
+Core.startAll();
+```
 
 #### Core.stopAll()
+Stops all modules.
 
-#### Core.extend()
+__Usage__
+
+```js
+Core.stopAll();
+```
+
+#### Core.extend( newExtension, implementation )
+Extends Core functionalities
+
+- `newExtension` (string): The name of the extension
+- `implementation` (function|string|number|boolean): The implementation of the extension
+
+__Usage__
+
+```js
+Core.extend('$', jQuery);
+```
+
+
 
 ## Maintainer
 
