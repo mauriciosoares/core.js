@@ -126,7 +126,7 @@ Core.register('tweet', function(sandbox) {
 
 Using the method `x` from `sandbox`, it gives you access to all extensions from Core, without talking directly to it.
 
-You might think: "Why do that? it's only increasing the code". But since we are talking to consistency, and maybe a code that will be updated by other programmers, this is a way we can keep thinkgs standardized, and again, conpectually a module should not talk to anything else but the `sandbox`.
+You might think: _"Why do that? it's only increasing the code"_. But since we are talking about consistency, and maybe a code that will be updated by other programmers, this is a way we can keep things standardized, and again, conpectually a module should not talk to anything else but the `sandbox`.
 
 ### Last thoughts
 
@@ -134,7 +134,7 @@ This is basically how Core.js works, below there's the documentation of methods 
 
 ## Maintainer
 
-- Mauricio Soares - <http://github.com/msodeveloper>
+- Mauricio Soares - <http://github.com/mauriciosoares>
 
 ## Contributing
 
