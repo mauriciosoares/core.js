@@ -155,6 +155,9 @@ This is basically how Core.js works, below there's the documentation of methods 
 
 #### Core.register( moduleName, constructor )
 
+- `moduleName` (string): The name of the module
+- `constructor` (function): The implementation of the module
+
 #### Core.start( moduleName )
 
 #### Core.stop( moduleName )
