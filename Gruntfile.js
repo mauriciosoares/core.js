@@ -106,6 +106,7 @@ module.exports = function(grunt) {
     src: [
       'src/core/core.js',
       'src/core/methods/extend.js',
+      'src/helpers/*.js',
       'src/sandbox/sandbox.js'
     ],
     options: {
