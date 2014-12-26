@@ -210,7 +210,7 @@ Core.stopAll();
 Extends Core functionalities
 
 - `newExtension` (string): The name of the extension
-- `implementation` (function|string|number|boolean|array): The implementation of the extension
+- `implementation` (function | string | number | boolean | array): The implementation of the extension
 
 __Usage__
 
@@ -225,6 +225,17 @@ Listens to other modules notifications
 - `callback` (function): The callback when the notification is triggered
 - `context` (object):
 
+#### sandbox.notify( config )
+Notifies other modules
+
+- `config` (object): The configuration object
+  - `type` (string): The notification that will be triggered
+  - `data` (function | string | number | boolean | array): The data that will be passed in the callback
+
+#### sandbox.x( extension )
+Calls the extension from core, if there's any
+
+- `extension` (string): The name of the extension
 
 ## Maintainer
 
