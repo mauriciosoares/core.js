@@ -93,7 +93,49 @@ describe('Testing Sandbox', function() {
     expect(spying.newTweet.calls.count()).toEqual(2);
   });
 
-  it('Should notify other modules from a specific notification');
+  it('Should notify other modules from a specific notification', function() {
+    var spying = {
+      newTweet: function() {},
+      newTweet2: function() {}
+    };
+
+    spyOn(spying, 'newTweet');
+    spyOn(spying, 'newTweet2');
+
+    Core.register('tweet', function(sandbox) {
+      return {
+        init: function() {
+          sandbox.notify({
+            type: 'new-tweet',
+            data: {}
+          });
+        }
+      }
+    });
+
+    Core.register('tweet-list', function(sandbox) {
+      return {
+        init: function() {
+          sandbox.listen('new-tweet', this.newTweet)
+          sandbox.listen('new-tweet2', this.newTweet2)
+        },
+
+        newTweet: function() {
+          spying.newTweet();
+        },
+
+        newTweet2: function() {
+          spying.newTweet2();
+        }
+      }
+    });
+
+    Core.start('tweet-list');
+    Core.start('tweet');
+
+    expect(spying.newTweet).toHaveBeenCalled();
+    expect(spying.newTweet2).not.toHaveBeenCalled();
+  });
 
   it('Should pass data through notifications');
 
