@@ -14,8 +14,8 @@
     Core.register('tweet-list', function(sandbox) {
       return {
         init: function() {
-          console.log(sandbox.x('$'));
-          // sandbox.listen('new-tweet', this.handleTweet, this);
+          // console.log(sandbox.x('$'));
+          sandbox.listen('new-tweet', this.handleTweet, this);
           // sandbox.listen('new-tweet', this.destroy, this, true);
           // sandbox.listen('new-tweet2', this.destroy, this);
           sandbox.listen(['new-tweet', 'new-tweet2'], this.destroy, this);
