@@ -32,7 +32,7 @@ Core.register('tweet', function(sandbox) {
 });
 ```
 
-This way you can register a new module, and everything inside the `init` method will be called once the module is started
+This way you can register a new module, and the method `init` will be called once the module is started, if it exists.
 
 ```js
 Core.start('tweet'); // Log: starting tweet module
@@ -55,6 +55,25 @@ Core.register('tweet-list', function(sandbox) {
 ```
 
 If you have multiple modules you can start everything using `Core.startAll();`, and everything will be started. But if you need some specific order for starting your modules, you can call the modules you want first, and then use `Core.startAll()`.
+
+### Destroying modules
+
+You might want to stop a module in some point, this can be easily done using the method `Core.stop()`.
+
+```js
+Core.register('tweet-list', function(sandbox) {
+  return {
+    destroy: function() {
+      console.log('Module destroyed');
+    }
+  }
+});
+
+Core.start('tweet-list');
+Core.stop('tweet-list'); // Log: Module destroyed
+```
+
+When you stop a module, the method `destroy` will be called, if it exists.
 
 ### Comunicating between modules
 
@@ -131,6 +150,20 @@ You might think: _"Why do that? it's only increasing the code"_. But since we ar
 ### Last thoughts
 
 This is basically how Core.js works, below there's the documentation of methods and parameters.
+
+## Docs
+
+#### Core.register( moduleName, constructor )
+
+#### Core.start( moduleName )
+
+#### Core.stop( moduleName )
+
+#### Core.startAll()
+
+#### Core.stopAll()
+
+#### Core.extend()
 
 ## Maintainer
 
