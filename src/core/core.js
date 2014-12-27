@@ -2,7 +2,8 @@
   /**
   * The constructor of Core
   *
-  * @method Core
+  * @class Core
+  * @constructor
   */
   var Core = function() {
     this.modules = {};
