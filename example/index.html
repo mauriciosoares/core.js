@@ -3,71 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
+  <div class="tweet">
+    <form id="tweet-form">
+      <input type="text" class="tweet-input">
+    </form>
+  </div>
+
+  <ul class="tweetlist"  id="tweet-list">
+    <li class="tweetlist-item">
+      @omauriciosoares<br>
+      Core.js rocks!
+    </li>
+  </ul>
 
   <script src="../dist/core.js"></script>
-  <script>
-    Core.extend('$', function() {
-      return true;
-    });
-    Core.register('tweet-list', function(sandbox) {
-      return {
-        init: function() {
-          // console.log(sandbox.x('$'));
-          sandbox.listen('new-tweet', this.handleTweet, this);
-          // sandbox.listen('new-tweet', this.destroy, this, true);
-          // sandbox.listen('new-tweet2', this.destroy, this);
-          sandbox.listen(['new-tweet', 'new-tweet2'], this.destroy, this);
-          // sandbox.listen('new-tweet2', this.handleTweet, this, true);
-        },
-
-        handleTweet: function(data) {
-          console.log(this);
-          console.log(data);
-        },
-
-        destroy: function() {
-          console.log('destroy tweet');
-        }
-      };
-    });
-
-    Core.register('tweet', function(sandbox) {
-      return {
-        init: function() {
-          setInterval(function() {
-            sandbox.notify({
-              type: 'new-tweet',
-              data: {
-                author: 'Mauricio Soares',
-                text: 'Hey, this is core.js, and is really cool'
-              }
-            });
-
-            sandbox.notify({
-              type: 'new-tweet2',
-              data: {
-                author: 'Mauricio Soares',
-                text: 'Hey, this is core.js, and is really cool'
-              }
-            });
-          }, 2 * 100000);
-        },
-
-        destroy: function() {
-          console.log('destroy search');
-        }
-      };
-    });
-
-    Core.start('tweet-list');
-
-    Core.startAll();
-
-    // setTimeout(function() {
-    //   Core.stop('tweet-list');
-    // }, 5000);
-  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
