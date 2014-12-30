@@ -1,7 +1,7 @@
 // extending stuff in core
 Core.extend('$', jQuery);
 
-// tweet.js
+// tweet-form.js
 (function(Core) {
   Core.register('tweet-form', function(sandbox) {
     return {
