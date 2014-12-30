@@ -4,6 +4,10 @@ __Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https:/
 
 It helps you creating scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
 
+## tl;dr
+
+Check out [this video](https://www.youtube.com/watch?v=s9tdZSa74jo)
+
 ## The Idea
 
 Conceptually, everything in your application is a module, and your modules should work independently from each other, so if one module breaks, the others should not.
