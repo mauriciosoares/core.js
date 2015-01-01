@@ -2,7 +2,7 @@
 
 __Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https://www.youtube.com/watch?v=b5pFv9NB9fs)
 
-It helps you creating scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
+It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
 
 ## tl;dr
 
@@ -20,7 +20,7 @@ So let's think about the twitter page, and how we could re-build it using the __
 
 ![Twitter Modules](https://cloud.githubusercontent.com/assets/2321259/5558085/3caa2e2c-8d00-11e4-8eba-4613b593193f.png)
 
-Everything inside a red square is a module, so they work in a way that they don't depend from any other modules, and they should be programmed that way as well.
+Everything inside a red square is a module, they work in a way that they don't depend on any other modules, and they should be programmed that way as well.
 
 Let's start with the tweet module.
 
@@ -42,7 +42,7 @@ This way you can register a new module, and the method `init` will be called onc
 Core.start('tweet'); // Log: starting tweet module
 ```
 
-For every module you have an enviroment called sandbox, this is the only guy your module will ever gonna speak to.
+For every module you have an enviroment called sandbox, this is the only guy your module will ever speak to.
 
 It garantees that if your module tries to call something that doesn't exists or is broken, it won't break the module itself.
 
@@ -106,7 +106,7 @@ Core.register('tweet', function(sandbox) {
 
 Every 5 seconds, this module notifies everything that is listening to `new-tweet` that something has happened. If nothing is listening to it, than nothing happens.
 
-Our `tweet-list` is gonna listen to this notifications.
+Our `tweet-list` is going to listen for this notifications.
 
 ```js
 Core.register('tweet-list', function(sandbox) {
@@ -122,11 +122,11 @@ Core.register('tweet-list', function(sandbox) {
 });
 ```
 
-Cool right? If one of those modules stop working, than it won't break the other module!
+Cool right? If one of those modules stop working, than it won't break the other one!
 
 ### Extending Core
 
-__Core.js__ simple gives you an structure to scale your apps, but it won't give you the tools to build it, since we don't want to reinvent the wheel, it provides you a way to extend its functionalities.
+__Core.js__ simple gives you an structure to scale your apps, but it won't give you the tools to build it, since we don't want to reinvent the wheel, it provides a way to extend its functionalities.
 
 Modules should not talk to external libreries as well, they will ask permission to `sandbox` before that, and `sandbox` will then talk to `Core` to check if that extension actually exists, let's see:
 
@@ -153,7 +153,7 @@ You might think: _"Why do that? it's only increasing the code"_. But since we ar
 
 ### Last thoughts
 
-This is basically how Core.js works, below there's the documentation of methods and parameters.
+This is basically how Core.js works, below you will find the documentation of methods and parameters.
 
 ## Docs
 
@@ -170,7 +170,7 @@ Core.register('module', function() {})
 ```
 
 #### Core.start( moduleName )
-Starts the given module.
+Starts the named module.
 
 - `moduleName` (string): The name of the module
 
@@ -182,7 +182,7 @@ Core.start('module');
 
 
 #### Core.stop( moduleName )
-Stops the given module.
+Stops the named module.
 
 - `moduleName` (string): The name of the module
 
