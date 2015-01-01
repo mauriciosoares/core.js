@@ -1,9 +1,9 @@
-/** core.js - v0.0.3 - 2014-12-27
-* Copyright (c) 2014 Mauricio Soares;
+/** core.js - v0.1.0 - 2015-01-01
+* Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
 
-(function(root) {
+(function(root, document) {
   /**
   * The constructor of Core
   *
@@ -43,17 +43,31 @@
   };
 
   /**
+  * Gets an element by ID to attach to the module instance
+  *
+  * @method getElement
+  * @param {string} id the id of the main element in the module
+  */
+  Core.prototype.getElement = function(id) {
+    return document.getElementById(id);
+  };
+
+  /**
   * Starts a registered module
   *
   * @method start
   * @param {string} module the name of the module
   */
   Core.prototype.start = function(module) {
-    var cModule = this.modules[module];
+    var cModule = this.modules[module],
+      el = this.getElement(module);
 
     if(this.moduleExist(cModule)) return;
 
     cModule.instance = new cModule.constructor(new root.Sandbox(module));
+
+    // attachs the element to the instance of the module
+    cModule.instance.el = el;
 
     if(cModule.instance.init) cModule.instance.init();
   };
@@ -107,7 +121,7 @@
   };
 
   root.Core = new Core();
-} (this));
+} (this, document));
 
 (function(Core) {
   var Error = function(error, message) {
