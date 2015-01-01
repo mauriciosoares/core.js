@@ -267,6 +267,11 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 2. Run `npm install -g grunt-cli` to install the grunt command
 3. Run `npm test`
 
+## Release History
+
+* 2014-12-30   v0.2.0   Isolation of DOM in modules
+* 2014-12-21   v0.1.0   Release usable version
+
 ## License
 
 (The MIT License)
