@@ -144,6 +144,8 @@ Core.register('tweet', function() {
 Core.start('tweet'); // Log: <div id="tweet"></div> (DOM Reference)
 ```
 
+If there's no DOM element, then `this.el` will return `null`.
+
 ### Extending Core
 
 __Core.js__ simple gives you an structure to scale your apps, but it won't give you the tools to build it, since we don't want to reinvent the wheel, it provides a way to extend its functionalities.
