@@ -124,6 +124,26 @@ Core.register('tweet-list', function(sandbox) {
 
 Cool right? If one of those modules stop working, than it won't break the other one!
 
+### Isolation of DOM
+
+If you have a DOM element with the same ID as the module name, it will be accessible inside the module using `this.el`.
+
+```html
+<div id="tweet"></div>
+```
+
+```js
+Core.register('tweet', function() {
+  return {
+    init: function() {
+      console.log(this.el);
+    }
+  }
+});
+
+Core.start('tweet'); // Log: <div id="tweet"></div> (DOM Reference)
+```
+
 ### Extending Core
 
 __Core.js__ simple gives you an structure to scale your apps, but it won't give you the tools to build it, since we don't want to reinvent the wheel, it provides a way to extend its functionalities.
