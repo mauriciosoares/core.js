@@ -188,4 +188,10 @@ describe('Testing Core', function() {
   it('Should return null if the extension doesn\'t exists into Core extensions', function() {
     expect(Core.getExtension('foo')).toBeNull();
   });
+
+  describe('Testing Isolation of DOM', function() {
+    it('Should return the DOM element if it has the same id as the module');
+
+    it('Should return null if the module doesnt find any DOM element with the same name');
+  });
 });
