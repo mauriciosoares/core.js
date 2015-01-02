@@ -190,7 +190,21 @@ describe('Testing Core', function() {
   });
 
   describe('Testing Isolation of DOM', function() {
-    it('Should return the DOM element if it has the same id as the module');
+    it('Should return the DOM element if it has the same id as the module', function() {
+      var newElement = document.createElement('div');
+      newElement.id = 'tweet';
+      document.body.appendChild(newElement);
+
+      Core.register('tweet', function() {
+        return {
+          init: function() {
+            expect(this.el).toBe(newElement);
+          }
+        };
+      });
+
+      Core.start('tweet');
+    });
 
     it('Should return null if the module doesnt find any DOM element with the same name');
   });
