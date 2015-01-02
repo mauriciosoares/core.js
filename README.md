@@ -7,6 +7,7 @@ It helps you create scalable applications written in Javascript, giving you some
 ## tl;dr
 
 * Check out [this video](https://www.youtube.com/watch?v=s9tdZSa74jo) - Introduction (portuguese)
+* Check out [this video](https://www.youtube.com/watch?v=smYbfRrXSEs) - Isolation of DOM (portuguese)
 
 ## The Idea
 
