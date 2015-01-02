@@ -206,6 +206,16 @@ describe('Testing Core', function() {
       Core.start('tweet');
     });
 
-    it('Should return null if the module doesnt find any DOM element with the same name');
+    it('Should return null if the module doesnt find any DOM element with the same name', function() {
+      Core.register('tweet2', function() {
+        return {
+          init: function() {
+            expect(this.el).toBeNull();
+          }
+        };
+      });
+
+      Core.start('tweet2');
+    });
   });
 });
