@@ -1,6 +1,6 @@
 (function(Core) {
   var err = function(error, message) {
-    console.log(err.messages[error] + message);
+    Core.helpers.log(err.messages[error] + message);
   };
 
   err.messages = {
