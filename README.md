@@ -1,4 +1,4 @@
-# Core.js
+# Core.js [![Build Status](https://travis-ci.org/mauriciosoares/core.js.svg?branch=master)](https://travis-ci.org/mauriciosoares/core.js)
 
 __Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https://www.youtube.com/watch?v=b5pFv9NB9fs)
 
