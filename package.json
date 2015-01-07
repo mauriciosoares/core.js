@@ -11,7 +11,7 @@
   },
   "main": "dist/core.js",
   "scripts": {
-    "test": "grunt jasmine"
+    "test": "grunt ci"
   },
   "bugs": {
     "url": "https://github.com/msodeveloper/core.js/issues"
