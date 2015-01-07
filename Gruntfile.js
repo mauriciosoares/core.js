@@ -120,4 +120,6 @@ module.exports = function(grunt) {
 
   // Load all tasks
   tasks.forEach(grunt.loadNpmTasks);
+
+  grunt.registerTask('ci', ['jshint', 'jasmine']);
 };
