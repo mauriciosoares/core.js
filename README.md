@@ -246,11 +246,12 @@ Core.extend('$', jQuery);
 ```
 
 #### sandbox.listen( notification, callback, context, force )
-Listens to other modules notifications
+Listens to other modules notifications, to overwrite a notification you must use the parameter force
 
 - `notification` (string | array): The name of the notification you are listening to
 - `callback` (function): The callback when the notification is triggered
-- `context` (object):
+- `context` (object): The value of `this` inside the callback
+- `force` (boolean): If you want to overwrite a notification, use `true` here
 
 #### sandbox.notify( config )
 Notifies other modules
