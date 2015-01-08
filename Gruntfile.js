@@ -133,11 +133,9 @@ module.exports = function(grunt) {
 
   // =============================================
   // coveralls
-  config.coveralls = {};
-  config.coveralls.options = {
-    src: 'bin/coverage/lcov.info',
-    force: true
-  }
+  config.coveralls = {
+    src: 'bin/coverage/lcov.info'
+  };
 
   // =============================================
   // config
@@ -146,5 +144,5 @@ module.exports = function(grunt) {
   // Load all tasks
   tasks.forEach(grunt.loadNpmTasks);
 
-  grunt.registerTask('ci', ['jshint', 'jasmine']);
+  grunt.registerTask('ci', ['jshint', 'jasmine', 'coveralls']);
 };
