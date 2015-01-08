@@ -4,6 +4,14 @@ __Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https:/
 
 It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
 
+## Bower
+
+You can install __Core.js__ using Bower running the following command:
+
+```
+bower install core_js
+```
+
 ## tl;dr
 
 * Check out [this video](https://www.youtube.com/watch?v=s9tdZSa74jo) - Introduction (portuguese)
