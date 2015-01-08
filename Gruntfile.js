@@ -7,6 +7,7 @@ module.exports = function(grunt) {
     'grunt-contrib-jasmine',
     'grunt-contrib-watch',
     'grunt-contrib-uglify',
+    'grunt-coveralls',
     'grunt-bump'
   ];
 
@@ -102,7 +103,7 @@ module.exports = function(grunt) {
   // =============================================
   // jasmine
   config.jasmine = {};
-  config.jasmine.pivotal = {
+  config.jasmine.coverage = {
     src: [
       'src/core/core.js',
       'src/core/methods/extend.js',
@@ -110,8 +111,32 @@ module.exports = function(grunt) {
       'src/sandbox/sandbox.js'
     ],
     options: {
-      specs: 'tests/**/*Spec.js'
+      specs: 'tests/**/*Spec.js',
+      template: require('grunt-template-jasmine-istanbul'),
+      templateOptions: {
+        coverage: 'bin/coverage/coverage.json',
+        report: {
+          type: 'lcov',
+          options: {
+            dir: 'bin/coverage'
+          }
+        },
+        thresholds: {
+          lines: 75,
+          statements: 75,
+          branches: 75,
+          functions: 90
+        }
+      }
     }
+  }
+
+  // =============================================
+  // coveralls
+  config.coveralls = {};
+  config.coveralls.options = {
+    src: 'bin/coverage/lcov.info',
+    force: true
   }
 
   // =============================================
