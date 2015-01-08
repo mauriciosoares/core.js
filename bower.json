@@ -1,0 +1,28 @@
+{
+  "name": "core_js",
+  "version": "0.2.0",
+  "homepage": "https://github.com/mauriciosoares/core.js",
+  "authors": [
+    "Mauricio Soares <m.soares2603@gmail.com>"
+  ],
+  "description": "Lightweight framework for scalable applications",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "core",
+    "core.js",
+    "lightweight",
+    "framework",
+    "scalable",
+    "application"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
