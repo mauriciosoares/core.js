@@ -7,11 +7,11 @@
   * @param {function} message the complementary message to the error
   */
   var err = function(error, message) {
-    Core.helpers.log(err.messages[error] + message);
+    Core.helpers.log(err.messages[error] + "\"" + message + "\"");
   };
 
   err.messages = {
-    '!module': 'There\'s no module named: ',
+    '!start': 'Could not start the given module, it\'s either already started or is not registered: ',
     'moduleExist': 'Can\'t register an already registered module: '
   };
 
