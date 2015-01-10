@@ -17,10 +17,9 @@
   * @param {function} constructor the constructor of the new module
   */
   Core.prototype.register = function(module, constructor) {
-    // // console.log(this.helpers.err('moduleExist', module));
     if(this.modules[module]) {
       this.helpers.err('moduleExist', module);
-      return;
+      return false;
     }
     this.modules[module] = {
       constructor: constructor,
