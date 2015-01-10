@@ -1,4 +1,4 @@
-/** core.js - v0.2.0 - 2015-01-01
+/** core.js - v0.2.0 - 2015-01-10
 * Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
@@ -22,6 +22,10 @@
   * @param {function} constructor the constructor of the new module
   */
   Core.prototype.register = function(module, constructor) {
+    if(this.modules[module]) {
+      this.helpers.err('!!module', module);
+      return false;
+    }
     this.modules[module] = {
       constructor: constructor,
       instance: null
@@ -29,14 +33,14 @@
   };
 
   /**
-  * Check if the module already exists
+  * Check if the module is already initialized or not
   *
-  * @method moduleExist
+  * @method moduleCheck
   * @param {string} module the name of the module that will be checked
   * @param {boolean} destroy check if the module exists, but is already destroyed
   * @return {boolean} if the module exists or already have an instance
   */
-  Core.prototype.moduleExist = function(module, destroy) {
+  Core.prototype.moduleCheck = function(module, destroy) {
     if(destroy) return !module || !module.instance;
 
     return !module || module.instance;
@@ -62,7 +66,10 @@
     var cModule = this.modules[module],
       el = this.getElement(module);
 
-    if(this.moduleExist(cModule)) return;
+    if(this.moduleCheck(cModule)) {
+      this.helpers.err('!start', module);
+      return false;
+    }
 
     cModule.instance = new cModule.constructor(new root.Sandbox(module));
 
@@ -81,7 +88,10 @@
   Core.prototype.stop = function(module) {
     var cModule = this.modules[module];
 
-    if(this.moduleExist(cModule, true)) return;
+    if(this.moduleCheck(cModule, true)) {
+      this.helpers.err('!stop', module);
+      return false;
+    }
 
     if(cModule.instance.destroy) cModule.instance.destroy();
 
@@ -124,16 +134,26 @@
 } (this, document));
 
 (function(Core) {
-  var Error = function(error, message) {
-    console.error(Error.messages[error], message);
+  /**
+  * Handles error messages
+  *
+  * @method err
+  * @param {string} error the type of the error
+  * @param {function} message the complementary message to the error
+  */
+  var err = function(error, message) {
+    Core.helpers.log(err.messages[error] + "\"" + message + "\"");
   };
 
-  Error.messages = {
-    '!module': 'There\'s no module called: '
+  err.messages = {
+    '!start': 'Could not start the given module, it\'s either already started or is not registered: ',
+    '!stop': 'Could not stop the given module, it\'s either already stopped or is not registered: ',
+    '!!module': 'Can\'t register an already registered module: ',
+    '!!listen': 'There\'s already an listen handler to the notification: '
   };
 
   Core.helpers = Core.helpers || {};
-  Core.helpers.Error = Error;
+  Core.helpers.err = err;
 } (this.Core));
 
 (function(Core) {
@@ -151,6 +171,18 @@
   Core.helpers = Core.helpers || {};
   Core.helpers.isArray = isArray;
 } (this.Core));
+
+(function(Core, root) {
+  /**
+  * Adds console.log to Core helpers
+  *
+  * @method log
+  */
+  var log = (root.console) ? root.console.log.bind(root.console) : function() {};
+
+  Core.helpers = Core.helpers || {};
+  Core.helpers.log = log;
+} (this.Core, this));
 
 (function(Core) {
   /**
@@ -272,7 +304,7 @@
     } else if(replace) {
       addNotification = true;
     } else {
-      console.log('Theres already a notification called ' + notification + ', you must force the rewrite');
+      helpers.err('!!listen', notification);
     }
 
     if(addNotification) {
