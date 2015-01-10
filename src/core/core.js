@@ -18,7 +18,7 @@
   */
   Core.prototype.register = function(module, constructor) {
     if(this.modules[module]) {
-      this.helpers.err('moduleExist', module);
+      this.helpers.err('!!module', module);
       return false;
     }
     this.modules[module] = {
