@@ -3,10 +3,19 @@ describe('Testing Core', function() {
     Core.stopAll();
     Core.modules = {};
   });
+
   it('Should create a new module', function() {
     Core.register('tweet', function() {});
 
     expect(Core.modules['tweet']).not.toBeUndefined();
+  });
+
+  it('Should return false and throw a log if the module is already registered', function() {
+    spyOn(Core.helpers, 'err');
+    Core.register('tweet', function() {});
+
+    expect(Core.register('tweet', function() {})).toBeFalsy();
+    expect(Core.helpers.err).toHaveBeenCalled();
   });
 
   it('Should start a new module', function() {
@@ -16,12 +25,31 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet.instance).not.toBeNull();
   });
 
+  it('Should return false and throw a log if the module is already started', function() {
+    spyOn(Core.helpers, 'err');
+    Core.register('tweet', function() {});
+    Core.start('tweet');
+
+    expect(Core.start('tweet')).toBeFalsy();
+    expect(Core.helpers.err).toHaveBeenCalled();
+  });
+
   it('Should stop a new module', function() {
     Core.register('tweet', function() {});
     Core.start('tweet');
     Core.stop('tweet');
 
     expect(Core.modules.tweet.instance).toBeNull();
+  });
+
+  it('Should return false and throw a log if the module is already stopped', function() {
+    spyOn(Core.helpers, 'err');
+    Core.register('tweet', function() {});
+    Core.start('tweet');
+    Core.stop('tweet');
+
+    expect(Core.stop('tweet')).toBeFalsy();
+    expect(Core.helpers.err).toHaveBeenCalled();
   });
 
   it('Should start all modules', function() {
