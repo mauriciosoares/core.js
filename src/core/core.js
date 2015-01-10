@@ -83,7 +83,10 @@
   Core.prototype.stop = function(module) {
     var cModule = this.modules[module];
 
-    if(this.moduleCheck(cModule, true)) return;
+    if(this.moduleCheck(cModule, true)) {
+      this.helpers.err('!stop', module);
+      return;
+    }
 
     if(cModule.instance.destroy) cModule.instance.destroy();
 

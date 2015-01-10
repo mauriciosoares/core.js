@@ -12,6 +12,7 @@
 
   err.messages = {
     '!start': 'Could not start the given module, it\'s either already started or is not registered: ',
+    '!stop': 'Could not stop the given module, it\'s either already stopped or is not registered: ',
     'moduleExist': 'Can\'t register an already registered module: '
   };
 
