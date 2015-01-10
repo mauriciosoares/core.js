@@ -71,7 +71,7 @@
     } else if(replace) {
       addNotification = true;
     } else {
-      console.log('Theres already a notification called ' + notification + ', you must force the rewrite');
+      helpers.err('!!listen', notification);
     }
 
     if(addNotification) {
