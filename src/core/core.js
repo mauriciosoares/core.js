@@ -28,14 +28,14 @@
   };
 
   /**
-  * Check if the module already exists
+  * Check if the module is already initialized
   *
-  * @method moduleExist
+  * @method moduleInitiated
   * @param {string} module the name of the module that will be checked
   * @param {boolean} destroy check if the module exists, but is already destroyed
   * @return {boolean} if the module exists or already have an instance
   */
-  Core.prototype.moduleExist = function(module, destroy) {
+  Core.prototype.moduleInitiated = function(module, destroy) {
     if(destroy) return !module || !module.instance;
 
     return !module || module.instance;
@@ -61,7 +61,7 @@
     var cModule = this.modules[module],
       el = this.getElement(module);
 
-    if(this.moduleExist(cModule)) return;
+    if(this.moduleInitiated(cModule)) return;
 
     cModule.instance = new cModule.constructor(new root.Sandbox(module));
 
@@ -80,7 +80,7 @@
   Core.prototype.stop = function(module) {
     var cModule = this.modules[module];
 
-    if(this.moduleExist(cModule, true)) return;
+    if(this.moduleInitiated(cModule, true)) return;
 
     if(cModule.instance.destroy) cModule.instance.destroy();
 
