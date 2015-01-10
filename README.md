@@ -301,6 +301,7 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 ## Release History
 
+* 2015-01-10   v0.2.1   Improve error messages
 * 2014-12-30   v0.2.0   Isolation of DOM in modules
 * 2014-12-21   v0.1.0   Release usable version
 
