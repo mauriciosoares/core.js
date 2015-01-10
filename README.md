@@ -1,8 +1,16 @@
-# Core.js
+# Core.js [![Build Status](https://travis-ci.org/mauriciosoares/core.js.svg?branch=master)](https://travis-ci.org/mauriciosoares/core.js) [![Coverage Status](https://img.shields.io/coveralls/mauriciosoares/core.js.svg)](https://coveralls.io/r/mauriciosoares/core.js)
 
 __Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https://www.youtube.com/watch?v=b5pFv9NB9fs)
 
 It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
+
+## Installing
+
+You can install __Core.js__ using Bower running the following command:
+
+```
+bower install core_js
+```
 
 ## tl;dr
 
@@ -246,11 +254,12 @@ Core.extend('$', jQuery);
 ```
 
 #### sandbox.listen( notification, callback, context, force )
-Listens to other modules notifications
+Listens to other modules notifications, to overwrite a notification you must use the parameter force
 
 - `notification` (string | array): The name of the notification you are listening to
 - `callback` (function): The callback when the notification is triggered
-- `context` (object):
+- `context` (object): The value of `this` inside the callback
+- `force` (boolean): If you want to overwrite a notification, use `true` here
 
 #### sandbox.notify( config )
 Notifies other modules
