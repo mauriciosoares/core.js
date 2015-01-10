@@ -63,7 +63,7 @@
 
     if(this.moduleCheck(cModule)) {
       this.helpers.err('!start', module);
-      return;
+      return false;
     }
 
     cModule.instance = new cModule.constructor(new root.Sandbox(module));
@@ -85,7 +85,7 @@
 
     if(this.moduleCheck(cModule, true)) {
       this.helpers.err('!stop', module);
-      return;
+      return false;
     }
 
     if(cModule.instance.destroy) cModule.instance.destroy();
