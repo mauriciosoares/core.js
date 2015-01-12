@@ -297,7 +297,7 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 1. Run `npm install`
 2. Run `npm install -g grunt-cli` to install the grunt command
-3. Run `npm test`
+3. Run `grunt jasmine`
 
 ## Release History
 
