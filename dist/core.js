@@ -17,7 +17,7 @@
     root.Core = factory();
   }
 }(this, function () {
-  var Core;
+  var Core = {};
 
 (function(root, document) {
   /**
@@ -146,8 +146,9 @@
     }
   };
 
-  Core = new Core();
+  root = new Core();
 } (Core, document));
+console.log(Core);
 
 (function(Core) {
   /**

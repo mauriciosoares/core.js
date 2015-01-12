@@ -12,4 +12,4 @@
     root.Core = factory();
   }
 }(this, function () {
-  var Core;
+  var Core = {};

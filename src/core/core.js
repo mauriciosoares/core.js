@@ -125,5 +125,6 @@
     }
   };
 
-  Core = new Core();
+  root = new Core();
 } (Core, document));
+console.log(Core);
