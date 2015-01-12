@@ -12,4 +12,4 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.isArray = isArray;
-} (this.Core));
+} (Core));

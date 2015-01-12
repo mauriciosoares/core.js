@@ -27,4 +27,4 @@
 
   Core.extend = extend;
   Core.getExtension = getExtension;
-} (this.Core));
+} (Core));

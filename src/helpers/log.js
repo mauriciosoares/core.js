@@ -8,4 +8,4 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.log = log;
-} (this.Core, this));
+} (Core, this));

@@ -19,4 +19,4 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.err = err;
-} (this.Core));
+} (Core));

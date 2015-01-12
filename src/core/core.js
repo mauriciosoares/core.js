@@ -66,7 +66,7 @@
       return false;
     }
 
-    cModule.instance = new cModule.constructor(new root.Sandbox(module));
+    cModule.instance = new cModule.constructor(new this.Sandbox(module));
 
     // attachs the element to the instance of the module
     cModule.instance.el = el;
@@ -125,5 +125,5 @@
     }
   };
 
-  root.Core = new Core();
-} (this, document));
+  Core = new Core();
+} (Core, document));

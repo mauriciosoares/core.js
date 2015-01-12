@@ -1,7 +1,23 @@
-/** core.js - v0.2.0 - 2015-01-10
+/** core.js - v0.2.0 - 2015-01-12
 * Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
+
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.Core = factory();
+  }
+}(this, function () {
+  var Core;
 
 (function(root, document) {
   /**
@@ -71,7 +87,7 @@
       return false;
     }
 
-    cModule.instance = new cModule.constructor(new root.Sandbox(module));
+    cModule.instance = new cModule.constructor(new this.Sandbox(module));
 
     // attachs the element to the instance of the module
     cModule.instance.el = el;
@@ -130,8 +146,8 @@
     }
   };
 
-  root.Core = new Core();
-} (this, document));
+  Core = new Core();
+} (Core, document));
 
 (function(Core) {
   /**
@@ -154,7 +170,7 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.err = err;
-} (this.Core));
+} (Core));
 
 (function(Core) {
   /**
@@ -170,7 +186,7 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.isArray = isArray;
-} (this.Core));
+} (Core));
 
 (function(Core, root) {
   /**
@@ -182,7 +198,7 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.log = log;
-} (this.Core, this));
+} (Core, this));
 
 (function(Core) {
   /**
@@ -198,7 +214,7 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.toArray = toArray;
-} (this.Core));
+} (Core));
 
 (function(Core) {
   'use strict';
@@ -229,7 +245,7 @@
 
   Core.extend = extend;
   Core.getExtension = getExtension;
-} (this.Core));
+} (Core));
 
 (function(root, Core, helpers) {
   /**
@@ -327,5 +343,8 @@
     return Core.getExtension(extension);
   };
 
-  root.Sandbox = Sandbox;
-} (this, this.Core, this.Core.helpers));
+  Core.Sandbox = Sandbox;
+} (this, Core, Core.helpers));
+
+  return Core;
+}));

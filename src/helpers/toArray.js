@@ -12,4 +12,4 @@
 
   Core.helpers = Core.helpers || {};
   Core.helpers.toArray = toArray;
-} (this.Core));
+} (Core));

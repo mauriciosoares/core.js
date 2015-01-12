@@ -94,5 +94,5 @@
     return Core.getExtension(extension);
   };
 
-  root.Sandbox = Sandbox;
-} (this, this.Core, this.Core.helpers));
+  Core.Sandbox = Sandbox;
+} (this, Core, Core.helpers));
