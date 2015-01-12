@@ -56,10 +56,12 @@ module.exports = function(grunt) {
     },
     dist: {
       src: [
+        'src/umd/head.js',
         'src/core/core.js',
         'src/helpers/*.js',
         'src/core/**/*.js',
-        'src/sandbox/sandbox.js'
+        'src/sandbox/sandbox.js',
+        'src/umd/foot.js'
       ],
       dest: 'dist/core.js'
     }
