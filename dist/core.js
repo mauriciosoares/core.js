@@ -1,4 +1,4 @@
-/** core.js - v0.2.0 - 2015-01-12
+/** core.js - v0.2.0 - 2015-01-13
 * Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
@@ -17,16 +17,16 @@
     root.Core = factory();
   }
 }(this, function () {
-  var Core = {};
+  var Core;
 
-(function(root, document) {
+(function(document) {
   /**
   * The constructor of Core
   *
   * @class Core
   * @constructor
   */
-  var Core = function() {
+  Core = function() {
     this.modules = {};
   };
 
@@ -113,7 +113,7 @@
 
     cModule.instance = null;
 
-    root.Sandbox.clearNotifications(module);
+    Sandbox.clearNotifications(module);
   };
 
   /**
@@ -146,9 +146,8 @@
     }
   };
 
-  root = new Core();
-} (Core, document));
-console.log(Core);
+  Core = new Core();
+} (document));
 
 (function(Core) {
   /**

@@ -1,11 +1,11 @@
-(function(root, document) {
+(function(document) {
   /**
   * The constructor of Core
   *
   * @class Core
   * @constructor
   */
-  var Core = function() {
+  Core = function() {
     this.modules = {};
   };
 
@@ -92,7 +92,7 @@
 
     cModule.instance = null;
 
-    root.Sandbox.clearNotifications(module);
+    Sandbox.clearNotifications(module);
   };
 
   /**
@@ -125,6 +125,5 @@
     }
   };
 
-  root = new Core();
-} (Core, document));
-console.log(Core);
+  Core = new Core();
+} (document));
