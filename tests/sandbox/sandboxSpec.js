@@ -8,7 +8,7 @@ describe('Testing Sandbox', function() {
     Core.register('tweet', function(sandbox) {
       return {
         init: function() {
-          expect(sandbox instanceof Sandbox).toBeTruthy();
+          expect(sandbox instanceof Core.Sandbox).toBeTruthy();
         }
       }
     });
