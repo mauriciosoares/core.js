@@ -92,7 +92,7 @@
 
     cModule.instance = null;
 
-    Sandbox.clearNotifications(module);
+    this.Sandbox.clearNotifications(module);
   };
 
   /**
