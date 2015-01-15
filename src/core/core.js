@@ -71,7 +71,7 @@
     // attachs the element to the instance of the module
     cModule.instance.el = el;
 
-    if(cModule.instance.init) cModule.instance.init();
+    if(cModule.instance.init) return cModule.instance.init();
   };
 
   /**
@@ -81,18 +81,22 @@
   * @param {string} module the name of the module
   */
   Core.prototype.stop = function(module) {
-    var cModule = this.modules[module];
+    var cModule = this.modules[module], valToReturn;
 
     if(this.moduleCheck(cModule, true)) {
       this.helpers.err('!stop', module);
       return false;
     }
 
-    if(cModule.instance.destroy) cModule.instance.destroy();
+    if(cModule.instance.destroy) {
+      valToReturn = cModule.instance.destroy();
+    }
 
     cModule.instance = null;
 
     root.Sandbox.clearNotifications(module);
+
+    return valToReturn;
   };
 
   /**
