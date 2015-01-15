@@ -201,7 +201,7 @@ Core.register('module', function() {})
 ```
 
 #### Core.start( moduleName )
-Starts the named module.
+Starts the named module. If a value is returned in the `init` method, it can be grabbed in the return of the method `Core.start`
 
 - `moduleName` (string): The name of the module
 
@@ -213,7 +213,7 @@ Core.start('module');
 
 
 #### Core.stop( moduleName )
-Stops the named module.
+Stops the named module. If a value is returned in the `destroy` method, it can be grabbed in the return of the method `Core.stop`
 
 - `moduleName` (string): The name of the module
 
