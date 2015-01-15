@@ -246,4 +246,19 @@ describe('Testing Core', function() {
       Core.start('tweet2');
     });
   });
+
+  describe('Testing return in Start and Stop methods', function() {
+    it('Should return in the Start method the value returned from the init method inside the module', function() {
+      Core.register('tweet', function() {
+        return {
+          init: function() {
+            return true;
+          }
+        }
+      });
+
+      expect(Core.start('tweet')).toBeTruthy();
+
+    });
+  });
 });
