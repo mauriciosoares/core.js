@@ -260,5 +260,19 @@ describe('Testing Core', function() {
       expect(Core.start('tweet')).toBeTruthy();
 
     });
+
+    it('Should return in the Stop method the value returned from the destroy method inside the module', function() {
+      Core.register('tweet', function() {
+        return {
+          destroy: function() {
+            return true;
+          }
+        }
+      });
+
+      Core.start('tweet')
+      expect(Core.stop('tweet')).toBeTruthy();
+
+    });
   });
 });
