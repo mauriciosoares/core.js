@@ -12,4 +12,5 @@
     root.Core = factory();
   }
 }(this, function () {
-  var Core;
+
+'use strict';
