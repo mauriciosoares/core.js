@@ -1,4 +1,4 @@
-# Core.js [![Build Status](https://travis-ci.org/mauriciosoares/core.js.svg?branch=master)](https://travis-ci.org/mauriciosoares/core.js) [![Coverage Status](https://img.shields.io/coveralls/mauriciosoares/core.js.svg)](https://coveralls.io/r/mauriciosoares/core.js)
+# Core.js [![Build Status](https://travis-ci.org/mauriciosoares/core.js.svg?branch=master)](https://travis-ci.org/mauriciosoares/core.js) [![Coverage Status](https://img.shields.io/coveralls/mauriciosoares/core.js.svg)](https://coveralls.io/r/mauriciosoares/core.js) [![Code Climate](https://codeclimate.com/github/mauriciosoares/core.js/badges/gpa.svg)](https://codeclimate.com/github/mauriciosoares/core.js)
 
 __Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https://www.youtube.com/watch?v=b5pFv9NB9fs)
 
@@ -201,7 +201,7 @@ Core.register('module', function() {})
 ```
 
 #### Core.start( moduleName )
-Starts the named module.
+Starts the named module. If a value is returned in the `init` method, it can be grabbed in the return of the method `Core.start`
 
 - `moduleName` (string): The name of the module
 
@@ -213,7 +213,7 @@ Core.start('module');
 
 
 #### Core.stop( moduleName )
-Stops the named module.
+Stops the named module. If a value is returned in the `destroy` method, it can be grabbed in the return of the method `Core.stop`
 
 - `moduleName` (string): The name of the module
 
@@ -297,10 +297,11 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 1. Run `npm install`
 2. Run `npm install -g grunt-cli` to install the grunt command
-3. Run `npm test`
+3. Run `grunt jasmine`
 
 ## Release History
 
+* 2015-01-10   v0.3.0   Ability to return values from init and destroy methods
 * 2015-01-10   v0.2.1   Improve error messages
 * 2014-12-30   v0.2.0   Isolation of DOM in modules
 * 2014-12-21   v0.1.0   Release usable version
