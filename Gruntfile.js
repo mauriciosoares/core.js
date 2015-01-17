@@ -46,7 +46,7 @@ module.exports = function(grunt) {
   config.jshint.options = {
     debug: true
   };
-  config.jshint.all = ['src/**/*.js'];
+  config.jshint.all = ['dist/core.js'];
 
   // =============================================
   // concat
@@ -56,10 +56,12 @@ module.exports = function(grunt) {
     },
     dist: {
       src: [
+        'src/umd/head.js',
         'src/core/core.js',
         'src/helpers/*.js',
         'src/core/**/*.js',
-        'src/sandbox/sandbox.js'
+        'src/sandbox/sandbox.js',
+        'src/umd/foot.js'
       ],
       dest: 'dist/core.js'
     }
@@ -70,7 +72,7 @@ module.exports = function(grunt) {
   config.watch = {};
   config.watch.scripts = {
     files: ['src/**/*.js'],
-    tasks: ['jshint', 'concat'],
+    tasks: ['concat', 'jshint'],
     options: {
       spawn: false,
     }
@@ -105,10 +107,7 @@ module.exports = function(grunt) {
   config.jasmine = {};
   config.jasmine.coverage = {
     src: [
-      'src/core/core.js',
-      'src/core/methods/extend.js',
-      'src/helpers/*.js',
-      'src/sandbox/sandbox.js'
+      'dist/core.js'
     ],
     options: {
       specs: 'tests/**/*Spec.js',
