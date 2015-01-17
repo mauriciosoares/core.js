@@ -1,4 +1,3 @@
-
 /**
 * Handles error messages
 *

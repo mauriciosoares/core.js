@@ -1,4 +1,3 @@
-
 /**
 * Returns if the object is an array
 *

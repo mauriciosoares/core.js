@@ -1,4 +1,3 @@
-
 /**
 * Adds console.log to Core helpers
 *

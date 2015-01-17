@@ -1,6 +1,6 @@
 /** core.js - v0.2.0 - 2015-01-17
 * Copyright (c) 2015 Mauricio Soares;
-* Licensed MIT
+* Licensed MIT 
 */
 
 (function (root, factory) {
@@ -148,7 +148,6 @@ Core.prototype.xAll = function(method) {
 
 Core = new Core();
 
-
 /**
 * Handles error messages
 *
@@ -170,7 +169,6 @@ err.messages = {
 Core.helpers = Core.helpers || {};
 Core.helpers.err = err;
 
-
 /**
 * Returns if the object is an array
 *
@@ -184,7 +182,6 @@ var isArray = function(obj) {
 
 Core.helpers = Core.helpers || {};
 Core.helpers.isArray = isArray;
-
 
 /**
 * Adds console.log to Core helpers
@@ -236,7 +233,6 @@ var getExtension = function(extension) {
 
 Core.extend = extend;
 Core.getExtension = getExtension;
-
 
 /**
 * The constructor of Sandbox
@@ -317,7 +313,7 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
     notifications[this.module] = notifications[this.module] || {};
     notifications[this.module][notification] = {
       callback: callback,
-      context: context || window
+      context: context || root
     };
   }
 };
