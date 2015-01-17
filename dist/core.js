@@ -313,7 +313,7 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
     notifications[this.module] = notifications[this.module] || {};
     notifications[this.module][notification] = {
       callback: callback,
-      context: context || root
+      context: context || window
     };
   }
 };
