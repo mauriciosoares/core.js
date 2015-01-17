@@ -1,4 +1,4 @@
-/** core.js - v0.2.0 - 2015-01-17
+/** core.js - v0.3.0 - 2015-01-17
 * Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
@@ -92,7 +92,7 @@ Core.prototype.start = function(module) {
   // attachs the element to the instance of the module
   cModule.instance.el = el;
 
-  if(cModule.instance.init) cModule.instance.init();
+  if(cModule.instance.init) return cModule.instance.init();
 };
 
 /**
@@ -102,18 +102,20 @@ Core.prototype.start = function(module) {
 * @param {string} module the name of the module
 */
 Core.prototype.stop = function(module) {
-  var cModule = this.modules[module];
+  var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
     this.helpers.err('!stop', module);
     return false;
   }
 
-  if(cModule.instance.destroy) cModule.instance.destroy();
+  if(cModule.instance.destroy) stopReturn = cModule.instance.destroy();
 
   cModule.instance = null;
 
   this.Sandbox.clearNotifications(module);
+
+  return stopReturn;
 };
 
 /**
