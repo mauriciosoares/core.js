@@ -70,7 +70,7 @@ Core.prototype.start = function(module) {
   // attachs the element to the instance of the module
   cModule.instance.el = el;
 
-  if(cModule.instance.init) return cModule.instance.init();
+  if(cModule.instance.init) return Promise.resolve(cModule.instance.init());
 };
 
 /**
@@ -93,7 +93,7 @@ Core.prototype.stop = function(module) {
 
   this.Sandbox.clearNotifications(module);
 
-  return stopReturn;
+  return Promise.resolve(stopReturn);
 };
 
 /**
@@ -102,7 +102,7 @@ Core.prototype.stop = function(module) {
 * @method startAll
 */
 Core.prototype.startAll = function() {
-  this.xAll('start');
+  return this.xAll('start');
 };
 
 /**
@@ -111,19 +111,28 @@ Core.prototype.startAll = function() {
 * @method stopAll
 */
 Core.prototype.stopAll = function() {
-  this.xAll('stop');
+  return this.xAll('stop');
 };
 
 /**
 * Helper for startAll and stopAll
-*
+* 
 * @method xAll
 * @param {string} method the method that will be triggered
+* @return A promise that will be resolved when all modules have executed   
 */
 Core.prototype.xAll = function(method) {
-  for(var module in this.modules) {
-    if(this.modules.hasOwnProperty(module)) this[method](module);
-  }
+  var resultMap = {};
+  
+  var moduleResults = Object.keys(this.modules).map(function(module) {
+    return this[method](module).then(function(result) {
+      resultMap[module] = result;
+    });
+  }.bind(this));
+  
+  return Promise.all(moduleResults).then(function() {
+    return resultMap;
+  });
 };
 
 Core = new Core();
