@@ -1,4 +1,4 @@
-/** core.js - v0.3.0 - 2015-01-17
+/** core.js - v0.4.0 - 2015-02-05
 * Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
@@ -327,7 +327,7 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
 * @param {string} extension the name of the extension
 * @return {function | array | boolean | string | number} the implementation of the extension
 */
-Sandbox.prototype.x = function(extension) {
+Sandbox.prototype.use = function(extension) {
   return Core.getExtension(extension);
 };
 
