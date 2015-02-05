@@ -30,7 +30,7 @@
       Core.register('tweet-form', function(sandbox) {
         return {
           init: function() {
-            this.$form = sandbox.x('$')('#tweet-form');
+            this.$form = sandbox.use('$')('#tweet-form');
             this.$input = this.$form.find('input');
 
             this.addListeners();
@@ -67,7 +67,7 @@
       Core.register('tweet-list', function(sandbox) {
         return {
           init: function() {
-            this.$list = sandbox.x('$')('#tweet-list');
+            this.$list = sandbox.use('$')('#tweet-list');
 
             this.listen();
           },
@@ -83,7 +83,7 @@
           },
 
           getHtml: function(data) {
-            var li = sandbox.x('$')('<li class="tweetlist-item">');
+            var li = sandbox.use('$')('<li class="tweetlist-item">');
             li.append(data.author + '<br>' + data.tweet);
 
             return li;
