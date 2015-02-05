@@ -294,7 +294,7 @@ describe('Testing Sandbox', function() {
     Core.register('tweet', function(sandbox) {
       return {
         init: function() {
-          expect(sandbox.x('$')).toBe(jQuery);
+          expect(sandbox.use('$')).toBe(jQuery);
         }
       }
     });
