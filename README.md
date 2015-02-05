@@ -301,7 +301,7 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 ## Release History
 
-* 2015-01-10   v0.4.0   Changes `x` to `use` in `Sandbox`
+* 2015-01-10   v0.5.0   Changes `x` to `use` in `Sandbox`
 * 2015-01-10   v0.4.0   Add UMD
 * 2015-01-10   v0.3.0   Ability to return values from init and destroy methods
 * 2015-01-10   v0.2.1   Improve error messages
