@@ -97,15 +97,6 @@ Core.prototype.stop = function(module) {
 };
 
 /**
-* Start all uninstarted modules
-*
-* @method startAll
-*/
-Core.prototype.startAll = function() {
-  this.xAll('start');
-};
-
-/**
 * Stop all started modules
 *
 * @method stopAll
