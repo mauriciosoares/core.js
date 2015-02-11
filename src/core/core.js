@@ -57,6 +57,11 @@ Core.prototype.getElement = function(id) {
 * @param {string} module the name of the module
 */
 Core.prototype.start = function(module) {
+  if(!module) {
+    this.startAll();
+    return;
+  }
+
   var cModule = this.modules[module],
     el = this.getElement(module);
 
