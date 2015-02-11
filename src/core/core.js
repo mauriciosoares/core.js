@@ -106,6 +106,15 @@ Core.prototype.stopAll = function() {
 };
 
 /**
+* Stop all started modules
+*
+* @method stopAll
+*/
+Core.prototype.startAll = function() {
+  this.xAll('start');
+};
+
+/**
 * Helper for startAll and stopAll
 *
 * @method xAll
