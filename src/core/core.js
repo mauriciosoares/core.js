@@ -51,7 +51,7 @@ Core.prototype.getElement = function(id) {
 };
 
 /**
-* Starts a registered module
+* Starts a registered module, if no module is passed, it starts all modules
 *
 * @method start
 * @param {string} module the name of the module
