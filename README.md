@@ -201,7 +201,7 @@ Core.register('module', function() {})
 ```
 
 #### Core.start( moduleName )
-Starts the named module. If a value is returned in the `init` method, it can be grabbed in the return of the method `Core.start`
+Starts the named module. If a value is returned in the `init` method, it can be grabbed in the return of the method `Core.start`. If no parameters are passed, it starts all unstarted modules.
 
 - `moduleName` (string): The name of the module
 
