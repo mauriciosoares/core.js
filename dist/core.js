@@ -1,4 +1,4 @@
-/** core.js - v0.4.0 - 2015-02-05
+/** core.js - v0.5.0 - 2015-02-12
 * Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
@@ -73,12 +73,14 @@ Core.prototype.getElement = function(id) {
 };
 
 /**
-* Starts a registered module
+* Starts a registered module, if no module is passed, it starts all modules
 *
 * @method start
 * @param {string} module the name of the module
 */
 Core.prototype.start = function(module) {
+  if(!module) return this.startAll();
+
   var cModule = this.modules[module],
     el = this.getElement(module);
 
@@ -119,12 +121,12 @@ Core.prototype.stop = function(module) {
 };
 
 /**
-* Start all uninstarted modules
+* Stop all started modules
 *
-* @method startAll
+* @method stopAll
 */
-Core.prototype.startAll = function() {
-  this.xAll('start');
+Core.prototype.stopAll = function() {
+  this.xAll('stop');
 };
 
 /**
@@ -132,8 +134,8 @@ Core.prototype.startAll = function() {
 *
 * @method stopAll
 */
-Core.prototype.stopAll = function() {
-  this.xAll('stop');
+Core.prototype.startAll = function() {
+  this.xAll('start');
 };
 
 /**
