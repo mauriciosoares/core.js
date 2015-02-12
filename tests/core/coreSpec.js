@@ -64,6 +64,18 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet3.instance).not.toBeNull();
   });
 
+  it('Should start all modules using the method start if no parameter is passed', function() {
+    Core.register('tweet1', function() {});
+    Core.register('tweet2', function() {});
+    Core.register('tweet3', function() {});
+
+    Core.start();
+
+    expect(Core.modules.tweet1.instance).not.toBeNull();
+    expect(Core.modules.tweet2.instance).not.toBeNull();
+    expect(Core.modules.tweet3.instance).not.toBeNull();
+  });
+
   it('Should stop all modules', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
