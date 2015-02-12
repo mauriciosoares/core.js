@@ -67,7 +67,7 @@ Core.register('tweet-list', function(sandbox) {
 });
 ```
 
-If you have multiple modules you can start everything using `Core.startAll();`, and everything will be started. But if you need some specific order for starting your modules, you can call the modules you want first, and then use `Core.startAll()`.
+If you have multiple modules you can start everything using `Core.start();` with no parameters, and everything will be started. But if you need some specific order for starting your modules, you can call the modules you want first, and then use `Core.start()`.
 
 ### Destroying modules
 
@@ -223,8 +223,8 @@ __Usage__
 Core.stop('module');
 ```
 
-#### Core.startAll()
-Starts all modules.
+#### Core.startAll() - _deprecated_
+Starts all modules. (You should use `Core.start()` with no parameters instead)
 
 __Usage__
 
