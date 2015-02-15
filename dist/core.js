@@ -1,4 +1,4 @@
-/** core.js - v0.5.0 - 2015-02-12
+/** core.js - v0.6.0 - 2015-02-15
 * Copyright (c) 2015 Mauricio Soares;
 * Licensed MIT 
 */
@@ -104,6 +104,8 @@ Core.prototype.start = function(module) {
 * @param {string} module the name of the module
 */
 Core.prototype.stop = function(module) {
+  if(!module) return this.stopAll();
+
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
