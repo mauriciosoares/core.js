@@ -82,6 +82,8 @@ Core.prototype.start = function(module) {
 * @param {string} module the name of the module
 */
 Core.prototype.stop = function(module) {
+  if(!module) return this.stopAll();
+
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
