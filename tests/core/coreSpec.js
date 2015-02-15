@@ -89,6 +89,19 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet3.instance).toBeNull();
   });
 
+  it('Should stop all modules using the method stop if no parameter is passed', function() {
+    Core.register('tweet1', function() {});
+    Core.register('tweet2', function() {});
+    Core.register('tweet3', function() {});
+
+    Core.start();
+    Core.stop();
+
+    expect(Core.modules.tweet1.instance).toBeNull();
+    expect(Core.modules.tweet2.instance).toBeNull();
+    expect(Core.modules.tweet3.instance).toBeNull();
+  });
+
   it('Should trigger init when the module is started', function() {
     var spying = {
       tweet: function() {}
