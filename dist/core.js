@@ -69,7 +69,10 @@ Core.prototype.moduleCheck = function(module, destroy) {
 * @param {string} id the id of the main element in the module
 */
 Core.prototype.getElement = function(id) {
-  return document.getElementById(id);
+  var el = document.getElementById(id);
+
+  // this fixes some blackberry, opera and IE possible bugs
+  return (el && el.id === id && el.parentElement) ? el : null;
 };
 
 /**
