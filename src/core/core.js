@@ -49,7 +49,8 @@ Core.prototype.moduleCheck = function(module, destroy) {
 Core.prototype.getElement = function(id) {
   var el = document.getElementById(id);
 
-  return (el && el.id === id) ? el : null;
+  // this fixes some blackberry, opera and IE possible bugs
+  return (el && el.id === id && el.parentElement) ? el : null;
 };
 
 /**
