@@ -47,7 +47,7 @@ module.exports = function(grunt) {
     tagName: 'v%VERSION%',
     tagMessage: 'Version %VERSION%',
     push: true,
-    pushTo: 'origin',
+    pushTo: 'https://github.com/msodeveloper/core.js.git',
     gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
   };
 
