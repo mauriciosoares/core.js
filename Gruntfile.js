@@ -1,30 +1,31 @@
 module.exports = function(grunt) {
   'use strict';
 
-  var tasks = [
-    'grunt-contrib-jshint',
-    'grunt-contrib-concat',
-    'grunt-contrib-jasmine',
-    'grunt-contrib-watch',
-    'grunt-contrib-uglify',
-    'grunt-coveralls',
-    'grunt-bump',
-    'grunt-umd'
-  ];
+  var app = {},
+    config = {},
+    tasks = [
+      'grunt-contrib-jshint',
+      'grunt-contrib-concat',
+      'grunt-contrib-jasmine',
+      'grunt-contrib-watch',
+      'grunt-contrib-uglify',
+      'grunt-coveralls',
+      'grunt-bump',
+      'grunt-umd'
+    ];
 
-  var patch = grunt.option('patch');
+  // get patch if it's release
+  app.patch = grunt.option('patch');
 
-  var config = {};
+  // config pack
+  app.pack = grunt.config('pkg', grunt.file.readJSON('package.json'));
 
-  // =============================================
-  // Metadata
-  config.pkg = grunt.file.readJSON('package.json');
-  config.banner = {
-    full:  '/** <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-              '<%= grunt.template.today(\'yyyy-mm-dd\') %>\n' +
-              '* Copyright (c) <%= grunt.template.today(\'yyyy\') %> <%= pkg.author %>;\n' +
-              '* Licensed <%= pkg.license %> \n*/\n\n'
-  };
+  // config banner
+  app.banner =  '/** ' +
+                '\n* ' + app.pack.name + ' -v' + grunt.file.readJSON('package.json').version +
+                '\n* Copyright (c) '+ grunt.template.today('yyyy') + ' ' + app.pack.author +
+                '\n* Licensed ' + app.pack.license + '\n*/\n\n';
+
 
   // =============================================
   // bump
@@ -34,12 +35,15 @@ module.exports = function(grunt) {
     updateConfigs: [],
     commit: true,
     commitMessage: 'Release v%VERSION%',
-    commitFiles: ['package.json'],
+    commitFiles: [
+      'package.json',
+      'dist'
+    ],
     createTag: true,
     tagName: 'v%VERSION%',
     tagMessage: 'Version %VERSION%',
     push: true,
-    pushTo: 'https://github.com/msodeveloper/core.js.git',
+    pushTo: 'origin',
     gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
   };
 
@@ -56,7 +60,7 @@ module.exports = function(grunt) {
   // concat
   config.concat = {
     options: {
-      banner: '<%= banner.full %>'
+      banner: app.banner
     },
     dist: {
       src: [
@@ -95,7 +99,7 @@ module.exports = function(grunt) {
       beautify: {
         ascii_only: true
       },
-      banner: '<%= banner.full %>',
+      banner: app.banner,
       compress: {
         hoist_funs: false,
         loops: false,
@@ -162,8 +166,12 @@ module.exports = function(grunt) {
   grunt.registerTask('ci', ['jshint', 'jasmine', 'coveralls']);
 
   grunt.registerTask('release', function () {
-    grunt.task.run('bump-only%patch%'.replace('%patch%', patch ? ':' + patch : ''));
-    grunt.task.run('dist');
+    grunt.task.run('bump-only%patch%'.replace('%patch%', app.patch ? ':' + app.patch : ''));
+    setTimeout(function() {
+      grunt.task.run('dist');
+    }, 0);
+
+    // grunt.task.run('dist');
     // grunt.task.run('bump-commit');
   });
 };
