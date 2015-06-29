@@ -1,22 +1,23 @@
-/** core.js - v0.6.0 - 2015-05-14
-* Copyright (c) 2015 Mauricio Soares;
-* Licensed MIT 
-*/
-
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
+    // AMD. Register as an anonymous module unless amdModuleId is set
+    define([], function () {
+      return (root['Core'] = factory());
+    });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
     module.exports = factory();
   } else {
-    // Browser globals (root is window)
-    root.Core = factory();
+    root['Core'] = factory();
   }
 }(this, function () {
+
+/** core.js - v0.6.0 - 2015-06-28
+* Copyright (c) 2015 Mauricio Soares;
+* Licensed MIT 
+*/
 
 'use strict';
 
@@ -340,5 +341,6 @@ Sandbox.prototype.use = function(extension) {
 
 Core.Sandbox = Sandbox;
 
-  return Core;
+return Core;
+
 }));

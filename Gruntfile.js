@@ -8,7 +8,8 @@ module.exports = function(grunt) {
     'grunt-contrib-watch',
     'grunt-contrib-uglify',
     'grunt-coveralls',
-    'grunt-bump'
+    'grunt-bump',
+    'grunt-umd'
   ];
 
   var config = {};
@@ -44,7 +45,8 @@ module.exports = function(grunt) {
   // jshint
   config.jshint = {};
   config.jshint.options = {
-    debug: true
+    debug: true,
+    sub: true
   };
   config.jshint.all = ['dist/core.js'];
 
@@ -56,12 +58,10 @@ module.exports = function(grunt) {
     },
     dist: {
       src: [
-        'src/umd/head.js',
         'src/core/core.js',
         'src/helpers/*.js',
         'src/core/**/*.js',
-        'src/sandbox/sandbox.js',
-        'src/umd/foot.js'
+        'src/sandbox/sandbox.js'
       ],
       dest: 'dist/core.js'
     }
@@ -72,7 +72,7 @@ module.exports = function(grunt) {
   config.watch = {};
   config.watch.scripts = {
     files: ['src/**/*.js'],
-    tasks: ['concat', 'jshint'],
+    tasks: ['concat', 'umd','jshint'],
     options: {
       spawn: false,
     }
@@ -131,6 +131,18 @@ module.exports = function(grunt) {
   }
 
   // =============================================
+  // umd
+  config.umd = {};
+  config.umd = {
+    all: {
+      options: {
+        src: 'dist/core.js',
+        objectToExport: 'Core'
+      }
+    }
+  };
+
+  // =============================================
   // coveralls
   config.coveralls = {
     src: 'bin/coverage/lcov.info'
@@ -143,7 +155,7 @@ module.exports = function(grunt) {
   // Load all tasks
   tasks.forEach(grunt.loadNpmTasks);
 
-  grunt.registerTask('dist', ['jshint', 'concat', 'jasmine', 'uglify']);
+  grunt.registerTask('dist', ['jshint', 'concat', 'umd', 'jasmine', 'uglify']);
 
   grunt.registerTask('ci', ['jshint', 'jasmine', 'coveralls']);
 };
