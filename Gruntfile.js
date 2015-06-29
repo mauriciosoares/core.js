@@ -154,12 +154,12 @@ module.exports = function(grunt) {
     src: 'bin/coverage/lcov.info'
   };
 
-  // =============================================
+  // Load all tasks
+  tasks.forEach(grunt.loadNpmTasks);
+
   // config
   grunt.initConfig(config);
 
-  // Load all tasks
-  tasks.forEach(grunt.loadNpmTasks);
 
   grunt.registerTask('dist', ['jshint', 'concat', 'umd', 'jasmine', 'uglify']);
 
@@ -167,11 +167,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('release', function () {
     grunt.task.run('bump-only%patch%'.replace('%patch%', app.patch ? ':' + app.patch : ''));
-    setTimeout(function() {
-      grunt.task.run('dist');
-    }, 0);
-
-    // grunt.task.run('dist');
-    // grunt.task.run('bump-commit');
+    grunt.task.run('dist');
   });
 };
