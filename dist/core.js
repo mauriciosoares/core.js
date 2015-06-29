@@ -14,9 +14,10 @@
   }
 }(this, function () {
 
-/** core.js - v0.6.0 - 2015-06-28
-* Copyright (c) 2015 Mauricio Soares;
-* Licensed MIT 
+/** 
+* core.js -v0.7.3
+* Copyright (c) 2015 Mauricio Soares
+* Licensed MIT
 */
 
 'use strict';
