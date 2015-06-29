@@ -301,12 +301,8 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 ## Release History
 
-<<<<<<< HEAD
+* 2015-06-15   v0.7.3   Refactor UMD
 * 2015-05-14   v0.7.2   Hotfix with ID's
-||||||| merged common ancestors
-=======
-* 2015-06-15   v0.7.1   Refactor UMD
->>>>>>> develop
 * 2015-02-15   v0.7.0   Deprecate `Core.stopAll`
 * 2015-02-12   v0.6.0   Deprecate `Core.startAll`
 * 2015-02-05   v0.5.0   Changes `x` to `use` in `Sandbox`
