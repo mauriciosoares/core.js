@@ -12,6 +12,8 @@ module.exports = function(grunt) {
     'grunt-umd'
   ];
 
+  var patch = grunt.option('patch');
+
   var config = {};
 
   // =============================================
@@ -158,4 +160,10 @@ module.exports = function(grunt) {
   grunt.registerTask('dist', ['jshint', 'concat', 'umd', 'jasmine', 'uglify']);
 
   grunt.registerTask('ci', ['jshint', 'jasmine', 'coveralls']);
+
+  grunt.registerTask('release', function () {
+    grunt.task.run('bump-only%patch%'.replace('%patch%', patch ? ':' + patch : ''));
+    grunt.task.run('dist');
+    // grunt.task.run('bump-commit');
+  });
 };
