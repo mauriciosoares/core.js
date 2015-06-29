@@ -301,6 +301,7 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 ## Release History
 
+* 2015-06-15   v0.8.0   Refactor UMD
 * 2015-02-15   v0.7.0   Deprecate `Core.stopAll`
 * 2015-02-12   v0.6.0   Deprecate `Core.startAll`
 * 2015-02-05   v0.5.0   Changes `x` to `use` in `Sandbox`
