@@ -20,12 +20,16 @@ module.exports = function(grunt) {
   // config pack
   app.pack = grunt.config('pkg', grunt.file.readJSON('package.json'));
 
-  // config banner
-  app.banner =  '/** ' +
-                '\n* ' + app.pack.name + ' -v' + grunt.file.readJSON('package.json').version +
-                '\n* Copyright (c) '+ grunt.template.today('yyyy') + ' ' + app.pack.author +
-                '\n* Licensed ' + app.pack.license + '\n*/\n\n';
+  // really?? I mean, really????
+  function updateBanner() {
+    app.banner =  '/** ' +
+                  '\n* ' + app.pack.name + ' -v' + grunt.file.readJSON('package.json').version +
+                  '\n* Copyright (c) '+ grunt.template.today('yyyy') + ' ' + app.pack.author +
+                  '\n* Licensed ' + app.pack.license + '\n*/\n\n';
 
+    config.concat.options.banner = app.banner;
+    config.uglify.all.options.banner = app.banner;
+  };
 
   // =============================================
   // bump
@@ -154,6 +158,8 @@ module.exports = function(grunt) {
     src: 'bin/coverage/lcov.info'
   };
 
+  updateBanner();
+
   // Load all tasks
   tasks.forEach(grunt.loadNpmTasks);
 
@@ -167,6 +173,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('release', function () {
     grunt.task.run('bump-only%patch%'.replace('%patch%', app.patch ? ':' + app.patch : ''));
-    grunt.task.run('dist');
+    setTimeout(function() {
+      updateBanner();
+      grunt.task.run('dist');
+    }, 0);
+    // grunt.task.run('dist');
   });
 };
