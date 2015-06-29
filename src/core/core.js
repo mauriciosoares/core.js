@@ -1,3 +1,5 @@
+'use strict';
+
 /**
 * The constructor of Core
 *
