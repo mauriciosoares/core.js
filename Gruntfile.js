@@ -176,7 +176,9 @@ module.exports = function(grunt) {
     setTimeout(function() {
       updateBanner();
       grunt.task.run('dist');
+      grunt.task.run('bump-commit');
     }, 0);
+
     // grunt.task.run('dist');
   });
 };
