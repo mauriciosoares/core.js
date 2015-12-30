@@ -25,6 +25,32 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet.instance).not.toBeNull();
   });
 
+  it('Should start new multiple modules', function() {
+    Core.register('tweet1', function() {});
+    Core.register('tweet2', function() {});
+    Core.register('tweet3', function() {});
+
+    Core.start(['tweet1','tweet3']);
+
+    expect(Core.modules.tweet1.instance).not.toBeNull();
+    expect(Core.modules.tweet2.instance).toBeNull();
+    expect(Core.modules.tweet3.instance).not.toBeNull();
+  });
+
+
+  it('Should start both new single and multiple modules', function() {
+    Core.register('tweet1', function() {});
+    Core.register('tweet2', function() {});
+    Core.register('tweet3', function() {});
+
+    Core.start(['tweet1','tweet3']);
+    Core.start('tweet2');
+
+    expect(Core.modules.tweet1.instance).not.toBeNull();
+    expect(Core.modules.tweet2.instance).not.toBeNull();
+    expect(Core.modules.tweet3.instance).not.toBeNull();
+  });
+
   it('Should return false and throw a log if the module is already started', function() {
     spyOn(Core.helpers, 'err');
     Core.register('tweet', function() {});
@@ -32,6 +58,20 @@ describe('Testing Core', function() {
 
     expect(Core.start('tweet')).toBeFalsy();
     expect(Core.helpers.err).toHaveBeenCalled();
+  });
+
+  it('Should return false and throw a logs if the module is already started by multiple way', function() {
+    spyOn(Core.helpers, 'err');
+    Core.register('tweet1', function() {});
+    Core.register('tweet2', function() {});
+    Core.start(['tweet1','tweet2']);
+
+    expect(Core.start('tweet1')).toBeFalsy();
+    expect(Core.start('tweet2')).toBeFalsy();
+    expect(Core.start(['tweet1','tweet2'][0])).toBeFalsy();
+    expect(Core.start(['tweet1','tweet2'][1])).toBeFalsy();
+
+    expect(Core.helpers.err.calls.count()).toEqual(4);
   });
 
   it('Should stop a new module', function() {
@@ -64,6 +104,18 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet3.instance).not.toBeNull();
   });
 
+  it('Should start all modules using the method start if parameter is an empty array', function() {
+    Core.register('tweet1', function() {});
+    Core.register('tweet2', function() {});
+    Core.register('tweet3', function() {});
+
+    Core.start([]);
+
+    expect(Core.modules.tweet1.instance).not.toBeNull();
+    expect(Core.modules.tweet2.instance).not.toBeNull();
+    expect(Core.modules.tweet3.instance).not.toBeNull();
+  });
+
   it('Should start all modules using the method start if no parameter is passed', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
@@ -89,6 +141,7 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet3.instance).toBeNull();
   });
 
+
   it('Should stop all modules using the method stop if no parameter is passed', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
@@ -101,6 +154,7 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet2.instance).toBeNull();
     expect(Core.modules.tweet3.instance).toBeNull();
   });
+
 
   it('Should trigger init when the module is started', function() {
     var spying = {
