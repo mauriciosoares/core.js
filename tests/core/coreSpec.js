@@ -144,16 +144,16 @@ describe('Testing Core', function() {
   });
 
   it('Should stop all modules using the method stop if parameter is an empty array', function() {
+    Core.register('tweet', function() {});
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
-    Core.register('tweet3', function() {});
 
     Core.start();
     Core.stop([]);
 
+    expect(Core.modules.tweet.instance).toBeNull();
     expect(Core.modules.tweet1.instance).toBeNull();
     expect(Core.modules.tweet2.instance).toBeNull();
-    expect(Core.modules.tweet3.instance).toBeNull();
   });
 
   it('Should trigger init when the module is started', function() {
