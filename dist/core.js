@@ -16,7 +16,7 @@
 
 /** 
 * core.js -v0.7.3
-* Copyright (c) 2015 Mauricio Soares
+* Copyright (c) 2016 Mauricio Soares
 * Licensed MIT
 */
 
@@ -110,6 +110,16 @@ Core.prototype.start = function(module) {
 */
 Core.prototype.stop = function(module) {
   if(!module) return this.stopAll();
+
+  if(Core.helpers.isArray(module)){
+    if(!module.length) return this.stopAll();
+
+    var stopped = [];
+    for (var i = 0; i < module.length; i++) {
+      stopped.push(this.stop(module[i]));
+    }
+    return stopped;
+  }
 
   var cModule = this.modules[module], stopReturn;
 
