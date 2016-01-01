@@ -64,6 +64,16 @@ Core.prototype.getElement = function(id) {
 Core.prototype.start = function(module) {
   if(!module) return this.startAll();
 
+  if(Core.helpers.isArray(module)){
+    if(!module.length) return this.startAll();
+
+    var started = [];
+    for (var i = 0; i < module.length; i++) {
+      started.push(this.start(module[i]));
+    }
+    return started;
+  }
+
   var cModule = this.modules[module],
     el = this.getElement(module);
 
