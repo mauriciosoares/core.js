@@ -60,6 +60,7 @@ describe('Testing Core', function() {
     Core.register('tweet2', function() {});
     Core.register('tweet3', function() {});
 
+    Core.start();
     Core.stop(['tweet1','tweet3']);
     Core.stop('tweet2');
 
