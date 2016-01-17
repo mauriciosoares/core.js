@@ -101,6 +101,20 @@ describe('Testing Core', function() {
     expect(Core.modules.tweet2.instance).toBeNull();
     expect(Core.modules.tweet3.instance).toBeNull();
   });
+  
+  // To test for the array parameter use-case for start and stop
+  it('Should stop all modules using the method stop using an array of names', function() {
+    Core.register('tweet1', function() {});
+    Core.register('tweet2', function() {});
+    Core.register('tweet3', function() {});
+
+    Core.start(['tweet1', 'tweet2', 'tweet3']);
+    Core.stop(['tweet1', 'tweet2', 'tweet3']);
+
+    expect(Core.modules.tweet1.instance).toBeNull();
+    expect(Core.modules.tweet2.instance).toBeNull();
+    expect(Core.modules.tweet3.instance).toBeNull();
+  });
 
   it('Should trigger init when the module is started', function() {
     var spying = {
