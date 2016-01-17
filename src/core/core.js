@@ -56,14 +56,13 @@ Core.prototype.getElement = function(id) {
 };
 
 /**
-* Starts a registered module, if no module is passed, it starts all modules
-*
-* @method start
+* D.R.Y. solution to dealing with array-based start function for multiple
+* modules at once
+* 
+* @method _start
 * @param {string} module the name of the module
 */
-Core.prototype.start = function(module) {
-  if(!module) return this.startAll();
-
+Core.prototype._start = function (module) {
   var cModule = this.modules[module],
     el = this.getElement(module);
 
@@ -81,14 +80,39 @@ Core.prototype.start = function(module) {
 };
 
 /**
-* Stops a registered module
+* Starts a registered module, if no module is passed, it starts all modules
 *
 * @method start
+* @param {string || array} module the name(s) of the module(s)
+*/
+Core.prototype.start = function(module) {
+  if(!module) return this.startAll();
+  
+  // Determine if multiple modules are passed as an array
+  var array = Core.helpers.isArray(module);
+  
+  if (array) { // Case for module being an array
+    var modules = [],
+        i;
+    // Iterate over each of the 
+    for (i = 0; i < module.length; i++) {
+      modules.push(this._start(module[i]));
+    }
+    // Returns the init function of all modules passed
+    return modules;
+  } else { // Case for module being a string
+    return this._start(module);
+  }
+};
+
+/**
+* D.R.Y. solution to dealing with array-based stop function for multiple
+* modules at once
+* 
+* @method _stop
 * @param {string} module the name of the module
 */
-Core.prototype.stop = function(module) {
-  if(!module) return this.stopAll();
-
+Core.prototype._stop = function(module) {
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
@@ -103,6 +127,32 @@ Core.prototype.stop = function(module) {
   this.Sandbox.clearNotifications(module);
 
   return stopReturn;
+};
+
+/**
+* Stops a registered module
+*
+* @method stop
+* @param {string || array} module the name(s) of the module(s)
+*/
+Core.prototype.stop = function(module) {
+  if(!module) return this.stopAll();
+  
+  // Determine if multiple modules are passed as an array
+  var array = Core.helpers.isArray(module);
+  
+  if (array) { // Case for module being an array
+    var modules = [],
+        i;
+    // Iterate over each of the 
+    for (i = 0; i < module.length; i++) {
+      modules.push(this._stop(module[i]));
+    }
+    // Returns the init function of all modules passed
+    return modules;
+  } else { // Case for module being a string
+    return this._stop(module);
+  }
 };
 
 /**
