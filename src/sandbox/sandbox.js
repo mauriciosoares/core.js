@@ -70,7 +70,9 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
   } else if(replace) {
     addNotification = true;
   } else {
-    Core.helpers.err('!!listen', notification);
+    Core.helpers.err('!!listen', {
+      notification: notification
+    });
   }
 
   if(addNotification) {
@@ -86,11 +88,11 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
 * Returns an extension from Core
 *
 * @method x
-* @param {string} extension the name of the extension
+* @param {string} name the name or alias of the extension
 * @return {function | array | boolean | string | number} the implementation of the extension
 */
-Sandbox.prototype.use = function(extension) {
-  return Core.getExtension(extension);
+Sandbox.prototype.use = function(name) {
+  return Core.getExtension(name);
 };
 
 Core.Sandbox = Sandbox;
