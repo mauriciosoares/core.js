@@ -159,23 +159,27 @@ If there's no DOM element, then `this.el` will return `null`.
 
 __Core.js__ simple gives you an structure to scale your apps, but it won't give you the tools to build it, since we don't want to reinvent the wheel, it provides a way to extend its functionalities.
 
-Modules should not talk to external libreries as well, they will ask permission to `sandbox` before that, and `sandbox` will then talk to `Core` to check if that extension actually exists, let's see:
+Modules should not talk to external libraries as well, they will ask permission to `sandbox` before that, and `sandbox` will then talk to `Core` to check if that extension actually exists.
+
+You can also declare module dependencies (extensions or other modules) upfront.
+The module will not be started if the dependency requirements are not satisfied.
 
 ```js
 // lets suppose we have jquery loaded before this
-Core.extend('$', jQuery);
+Core.extend('$', jQuery, 'jquery'); // the third parameter defines an alias for
+the extension
 
 Core.register('tweet', function(sandbox) {
   return {
     init: function() {
-      sandbox.use('$')('#tweet').on('click', this.newTweet);
+      sandbox.use('jquery')('#tweet').on('click', this.newTweet);
     },
 
     newTweet: function() {
       // handles click
     }
   };
-});
+}, { extensions: ['jquery'], modules: [] });
 ```
 
 Using the method `use` from `sandbox`, it gives you access to all extensions from Core, without talking directly to it.
@@ -241,16 +245,17 @@ __Usage__
 Core.stopAll();
 ```
 
-#### Core.extend( newExtension, implementation )
+#### Core.extend( newExtension, implementation, alias )
 Extends Core functionalities
 
 - `newExtension` (string): The name of the extension
 - `implementation` (function | string | number | boolean | array): The implementation of the extension
+- `alias` (string): The alias of the extension
 
 __Usage__
 
 ```js
-Core.extend('$', jQuery);
+Core.extend('$', jQuery, 'jquery');
 ```
 
 #### sandbox.listen( notification, callback, context, force )
