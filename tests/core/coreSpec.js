@@ -369,19 +369,8 @@ describe('Testing Core', function() {
     it('Should refer to an extension by its alias', function() {
       var jQuery = {};
       Core.extend('$', jQuery, 'jquery');
-      Core.register('tweet', function() {}, { extensions: ['jquery'] });
-      Core.start('tweet');
 
-      expect(Core.modules.tweet.instance).not.toBeNull();
-    });
-
-    it('Should refer to an extension by its real name', function() {
-      var jQuery = {};
-      Core.extend('$', jQuery, 'jquery');
-      Core.register('tweet', function() {}, { extensions: ['$'] });
-      Core.start('tweet');
-
-      expect(Core.modules.tweet.instance).not.toBeNull();
+      expect(Core.getExtension('jquery')).toBe(jQuery);
     });
   });
 });
