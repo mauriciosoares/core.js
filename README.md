@@ -161,13 +161,11 @@ __Core.js__ simple gives you an structure to scale your apps, but it won't give 
 
 Modules should not talk to external libraries as well, they will ask permission to `sandbox` before that, and `sandbox` will then talk to `Core` to check if that extension actually exists.
 
-You can also declare module dependencies (extensions or other modules) upfront.
-The module will not be started if the dependency requirements are not satisfied.
+You can also declare module dependencies (extensions or other modules) upfront. The module will not be started if the dependency requirements are not satisfied.
 
 ```js
 // lets suppose we have jquery loaded before this
-Core.extend('$', jQuery, 'jquery'); // the third parameter defines an alias for
-the extension
+Core.extend('$', jQuery, 'jquery'); // the third parameter defines an alias for the extension
 
 Core.register('tweet', function(sandbox) {
   return {
@@ -182,6 +180,8 @@ Core.register('tweet', function(sandbox) {
 }, { extensions: ['jquery'], modules: [] });
 ```
 
+The third parameter of the `register` method defines module dependencies. The dependencies can either be extensions (referred to by a) name or b) an alias) or other modules.
+
 Using the method `use` from `sandbox`, it gives you access to all extensions from Core, without talking directly to it.
 
 You might think: _"Why do that? it's only increasing the code"_. But since we are talking about consistency, and maybe a code that will be updated by other programmers, this is a way we can keep things standardized, and again, conpectually a module should not talk to anything else but the `sandbox`.
@@ -192,11 +192,14 @@ This is basically how Core.js works, below you will find the documentation of me
 
 ## Docs
 
-#### Core.register( moduleName, constructor )
+#### Core.register( moduleName, constructor, dependencies )
 Register a new module.
 
 - `moduleName` (string): The name of the module
 - `constructor` (function): The implementation of the module
+- `dependencies` (Object): The dependencies of the module. This object can
+  contain two keys: `extensions` and `modules`. Each should contain an array of
+  dependency names (or aliases)
 
 __Usage__
 
