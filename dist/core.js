@@ -16,7 +16,7 @@
 
 /** 
 * core.js -v0.7.3
-* Copyright (c) 2015 Mauricio Soares
+* Copyright (c) 2016 Mauricio Soares
 * Licensed MIT
 */
 
@@ -38,14 +38,18 @@ var Core = function() {
 * @method register
 * @param {string} module the name of the new module
 * @param {function} constructor the constructor of the new module
+* @param {array} dependencies modules or extensions this module depends on
 */
-Core.prototype.register = function(module, constructor) {
+Core.prototype.register = function(module, constructor, dependencies) {
   if(this.modules[module]) {
-    this.helpers.err('!!module', module);
+    this.helpers.err('!!module', {
+      module: module
+    });
     return false;
   }
   this.modules[module] = {
     constructor: constructor,
+    dependencies: dependencies || [],
     instance: null
   };
 };
@@ -54,7 +58,7 @@ Core.prototype.register = function(module, constructor) {
 * Check if the module is already initialized or not
 *
 * @method moduleCheck
-* @param {string} module the name of the module that will be checked
+* @param {Object} module the module that will be checked
 * @param {boolean} destroy check if the module exists, but is already destroyed
 * @return {boolean} if the module exists or already have an instance
 */
@@ -62,6 +66,38 @@ Core.prototype.moduleCheck = function(module, destroy) {
   if(destroy) return !module || !module.instance;
 
   return !module || module.instance;
+};
+
+/**
+* Checks whether the required module dependencies exist
+*
+* @method nextDependency
+* @param {Object} module the module whose dependencies will be checked
+* @return {string|null} the name of the next unmatched dependency or null if all
+* dependencies are satisfied
+*/
+Core.prototype.nextDependency = function(module) {
+  if(module.dependencies.length === 0) {
+    return null;
+  }
+
+  // Check modules
+  var modules = module.dependencies.modules || [];
+  for(var i = 0; i < modules.length; i++) {
+    if(!this.modules[modules[i]]) {
+      return modules[i];
+    }
+  }
+
+  // Check extensions
+  var extensions = module.dependencies.extensions || [];
+  for(i = 0; i < extensions.length; i++) {
+    if(!this.getExtension(extensions[i])) {
+      return extensions[i];
+    }
+  }
+
+  return null;
 };
 
 /**
@@ -90,7 +126,18 @@ Core.prototype.start = function(module) {
     el = this.getElement(module);
 
   if(this.moduleCheck(cModule)) {
-    this.helpers.err('!start', module);
+    this.helpers.err('!start', {
+      module: module
+    });
+    return false;
+  }
+
+  var dependency = this.nextDependency(cModule);
+  if(dependency) {
+    this.helpers.err('!deps', {
+      module: module,
+      dependency: dependency
+    });
     return false;
   }
 
@@ -114,7 +161,9 @@ Core.prototype.stop = function(module) {
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
-    this.helpers.err('!stop', module);
+    this.helpers.err('!stop', {
+      module: module
+    });
     return false;
   }
 
@@ -164,17 +213,26 @@ Core = new Core();
 *
 * @method err
 * @param {string} error the type of the error
-* @param {function} message the complementary message to the error
+* @param {Object} replacements message replacements
 */
-var err = function(error, message) {
-  Core.helpers.log(err.messages[error] + "\"" + message + "\"");
+var err = function(error, replacements) {
+  var message = err.messages[error];
+  
+  for(var key in replacements) {
+    if(replacements.hasOwnProperty(key)) {
+      message = message.replace('@' + key, replacements[key]);
+    }
+  }
+
+  Core.helpers.log(message);
 };
 
 err.messages = {
-  '!start': 'Could not start the given module, it\'s either already started or is not registered: ',
-  '!stop': 'Could not stop the given module, it\'s either already stopped or is not registered: ',
-  '!!module': 'Can\'t register an already registered module: ',
-  '!!listen': 'There\'s already an listen handler to the notification: '
+  '!deps': '"@module" requires the following dependency to be installed: "@dependency"',
+  '!start': 'Could not start the given module, it\'s either already started or is not registered: @module',
+  '!stop': 'Could not stop the given module, it\'s either already stopped or is not registered: @module',
+  '!!module': 'Can\'t register an already registered module: @module',
+  '!!listen': 'There\'s already a listen handler to the notification: @notification'
 };
 
 Core.helpers = Core.helpers || {};
@@ -218,7 +276,9 @@ var toArray = function(obj) {
 Core.helpers = Core.helpers || {};
 Core.helpers.toArray = toArray;
 
-var extensions = {};
+var extensions = {
+    _aliases: {}
+};
 
 /**
 * Extends core functionalities
@@ -226,20 +286,29 @@ var extensions = {};
 * @method extend
 * @param {string} name the name of the extension
 * @param {function | array | boolean | string | number} implementation what the extension does
+* @param {string} extension alias
 */
-var extend = function(name, implementation) {
+var extend = function(name, implementation, alias) {
   extensions[name] = implementation;
+
+  if(!alias) alias = name;
+
+  extensions._aliases[alias] = name;
 };
 
 /**
 * returns the extension
 *
 * @method getExtension
-* @param {string} extension the name of the extension
+* @param {string} name the name or alias of the extension
 * @return {function | array | boolean | string | number} the implementation of the extension
 */
-var getExtension = function(extension) {
-  return extensions[extension] || null;
+var getExtension = function(name) {
+  if(!extensions[name]) {
+    name = extensions._aliases[name];
+  }
+
+  return extensions[name] || null;
 };
 
 Core.extend = extend;
@@ -317,7 +386,9 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
   } else if(replace) {
     addNotification = true;
   } else {
-    Core.helpers.err('!!listen', notification);
+    Core.helpers.err('!!listen', {
+      notification: notification
+    });
   }
 
   if(addNotification) {
@@ -333,11 +404,11 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
 * Returns an extension from Core
 *
 * @method x
-* @param {string} extension the name of the extension
+* @param {string} name the name or alias of the extension
 * @return {function | array | boolean | string | number} the implementation of the extension
 */
-Sandbox.prototype.use = function(extension) {
-  return Core.getExtension(extension);
+Sandbox.prototype.use = function(name) {
+  return Core.getExtension(name);
 };
 
 Core.Sandbox = Sandbox;

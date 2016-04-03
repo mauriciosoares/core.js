@@ -15,7 +15,9 @@ describe('Testing Core', function() {
     Core.register('tweet', function() {});
 
     expect(Core.register('tweet', function() {})).toBeFalsy();
-    expect(Core.helpers.err).toHaveBeenCalled();
+    expect(Core.helpers.err).toHaveBeenCalledWith('!!module', {
+      module: 'tweet'
+    });
   });
 
   it('Should start a new module', function() {
@@ -31,7 +33,9 @@ describe('Testing Core', function() {
     Core.start('tweet');
 
     expect(Core.start('tweet')).toBeFalsy();
-    expect(Core.helpers.err).toHaveBeenCalled();
+    expect(Core.helpers.err).toHaveBeenCalledWith('!start', {
+      module: 'tweet'
+    });
   });
 
   it('Should stop a new module', function() {
@@ -49,7 +53,9 @@ describe('Testing Core', function() {
     Core.stop('tweet');
 
     expect(Core.stop('tweet')).toBeFalsy();
-    expect(Core.helpers.err).toHaveBeenCalled();
+    expect(Core.helpers.err).toHaveBeenCalledWith('!stop', {
+      module: 'tweet'
+    });
   });
 
   it('Should start all modules', function() {
@@ -298,6 +304,73 @@ describe('Testing Core', function() {
       Core.start('tweet')
       expect(Core.stop('tweet')).toBeTruthy();
 
+    });
+  });
+
+  describe('Testing dependency enforcement', function() {
+    it('Should return false in the Start method and throw a log if extension dependency requirements are not met', function() {
+      spyOn(Core.helpers, 'err');
+      Core.register('tweet', function() {}, { extensions: ['jquery'] });
+
+      expect(Core.start('tweet')).toBeFalsy();
+      expect(Core.helpers.err).toHaveBeenCalledWith('!deps', {
+        module: 'tweet',
+        dependency: 'jquery'
+      });
+    });
+
+    it('Should return false in the Start method if module dependency requirements are not met', function() {
+      Core.register('tweet', function() {}, { modules: ['tweet-list'] });
+
+      expect(Core.start('tweet')).toBeFalsy();
+    });
+
+    it('Should start a new module if extension dependency requirements are met', function() {
+      var jQuery = {};
+      Core.extend('$', jQuery);
+      Core.register('tweet', function() {}, { extensions: ['$'] });
+      Core.start('tweet');
+
+      expect(Core.modules.tweet.instance).not.toBeNull();
+    });
+
+    it('Should start a new module if module dependency requirements are met', function() {
+      Core.register('tweet-list', function() {});
+      Core.register('tweet', function() {}, { modules: ['tweet-list'] });
+      Core.start('tweet');
+
+      expect(Core.modules.tweet.instance).not.toBeNull();
+    });
+
+    it('Should start a new module if mixed dependency requirements are met', function() {
+      var jQuery = {};
+      Core.extend('$', jQuery, 'jquery');
+
+      var lib = {};
+      Core.extend('lib', jQuery, 'another-library');
+
+      Core.register('tweet-list', function() {});
+      Core.register('tweet', function() {}, { extensions: ['jquery', 'another-library'], modules: ['tweet-list'] });
+      Core.start('tweet');
+
+      expect(Core.modules.tweet.instance).not.toBeNull();
+    });
+
+    it('Should return false in the Start method if mixed dependency requirements are not met', function() {
+      var jQuery = {};
+      Core.extend('$', jQuery, 'jquery');
+
+      Core.register('tweet', function() {}, { extensions: ['jquery'], modules: ['tweet-list'] });
+      expect(Core.start('tweet')).toBeFalsy();
+    });
+  });
+
+  describe('Testing extension aliases', function() {
+    it('Should refer to an extension by its alias', function() {
+      var jQuery = {};
+      Core.extend('$', jQuery, 'jquery');
+
+      expect(Core.getExtension('jquery')).toBe(jQuery);
     });
   });
 });

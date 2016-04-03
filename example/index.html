@@ -23,14 +23,15 @@
   <script>
     // extensions.js
     // Exends core with jQuery
-    Core.extend('$', jQuery);
+    Core.extend('$', jQuery, 'jquery');
 
     // tweet-form.js
     (function(Core) {
       Core.register('tweet-form', function(sandbox) {
         return {
           init: function() {
-            this.$form = sandbox.use('$')('#tweet-form');
+            var $ = sandbox.use('jquery');
+            this.$form = $('#tweet-form');
             this.$input = this.$form.find('input');
 
             this.addListeners();
@@ -59,7 +60,7 @@
             });
           }
         }
-      });
+      }, { extensions: ['jquery'] });
     } (Core));
 
     // tweet-list.js
@@ -89,7 +90,7 @@
             return li;
           }
         }
-      });
+      }, { extensions: ['jquery'] });
     } (Core));
 
     // boot.js

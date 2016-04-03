@@ -16,14 +16,18 @@ var Core = function() {
 * @method register
 * @param {string} module the name of the new module
 * @param {function} constructor the constructor of the new module
+* @param {array} dependencies modules or extensions this module depends on
 */
-Core.prototype.register = function(module, constructor) {
+Core.prototype.register = function(module, constructor, dependencies) {
   if(this.modules[module]) {
-    this.helpers.err('!!module', module);
+    this.helpers.err('!!module', {
+      module: module
+    });
     return false;
   }
   this.modules[module] = {
     constructor: constructor,
+    dependencies: dependencies || [],
     instance: null
   };
 };
@@ -32,7 +36,7 @@ Core.prototype.register = function(module, constructor) {
 * Check if the module is already initialized or not
 *
 * @method moduleCheck
-* @param {string} module the name of the module that will be checked
+* @param {Object} module the module that will be checked
 * @param {boolean} destroy check if the module exists, but is already destroyed
 * @return {boolean} if the module exists or already have an instance
 */
@@ -40,6 +44,38 @@ Core.prototype.moduleCheck = function(module, destroy) {
   if(destroy) return !module || !module.instance;
 
   return !module || module.instance;
+};
+
+/**
+* Checks whether the required module dependencies exist
+*
+* @method nextDependency
+* @param {Object} module the module whose dependencies will be checked
+* @return {string|null} the name of the next unmatched dependency or null if all
+* dependencies are satisfied
+*/
+Core.prototype.nextDependency = function(module) {
+  if(module.dependencies.length === 0) {
+    return null;
+  }
+
+  // Check modules
+  var modules = module.dependencies.modules || [];
+  for(var i = 0; i < modules.length; i++) {
+    if(!this.modules[modules[i]]) {
+      return modules[i];
+    }
+  }
+
+  // Check extensions
+  var extensions = module.dependencies.extensions || [];
+  for(i = 0; i < extensions.length; i++) {
+    if(!this.getExtension(extensions[i])) {
+      return extensions[i];
+    }
+  }
+
+  return null;
 };
 
 /**
@@ -68,7 +104,18 @@ Core.prototype.start = function(module) {
     el = this.getElement(module);
 
   if(this.moduleCheck(cModule)) {
-    this.helpers.err('!start', module);
+    this.helpers.err('!start', {
+      module: module
+    });
+    return false;
+  }
+
+  var dependency = this.nextDependency(cModule);
+  if(dependency) {
+    this.helpers.err('!deps', {
+      module: module,
+      dependency: dependency
+    });
     return false;
   }
 
@@ -92,7 +139,9 @@ Core.prototype.stop = function(module) {
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
-    this.helpers.err('!stop', module);
+    this.helpers.err('!stop', {
+      module: module
+    });
     return false;
   }
 
