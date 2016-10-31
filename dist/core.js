@@ -222,14 +222,18 @@ var extensions = {};
 
 /**
 * Extends core functionalities
-*
-* @method extend
-* @param {string} name the name of the extension
-* @param {function | array | boolean | string | number} implementation what the extension does
 */
-var extend = function(name, implementation) {
-  extensions[name] = implementation;
-};
+var extend = function() {  
+    var hasOwnProperty = Object.prototype.hasOwnProperty;       
+    for (var i = 0; i < arguments.length; i++) {
+         var implementation = arguments[i]
+         for (var name in implementation) {
+              if (hasOwnProperty.call(implementation, name)) {
+                  extensions[name] = implementation[name]
+              }
+         }
+    }
+}
 
 /**
 * returns the extension
