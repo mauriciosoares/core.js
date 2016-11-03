@@ -222,6 +222,8 @@ var extensions = {};
 
 /**
 * Extends core functionalities
+*
+* @method extend
 */
 var extend = function() {  
     var hasOwnProperty = Object.prototype.hasOwnProperty;       
