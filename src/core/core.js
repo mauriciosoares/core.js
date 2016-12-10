@@ -1,3 +1,5 @@
+'use strict';
+
 /**
 * The constructor of Core
 *
@@ -47,7 +49,10 @@ Core.prototype.moduleCheck = function(module, destroy) {
 * @param {string} id the id of the main element in the module
 */
 Core.prototype.getElement = function(id) {
-  return document.getElementById(id);
+  var el = document.getElementById(id);
+
+  // this fixes some blackberry, opera and IE possible bugs
+  return (el && el.id === id && el.parentElement) ? el : null;
 };
 
 /**
@@ -82,6 +87,8 @@ Core.prototype.start = function(module) {
 * @param {string} module the name of the module
 */
 Core.prototype.stop = function(module) {
+  if(!module) return this.stopAll();
+
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {

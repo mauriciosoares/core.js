@@ -1,22 +1,24 @@
-/** core.js - v0.5.0 - 2015-02-12
-* Copyright (c) 2015 Mauricio Soares;
-* Licensed MIT 
-*/
-
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
+    // AMD. Register as an anonymous module unless amdModuleId is set
+    define([], function () {
+      return (root['Core'] = factory());
+    });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
     module.exports = factory();
   } else {
-    // Browser globals (root is window)
-    root.Core = factory();
+    root['Core'] = factory();
   }
 }(this, function () {
+
+/** 
+* core.js -v0.7.3
+* Copyright (c) 2015 Mauricio Soares
+* Licensed MIT
+*/
 
 'use strict';
 
@@ -69,7 +71,10 @@ Core.prototype.moduleCheck = function(module, destroy) {
 * @param {string} id the id of the main element in the module
 */
 Core.prototype.getElement = function(id) {
-  return document.getElementById(id);
+  var el = document.getElementById(id);
+
+  // this fixes some blackberry, opera and IE possible bugs
+  return (el && el.id === id && el.parentElement) ? el : null;
 };
 
 /**
@@ -104,6 +109,8 @@ Core.prototype.start = function(module) {
 * @param {string} module the name of the module
 */
 Core.prototype.stop = function(module) {
+  if(!module) return this.stopAll();
+
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
@@ -335,5 +342,6 @@ Sandbox.prototype.use = function(extension) {
 
 Core.Sandbox = Sandbox;
 
-  return Core;
+return Core;
+
 }));

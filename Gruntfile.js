@@ -1,26 +1,34 @@
 module.exports = function(grunt) {
   'use strict';
 
-  var tasks = [
-    'grunt-contrib-jshint',
-    'grunt-contrib-concat',
-    'grunt-contrib-jasmine',
-    'grunt-contrib-watch',
-    'grunt-contrib-uglify',
-    'grunt-coveralls',
-    'grunt-bump'
-  ];
+  var app = {},
+    config = {},
+    tasks = [
+      'grunt-contrib-jshint',
+      'grunt-contrib-concat',
+      'grunt-contrib-jasmine',
+      'grunt-contrib-watch',
+      'grunt-contrib-uglify',
+      'grunt-coveralls',
+      'grunt-bump',
+      'grunt-umd'
+    ];
 
-  var config = {};
+  // get patch if it's release
+  app.patch = grunt.option('patch');
 
-  // =============================================
-  // Metadata
-  config.pkg = grunt.file.readJSON('package.json');
-  config.banner = {
-    full:  '/** <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-              '<%= grunt.template.today(\'yyyy-mm-dd\') %>\n' +
-              '* Copyright (c) <%= grunt.template.today(\'yyyy\') %> <%= pkg.author %>;\n' +
-              '* Licensed <%= pkg.license %> \n*/\n\n'
+  // config pack
+  app.pack = grunt.config('pkg', grunt.file.readJSON('package.json'));
+
+  // really?? I mean, really????
+  function updateBanner() {
+    app.banner =  '/** ' +
+                  '\n* ' + app.pack.name + ' -v' + grunt.file.readJSON('package.json').version +
+                  '\n* Copyright (c) '+ grunt.template.today('yyyy') + ' ' + app.pack.author +
+                  '\n* Licensed ' + app.pack.license + '\n*/\n\n';
+
+    config.concat.options.banner = app.banner;
+    config.uglify.all.options.banner = app.banner;
   };
 
   // =============================================
@@ -31,7 +39,10 @@ module.exports = function(grunt) {
     updateConfigs: [],
     commit: true,
     commitMessage: 'Release v%VERSION%',
-    commitFiles: ['package.json'],
+    commitFiles: [
+      'package.json',
+      'dist'
+    ],
     createTag: true,
     tagName: 'v%VERSION%',
     tagMessage: 'Version %VERSION%',
@@ -44,7 +55,8 @@ module.exports = function(grunt) {
   // jshint
   config.jshint = {};
   config.jshint.options = {
-    debug: true
+    debug: true,
+    sub: true
   };
   config.jshint.all = ['dist/core.js'];
 
@@ -52,16 +64,14 @@ module.exports = function(grunt) {
   // concat
   config.concat = {
     options: {
-      banner: '<%= banner.full %>'
+      banner: app.banner
     },
     dist: {
       src: [
-        'src/umd/head.js',
         'src/core/core.js',
         'src/helpers/*.js',
         'src/core/**/*.js',
-        'src/sandbox/sandbox.js',
-        'src/umd/foot.js'
+        'src/sandbox/sandbox.js'
       ],
       dest: 'dist/core.js'
     }
@@ -72,7 +82,7 @@ module.exports = function(grunt) {
   config.watch = {};
   config.watch.scripts = {
     files: ['src/**/*.js'],
-    tasks: ['concat', 'jshint'],
+    tasks: ['concat', 'umd','jshint'],
     options: {
       spawn: false,
     }
@@ -93,7 +103,7 @@ module.exports = function(grunt) {
       beautify: {
         ascii_only: true
       },
-      banner: '<%= banner.full %>',
+      banner: app.banner,
       compress: {
         hoist_funs: false,
         loops: false,
@@ -131,19 +141,44 @@ module.exports = function(grunt) {
   }
 
   // =============================================
+  // umd
+  config.umd = {};
+  config.umd = {
+    all: {
+      options: {
+        src: 'dist/core.js',
+        objectToExport: 'Core'
+      }
+    }
+  };
+
+  // =============================================
   // coveralls
   config.coveralls = {
     src: 'bin/coverage/lcov.info'
   };
 
-  // =============================================
-  // config
-  grunt.initConfig(config);
+  updateBanner();
 
   // Load all tasks
   tasks.forEach(grunt.loadNpmTasks);
 
-  grunt.registerTask('dist', ['jshint', 'concat', 'jasmine', 'uglify']);
+  // config
+  grunt.initConfig(config);
+
+
+  grunt.registerTask('dist', ['jshint', 'concat', 'umd', 'jasmine', 'uglify']);
 
   grunt.registerTask('ci', ['jshint', 'jasmine', 'coveralls']);
+
+  grunt.registerTask('release', function () {
+    grunt.task.run('bump-only%patch%'.replace('%patch%', app.patch ? ':' + app.patch : ''));
+    setTimeout(function() {
+      updateBanner();
+      grunt.task.run('dist');
+      grunt.task.run('bump-commit');
+    }, 0);
+
+    // grunt.task.run('dist');
+  });
 };

@@ -201,7 +201,7 @@ Core.register('module', function() {})
 ```
 
 #### Core.start( moduleName )
-Starts the named module. If a value is returned in the `init` method, it can be grabbed in the return of the method `Core.start`
+Starts the named module. If a value is returned in the `init` method, it can be grabbed in the return of the method `Core.start`. If no parameters are passed, it starts all unstarted modules.
 
 - `moduleName` (string): The name of the module
 
@@ -232,8 +232,8 @@ __Usage__
 Core.startAll();
 ```
 
-#### Core.stopAll()
-Stops all modules.
+#### Core.stopAll() - _deprecated_
+Stops all modules. (You should use `Core.stop()` with no parameters instead)
 
 __Usage__
 
@@ -301,6 +301,9 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 ## Release History
 
+* 2015-06-15   v0.7.3   Refactor UMD
+* 2015-05-14   v0.7.2   Hotfix with ID's
+* 2015-02-15   v0.7.0   Deprecate `Core.stopAll`
 * 2015-02-12   v0.6.0   Deprecate `Core.startAll`
 * 2015-02-05   v0.5.0   Changes `x` to `use` in `Sandbox`
 * 2015-01-17   v0.4.0   Add UMD
