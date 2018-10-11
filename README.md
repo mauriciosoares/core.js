@@ -155,20 +155,14 @@ Core.start('tweet'); // Log: <div id="tweet"></div> (DOM Reference)
 
 If there's no DOM element, then `this.el` will return `null`.
 
-### Extending Core
-
-__Core.js__ simple gives you an structure to scale your apps, but it won't give you the tools to build it, since we don't want to reinvent the wheel, it provides a way to extend its functionalities.
-
-Modules should not talk to external libreries as well, they will ask permission to `sandbox` before that, and `sandbox` will then talk to `Core` to check if that extension actually exists, let's see:
-
 ```js
 // lets suppose we have jquery loaded before this
-Core.extend('$', jQuery);
+
 
 Core.register('tweet', function(sandbox) {
   return {
     init: function() {
-      sandbox.use('$')('#tweet').on('click', this.newTweet);
+      jQuery('#tweet').on('click', this.newTweet);
     },
 
     newTweet: function() {
@@ -178,9 +172,9 @@ Core.register('tweet', function(sandbox) {
 });
 ```
 
-Using the method `use` from `sandbox`, it gives you access to all extensions from Core, without talking directly to it.
 
-You might think: _"Why do that? it's only increasing the code"_. But since we are talking about consistency, and maybe a code that will be updated by other programmers, this is a way we can keep things standardized, and again, conpectually a module should not talk to anything else but the `sandbox`.
+
+A module should not talk to other modules directly anything else but the `sandbox`.
 
 ### Last thoughts
 
@@ -241,18 +235,6 @@ __Usage__
 Core.stopAll();
 ```
 
-#### Core.extend( newExtension, implementation )
-Extends Core functionalities
-
-- `newExtension` (string): The name of the extension
-- `implementation` (function | string | number | boolean | array): The implementation of the extension
-
-__Usage__
-
-```js
-Core.extend('$', jQuery);
-```
-
 #### sandbox.listen( notification, callback, context, force )
 Listens to other modules notifications, to overwrite a notification you must use the parameter force
 
@@ -268,10 +250,6 @@ Notifies other modules
   - `type` (string): The notification that will be triggered
   - `data` (function | string | number | boolean | array): The data that will be passed in the callback
 
-#### sandbox.use( extension )
-Calls the extension from core, if there's any
-
-- `extension` (string): The name of the extension
 
 ## Maintainer
 

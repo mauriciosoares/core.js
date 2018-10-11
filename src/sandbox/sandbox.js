@@ -82,15 +82,4 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
   }
 };
 
-/**
-* Returns an extension from Core
-*
-* @method x
-* @param {string} extension the name of the extension
-* @return {function | array | boolean | string | number} the implementation of the extension
-*/
-Sandbox.prototype.use = function(extension) {
-  return Core.getExtension(extension);
-};
-
 Core.Sandbox = Sandbox;

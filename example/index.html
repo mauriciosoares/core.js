@@ -21,10 +21,6 @@
   <script src="../dist/core.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script>
-    // extensions.js
-    // Exends core with jQuery
-    Core.extend('$', jQuery);
-
     // tweet-form.js
     (function(Core) {
       Core.register('tweet-form', function(sandbox) {
@@ -67,7 +63,7 @@
       Core.register('tweet-list', function(sandbox) {
         return {
           init: function() {
-            this.$list = sandbox.use('$')('#tweet-list');
+            this.$list = jQuery('#tweet-list');
 
             this.listen();
           },

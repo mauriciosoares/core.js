@@ -231,17 +231,6 @@ describe('Testing Core', function() {
     expect(spying.tweet3).toHaveBeenCalled();
   });
 
-  it('Should extend and return a different component from Core extensions', function() {
-    var jQuery = {};
-    Core.extend('$', jQuery);
-
-    expect(Core.getExtension('$')).toBe(jQuery);
-  });
-
-  it('Should return null if the extension doesn\'t exists into Core extensions', function() {
-    expect(Core.getExtension('foo')).toBeNull();
-  });
-
   describe('Testing Isolation of DOM', function() {
     it('Should return the DOM element if it has the same id as the module', function() {
       var newElement = document.createElement('div');
