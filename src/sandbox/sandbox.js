@@ -43,7 +43,7 @@ Sandbox.prototype.notify = function(notification) {
 * @param {string | array} notification the notification that the module will be listening to
 */
 Sandbox.prototype.listen = function(notification) {
-  var args = Core.helpers.toArray(arguments);
+  var args = Array.from(arguments);
   if(!Array.isArray(notification)) return this.addNotification.apply(this, arguments);
 
   for(var i = 0, len = notification.length; i < len; i += 1) {
