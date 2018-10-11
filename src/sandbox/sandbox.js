@@ -44,7 +44,7 @@ Sandbox.prototype.notify = function(notification) {
 */
 Sandbox.prototype.listen = function(notification) {
   var args = Core.helpers.toArray(arguments);
-  if(!Core.helpers.isArray(notification)) return this.addNotification.apply(this, arguments);
+  if(!Array.isArray(notification)) return this.addNotification.apply(this, arguments);
 
   for(var i = 0, len = notification.length; i < len; i += 1) {
     args[0] = notification[i];
