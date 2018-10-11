@@ -1,4 +1,6 @@
-'use strict';
+export {Core};
+import {err} from "../helpers/err.js";
+import {Sandbox} from "../sandbox/sandbox.js";
 
 /**
 * The constructor of Core
@@ -19,7 +21,7 @@ var Core = function() {
 */
 Core.prototype.register = function(module, constructor) {
   if(this.modules[module]) {
-    this.helpers.err('!!module', module);
+    err('!!module', module);
     return false;
   }
   this.modules[module] = {
@@ -68,7 +70,7 @@ Core.prototype.start = function(module) {
     el = this.getElement(module);
 
   if(this.moduleCheck(cModule)) {
-    this.helpers.err('!start', module);
+    err('!start', module);
     return false;
   }
 
@@ -92,7 +94,7 @@ Core.prototype.stop = function(module) {
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
-    this.helpers.err('!stop', module);
+    err('!stop', module);
     return false;
   }
 

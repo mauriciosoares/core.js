@@ -1,3 +1,6 @@
+export {Sandbox};
+import {err} from "../helpers/err.js";
+
 /**
 * The constructor of Sandbox
 *
@@ -70,7 +73,7 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
   } else if(replace) {
     addNotification = true;
   } else {
-    Core.helpers.err('!!listen', notification);
+    err('!!listen', notification);
   }
 
   if(addNotification) {
@@ -81,5 +84,3 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
     };
   }
 };
-
-Core.Sandbox = Sandbox;
