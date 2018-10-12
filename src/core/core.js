@@ -74,7 +74,7 @@ Core.prototype.start = function(module) {
     return false;
   }
 
-  cModule.instance = new cModule.constructor(new this.Sandbox(module));
+  cModule.instance = new cModule.constructor(new Sandbox(module));
 
   // attachs the element to the instance of the module
   cModule.instance.el = el;
@@ -102,7 +102,7 @@ Core.prototype.stop = function(module) {
 
   cModule.instance = null;
 
-  this.Sandbox.clearNotifications(module);
+  Sandbox.clearNotifications(module);
 
   return stopReturn;
 };
