@@ -2,7 +2,7 @@
 import _package from "../package.json";
 
 const {version, name, license} = _package;
-const GLOBAL_NAME = `core`;
+const GLOBAL_NAME = `Core`;
 const banner = `/*  ${name} v${version} ${new Date().toJSON()} licensed ${license} */`;
 
 	const commonOutputOptions = {
