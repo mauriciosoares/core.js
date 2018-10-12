@@ -1,14 +1,14 @@
-export {Core};
+export {Core, CoreClass};
 import {err} from "../helpers/err.js";
 import {Sandbox} from "../sandbox/sandbox.js";
 
 /**
 * The constructor of Core
 *
-* @class Core
+* @class CoreClass
 * @constructor
 */
-var Core = function() {
+var CoreClass = function() {
   this.modules = {};
 };
 
@@ -19,7 +19,7 @@ var Core = function() {
 * @param {string} module the name of the new module
 * @param {function} constructor the constructor of the new module
 */
-Core.prototype.register = function(module, constructor) {
+CoreClass.prototype.register = function(module, constructor) {
   if(this.modules[module]) {
     err('!!module', module);
     return false;
@@ -38,7 +38,7 @@ Core.prototype.register = function(module, constructor) {
 * @param {boolean} destroy check if the module exists, but is already destroyed
 * @return {boolean} if the module exists or already have an instance
 */
-Core.prototype.moduleCheck = function(module, destroy) {
+CoreClass.prototype.moduleCheck = function(module, destroy) {
   if(destroy) return !module || !module.instance;
 
   return !module || module.instance;
@@ -50,7 +50,7 @@ Core.prototype.moduleCheck = function(module, destroy) {
 * @method getElement
 * @param {string} id the id of the main element in the module
 */
-Core.prototype.getElement = function(id) {
+CoreClass.prototype.getElement = function(id) {
   var el = document.getElementById(id);
 
   // this fixes some blackberry, opera and IE possible bugs
@@ -63,7 +63,7 @@ Core.prototype.getElement = function(id) {
 * @method start
 * @param {string} module the name of the module
 */
-Core.prototype.start = function(module) {
+CoreClass.prototype.start = function(module) {
   if(!module) return this.startAll();
 
   var cModule = this.modules[module],
@@ -88,7 +88,7 @@ Core.prototype.start = function(module) {
 * @method start
 * @param {string} module the name of the module
 */
-Core.prototype.stop = function(module) {
+CoreClass.prototype.stop = function(module) {
   if(!module) return this.stopAll();
 
   var cModule = this.modules[module], stopReturn;
@@ -112,7 +112,7 @@ Core.prototype.stop = function(module) {
 *
 * @method stopAll
 */
-Core.prototype.stopAll = function() {
+CoreClass.prototype.stopAll = function() {
   this.xAll('stop');
 };
 
@@ -121,7 +121,7 @@ Core.prototype.stopAll = function() {
 *
 * @method stopAll
 */
-Core.prototype.startAll = function() {
+CoreClass.prototype.startAll = function() {
   this.xAll('start');
 };
 
@@ -131,10 +131,10 @@ Core.prototype.startAll = function() {
 * @method xAll
 * @param {string} method the method that will be triggered
 */
-Core.prototype.xAll = function(method) {
+CoreClass.prototype.xAll = function(method) {
   for(var module in this.modules) {
     if(this.modules.hasOwnProperty(module)) this[method](module);
   }
 };
 
-Core = new Core();
+var Core = new Core();
