@@ -20,8 +20,12 @@ Core.register('tweet-list', function(sandbox) {
       },
 
       getHtml: function(data) {
-        var li = $('<li class="tweetlist-item">');
-        li.append(data.author + '<br>' + data.tweet);
+        var li = $(
+        `<li class="tweetlist-item">
+            ${data.author}<br>
+            ${data.tweet}
+        </li>`);
+        li.append();
 
         return li;
       }
