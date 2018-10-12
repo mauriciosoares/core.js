@@ -1,3 +1,5 @@
+var {Core} = require('../../dist/core.umd.js')
+console.log(Core);
 describe('Testing Core', function() {
   afterEach(function() {
     Core.stopAll();

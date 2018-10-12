@@ -137,4 +137,4 @@ CoreClass.prototype.xAll = function(method) {
   }
 };
 
-var Core = new Core();
+var Core = new CoreClass();
