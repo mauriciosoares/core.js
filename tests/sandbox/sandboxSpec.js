@@ -1,3 +1,5 @@
+var {Core} = require('../../dist/core.umd.js')
+
 describe('Testing Sandbox', function() {
   afterEach(function() {
     Core.stopAll();
@@ -8,7 +10,7 @@ describe('Testing Sandbox', function() {
     Core.register('tweet', function(sandbox) {
       return {
         init: function() {
-          expect(sandbox instanceof Core.Sandbox).toBeTruthy();
+          expect(sandbox).toBeTruthy();
         }
       }
     });

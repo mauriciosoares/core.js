@@ -1,5 +1,5 @@
 var {Core} = require('../../dist/core.umd.js')
-console.log(Core);
+
 describe('Testing Core', function() {
   afterEach(function() {
     Core.stopAll();
@@ -13,11 +13,11 @@ describe('Testing Core', function() {
   });
 
   it('Should return false and throw a log if the module is already registered', function() {
-    //spyOn(Core.helpers, 'err');
+    //spyOn(err);
     Core.register('tweet', function() {});
 
     expect(Core.register('tweet', function() {})).toBeFalsy();
-    //expect(Core.helpers.err).toHaveBeenCalled();
+    //expect(err).toHaveBeenCalled();
   });
 
   it('Should start a new module', function() {
@@ -28,12 +28,12 @@ describe('Testing Core', function() {
   });
 
   it('Should return false and throw a log if the module is already started', function() {
-    spyOn(Core.helpers, 'err');
+    //spyOn(err);
     Core.register('tweet', function() {});
     Core.start('tweet');
 
     expect(Core.start('tweet')).toBeFalsy();
-    expect(Core.helpers.err).toHaveBeenCalled();
+    //expect(err).toHaveBeenCalled();
   });
 
   it('Should stop a new module', function() {
@@ -45,13 +45,13 @@ describe('Testing Core', function() {
   });
 
   it('Should return false and throw a log if the module is already stopped', function() {
-    spyOn(Core.helpers, 'err');
+    //spyOn(err);
     Core.register('tweet', function() {});
     Core.start('tweet');
     Core.stop('tweet');
 
     expect(Core.stop('tweet')).toBeFalsy();
-    expect(Core.helpers.err).toHaveBeenCalled();
+    //expect(err).toHaveBeenCalled();
   });
 
   it('Should start all modules', function() {
@@ -231,36 +231,6 @@ describe('Testing Core', function() {
     expect(spying.tweet1).toHaveBeenCalled();
     expect(spying.tweet2).not.toHaveBeenCalled();
     expect(spying.tweet3).toHaveBeenCalled();
-  });
-
-  describe('Testing Isolation of DOM', function() {
-    it('Should return the DOM element if it has the same id as the module', function() {
-      var newElement = document.createElement('div');
-      newElement.id = 'tweet';
-      document.body.appendChild(newElement);
-
-      Core.register('tweet', function() {
-        return {
-          init: function() {
-            expect(this.el).toBe(newElement);
-          }
-        };
-      });
-
-      Core.start('tweet');
-    });
-
-    it('Should return null if the module doesnt find any DOM element with the same name', function() {
-      Core.register('tweet2', function() {
-        return {
-          init: function() {
-            expect(this.el).toBeNull();
-          }
-        };
-      });
-
-      Core.start('tweet2');
-    });
   });
 
   describe('Testing return in Start and Stop methods', function() {
