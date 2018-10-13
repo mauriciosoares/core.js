@@ -5,7 +5,5 @@ notifications:
   email: false
 jobs:
   include:
-    - stage: build
-      script: npm run bundle
-    - stage: test
-      script: npm t
+    - stage: buildtest
+      script: npm run bundle && npm t
