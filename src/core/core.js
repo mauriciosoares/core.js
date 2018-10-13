@@ -45,19 +45,6 @@ CoreClass.prototype.moduleCheck = function(module, destroy) {
 };
 
 /**
-* Gets an element by ID to attach to the module instance
-*
-* @method getElement
-* @param {string} id the id of the main element in the module
-*/
-CoreClass.prototype.getElement = function(id) {
-  var el = document.getElementById(id);
-
-  // this fixes some blackberry, opera and IE possible bugs
-  return (el && el.id === id && el.parentElement) ? el : null;
-};
-
-/**
 * Starts a registered module, if no module is passed, it starts all modules
 *
 * @method start
@@ -66,8 +53,7 @@ CoreClass.prototype.getElement = function(id) {
 CoreClass.prototype.start = function(module) {
   if(!module) return this.startAll();
 
-  var cModule = this.modules[module],
-    el = this.getElement(module);
+  var cModule = this.modules[module];
 
   if(this.moduleCheck(cModule)) {
     err('!start', module);
@@ -76,8 +62,6 @@ CoreClass.prototype.start = function(module) {
 
   cModule.instance = new cModule.constructor(new Sandbox(module));
 
-  // attachs the element to the instance of the module
-  cModule.instance.el = el;
 
   if(cModule.instance.init) return cModule.instance.init();
 };
