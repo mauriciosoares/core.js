@@ -39,7 +39,7 @@ CoreClass.prototype.register = function(module, constructor) {
 * @return {boolean} if the module exists or already have an instance
 */
 CoreClass.prototype.moduleCheck = function(module, destroy) {
-  if(destroy) return !module || !module.instance;
+  if (destroy) return !module || !module.instance;
 
   return !module || module.instance;
 };
@@ -94,7 +94,7 @@ CoreClass.prototype.stop = function(module) {
   var cModule = this.modules[module], stopReturn;
 
   if(this.moduleCheck(cModule, true)) {
-    err('!stop', module);
+    //err('!stop', module);
     return false;
   }
 
