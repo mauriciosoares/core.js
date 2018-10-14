@@ -1,3 +1,6 @@
+export {Sandbox};
+import {err} from "../helpers/err.js";
+
 /**
 * The constructor of Sandbox
 *
@@ -8,8 +11,12 @@ var Sandbox = function(module) {
   this.module = module;
 };
 
-// All notifications from sandbox
-Sandbox.notifications = {};
+/**
+* All notifications from sandbox
+*
+* @private
+*/
+var notifications = {};
 
 /**
 * Clear all notifications from an specific module
@@ -18,7 +25,7 @@ Sandbox.notifications = {};
 * @param {string} module the name of the module
 */
 Sandbox.clearNotifications = function(module) {
-  delete Sandbox.notifications[module];
+  delete notifications[module];
 };
 
 /**
@@ -28,8 +35,8 @@ Sandbox.clearNotifications = function(module) {
 * @param {object} notification the object with notifications configs
 */
 Sandbox.prototype.notify = function(notification) {
-  for(var module in Sandbox.notifications) {
-    var listening = Sandbox.notifications[module][notification.type];
+  for(var module in notifications) {
+    var listening = notifications[module][notification.type];
     if(listening) {
       listening.callback.call(listening.context, notification.data);
     }
@@ -43,8 +50,8 @@ Sandbox.prototype.notify = function(notification) {
 * @param {string | array} notification the notification that the module will be listening to
 */
 Sandbox.prototype.listen = function(notification) {
-  var args = Core.helpers.toArray(arguments);
-  if(!Core.helpers.isArray(notification)) return this.addNotification.apply(this, arguments);
+  var args = Array.from(arguments);
+  if(!Array.isArray(notification)) return this.addNotification.apply(this, arguments);
 
   for(var i = 0, len = notification.length; i < len; i += 1) {
     args[0] = notification[i];
@@ -62,35 +69,21 @@ Sandbox.prototype.listen = function(notification) {
 * @param {boolean} replace if the notification already exists, it forces to rewrite it
 */
 Sandbox.prototype.addNotification = function(notification, callback, context, replace) {
-  var notifications = Sandbox.notifications,
-    addNotification = false;
+  var addNotification = false;
 
   if(!notifications[this.module] || !notifications[this.module][notification]) {
     addNotification = true;
   } else if(replace) {
     addNotification = true;
   } else {
-    Core.helpers.err('!!listen', notification);
+    err('!!listen', notification);
   }
 
   if(addNotification) {
     notifications[this.module] = notifications[this.module] || {};
     notifications[this.module][notification] = {
       callback: callback,
-      context: context || window
+      context: context || undefined
     };
   }
 };
-
-/**
-* Returns an extension from Core
-*
-* @method x
-* @param {string} extension the name of the extension
-* @return {function | array | boolean | string | number} the implementation of the extension
-*/
-Sandbox.prototype.use = function(extension) {
-  return Core.getExtension(extension);
-};
-
-Core.Sandbox = Sandbox;

@@ -18,83 +18,9 @@
     </li>
   </ul>
 
-  <script src="../dist/core.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script>
-    // extensions.js
-    // Exends core with jQuery
-    Core.extend('$', jQuery);
-
-    // tweet-form.js
-    (function(Core) {
-      Core.register('tweet-form', function(sandbox) {
-        return {
-          init: function() {
-            this.$form = sandbox.use('$')('#tweet-form');
-            this.$input = this.$form.find('input');
-
-            this.addListeners();
-          },
-
-          addListeners: function() {
-            this.$form.on('submit', this.onSubmit.bind(this));
-          },
-
-          onSubmit: function(e) {
-            e.preventDefault();
-
-            var newTweet = this.$input[0].value;
-            this.$input[0].value = '';
-
-            this.notify(newTweet);
-          },
-
-          notify: function(tweet) {
-            sandbox.notify({
-              type: 'new-tweet',
-              data: {
-                tweet: tweet,
-                author: '@omauriciosoares'
-              }
-            });
-          }
-        }
-      });
-    } (Core));
-
-    // tweet-list.js
-    (function(Core) {
-      Core.register('tweet-list', function(sandbox) {
-        return {
-          init: function() {
-            this.$list = sandbox.use('$')('#tweet-list');
-
-            this.listen();
-          },
-
-          listen: function() {
-            sandbox.listen('new-tweet', this.newTweet, this);
-          },
-
-          newTweet: function(data) {
-            var newTweetHtml = this.getHtml(data);
-
-            this.$list.prepend(newTweetHtml);
-          },
-
-          getHtml: function(data) {
-            var li = sandbox.use('$')('<li class="tweetlist-item">');
-            li.append(data.author + '<br>' + data.tweet);
-
-            return li;
-          }
-        }
-      });
-    } (Core));
-
-    // boot.js
-    Core.startAll();
-
-  </script>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+    crossorigin="anonymous"></script>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>

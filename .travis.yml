@@ -1,7 +1,9 @@
 language: node_js
 node_js:
-  - "0.10"
-before_install:
-- npm install -g grunt-cli grunt-contrib-jshint grunt-contrib-jasmine
+  - "node"
 notifications:
   email: false
+jobs:
+  include:
+    - stage: buildtest
+      script: npm run bundle && npm t
