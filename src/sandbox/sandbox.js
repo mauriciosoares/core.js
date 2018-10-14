@@ -11,8 +11,12 @@ var Sandbox = function(module) {
   this.module = module;
 };
 
-// All notifications from sandbox
-Sandbox.notifications = {};
+/**
+* All notifications from sandbox
+*
+* @private
+*/
+var notifications = {};
 
 /**
 * Clear all notifications from an specific module
@@ -21,7 +25,7 @@ Sandbox.notifications = {};
 * @param {string} module the name of the module
 */
 Sandbox.clearNotifications = function(module) {
-  delete Sandbox.notifications[module];
+  delete notifications[module];
 };
 
 /**
@@ -31,8 +35,8 @@ Sandbox.clearNotifications = function(module) {
 * @param {object} notification the object with notifications configs
 */
 Sandbox.prototype.notify = function(notification) {
-  for(var module in Sandbox.notifications) {
-    var listening = Sandbox.notifications[module][notification.type];
+  for(var module in notifications) {
+    var listening = notifications[module][notification.type];
     if(listening) {
       listening.callback.call(listening.context, notification.data);
     }
@@ -65,8 +69,7 @@ Sandbox.prototype.listen = function(notification) {
 * @param {boolean} replace if the notification already exists, it forces to rewrite it
 */
 Sandbox.prototype.addNotification = function(notification, callback, context, replace) {
-  var notifications = Sandbox.notifications,
-    addNotification = false;
+  var addNotification = false;
 
   if(!notifications[this.module] || !notifications[this.module][notification]) {
     addNotification = true;
