@@ -54,6 +54,34 @@ describe('Testing Core', function() {
     //expect(err).toHaveBeenCalled();
   });
 
+  
+  it('Should start non singleton modules with an alias', function() {
+    Core.register('user', function () {
+        return {
+        "init": function() {}
+        "factory": true
+    }});
+    Core.start('user', 'Moritz');
+    Core.stop('Moritz');
+
+    expect(Core.stop('Moritz')).toBeFalsy();
+  });
+
+   it('Should not return false and when a factory is already used with different alias', function() {
+    Core.register('user', function () {
+        return {
+        "init": function() {}
+        "factory": true
+    }});
+    Core.start('user', 'Moritz');
+    
+    
+    expect(Core.start('user', 'Max')).toBeTruethy();
+    Core.stop('Moritz');
+    Core.stop('Max');
+    //expect(err).toHaveBeenCalled();
+  });
+
   it('Should start all modules', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
@@ -186,7 +214,7 @@ describe('Testing Core', function() {
     expect(spying.tweet).toHaveBeenCalled();
   });
 
-  it('Should trigger destroy from the modules that where stoped', function() {
+  it('Should trigger destroy from the modules that where stopped', function() {
     var spying = {
       tweet1: function() {},
       tweet2: function() {},

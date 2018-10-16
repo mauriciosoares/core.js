@@ -19,14 +19,15 @@ var CoreClass = function() {
 * @param {string} module the name of the new module
 * @param {function} constructor the constructor of the new module
 */
-CoreClass.prototype.register = function(module, constructor) {
+CoreClass.prototype.register = function(module, constructor, factory = false) {
   if(this.modules[module]) {
     err('!!module', module);
     return false;
   }
   this.modules[module] = {
     constructor: constructor,
-    instance: null
+    instance: null,
+    factory
   };
 };
 
@@ -34,36 +35,45 @@ CoreClass.prototype.register = function(module, constructor) {
 * Check if the module is already initialized or not
 *
 * @method moduleCheck
-* @param {string} module the name of the module that will be checked
+* @param {object} moduleWrapper
 * @param {boolean} destroy check if the module exists, but is already destroyed
 * @return {boolean} if the module exists or already have an instance
 */
-CoreClass.prototype.moduleCheck = function(module, destroy) {
-  if (destroy) return !module || !module.instance;
+CoreClass.prototype.moduleCheck = function(moduleWrapper, destroy) {
+  if (destroy) {
+      return !moduleWrapper || !moduleWrapper.instance;
+  }
 
-  return !module || module.instance;
+  return !moduleWrapper || moduleWrapper.instance;
 };
 
 /**
 * Starts a registered module, if no module is passed, it starts all modules
 *
 * @method start
-* @param {string} module the name of the module
+* @param {string} moduleName
+* @param {string|undefined} alias
 */
-CoreClass.prototype.start = function(module) {
-  if(!module) return this.startAll();
+CoreClass.prototype.start = function(moduleName, alias) {
+  if (!moduleName) {
+      return this.startAll();
+  }
+  
+  var moduleWrapper = this.modules[moduleName];
 
-  var cModule = this.modules[module];
-
-  if(this.moduleCheck(cModule)) {
-    err('!start', module);
+  if(this.moduleCheck(moduleWrapper)) {
+    err('!start', moduleName);
     return false;
   }
 
-  cModule.instance = new cModule.constructor(new Sandbox(module));
+  
+  moduleWrapper.instance = new moduleWrapper.constructor(new Sandbox(moduleName));
 
 
-  if(cModule.instance.init) return cModule.instance.init();
+  if(moduleWrapper.instance.init) {
+      return moduleWrapper.instance.init();
+  }
+  return true;
 };
 
 /**
