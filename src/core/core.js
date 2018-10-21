@@ -32,42 +32,31 @@ CoreClass.prototype.register = function(module, constructor, factory = false) {
 };
 
 /**
-* Check if the module is already initialized or not
-*
-* @method moduleCheck
-* @param {object} moduleWrapper
-* @param {boolean} destroy check if the module exists, but is already destroyed
-* @return {boolean} if the module exists or already have an instance
-*/
-CoreClass.prototype.moduleCheck = function(moduleWrapper, destroy) {
-  if (destroy) {
-      return !moduleWrapper || !moduleWrapper.instance;
-  }
-
-  return !moduleWrapper || moduleWrapper.instance;
-};
-
-/**
 * Starts a registered module, if no module is passed, it starts all modules
 *
 * @method start
 * @param {string} moduleName
 * @param {string|undefined} alias
 */
-CoreClass.prototype.start = function(moduleName, alias) {
+CoreClass.prototype.start = function(moduleName, alias = moduleName) {
   if (!moduleName) {
       return this.startAll();
   }
-  
-  var moduleWrapper = this.modules[moduleName];
 
-  if(this.moduleCheck(moduleWrapper)) {
+  var moduleWrapper = this.modules[moduleName];
+  
+  if (!moduleWrapper) {
+    console.error(`Could not start ${moduleName}, it must be registered first`);
+    return false;
+  }
+
+  if (!moduleWrapper.instance && !moduleWrapper.factory) {
     err('!start', moduleName);
     return false;
   }
 
   
-  moduleWrapper.instance = new moduleWrapper.constructor(new Sandbox(moduleName));
+  moduleWrapper.instance = new moduleWrapper.constructor(new Sandbox(alias));
 
 
   if(moduleWrapper.instance.init) {
@@ -82,21 +71,25 @@ CoreClass.prototype.start = function(moduleName, alias) {
 * @method start
 * @param {string} module the name of the module
 */
-CoreClass.prototype.stop = function(module) {
-  if(!module) return this.stopAll();
+CoreClass.prototype.stop = function(moduleName) {
+  if (!moduleName) {
+      return this.stopAll();
+  }
 
-  var cModule = this.modules[module], stopReturn;
-
-  if(this.moduleCheck(cModule, true)) {
+  var moduleWrapper = this.modules[moduleName];
+  var stopReturn;
+  
+  if(!moduleWrapper || !moduleWrapper.instance) {
     //err('!stop', module);
     return false;
   }
 
-  if(cModule.instance.destroy) stopReturn = cModule.instance.destroy();
+  if(moduleWrapper.instance.destroy) {
+      stopReturn = moduleWrapper.instance.destroy();
+  }
+  moduleWrapper.instance = null;
 
-  cModule.instance = null;
-
-  Sandbox.clearNotifications(module);
+  Sandbox.clearNotifications(moduleName);
 
   return stopReturn;
 };
