@@ -2,14 +2,13 @@ var {CoreClass} = require('../../dist/core.umd.js')
 
 let Core;
 describe('Testing Core', function() {
-    
+
   beforeEach(function () {
       Core = new CoreClass();
   });
-  
+
   afterEach(function() {
     Core.stopAll();
-    Core.modules = {};
   });
 
   it('Should create a new module', function() {
@@ -30,8 +29,8 @@ describe('Testing Core', function() {
     Core.register('tweet', function() {});
     Core.start('tweet');
 
-    expect(Core.modulesInstances.tweet).not.toBeUndefined();
-    });
+    expect(Core.moduleInstances.tweet).not.toBeUndefined();
+  });
 
   it('Should return false and throw a log if the module is already started', function() {
     //spyOn(err);
@@ -47,7 +46,7 @@ describe('Testing Core', function() {
     Core.start('tweet');
     Core.stop('tweet');
 
-    expect(Core.modulesInstances.tweet).toBeUndefined();
+    expect(Core.moduleInstances.tweet).toBeUndefined();
   });
 
   it('Should return false and throw a log if the module is already stopped', function() {
@@ -60,13 +59,13 @@ describe('Testing Core', function() {
     //expect(err).toHaveBeenCalled();
   });
 
-  
+
   it('Should start non singleton modules with an alias', function() {
     Core.register('user', function () {
         return {
-        "init": function() {},
-        "factory": true
-    }});
+            "init": function() {}
+        }
+    }, true);
     Core.start('user', 'Moritz');
     Core.stop('Moritz');
 
@@ -76,13 +75,15 @@ describe('Testing Core', function() {
    it('Should not return false and when a factory is already used with different alias', function() {
     Core.register('user', function () {
         return {
-        "init": function() {},
-        "factory": true
-    }});
+            "init": function() {
+                return true;
+            }
+        }
+    }, true);
     Core.start('user', 'Moritz');
-    
-    
-    expect(Core.start('user', 'Max')).toBeTruethy();
+
+
+    expect(Core.start('user', 'Max')).toBeTruthy();
     Core.stop('Moritz');
     Core.stop('Max');
     //expect(err).toHaveBeenCalled();
@@ -91,43 +92,43 @@ describe('Testing Core', function() {
   it('Should start all modules', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
-  
+
     Core.startAll();
 
-    expect(Core.modulesInstances.tweet1).not.toBeNull();
-    expect(Core.modulesInstances.tweet2).not.toBeNull();
+    expect(Core.moduleInstances.tweet1).not.toBeNull();
+    expect(Core.moduleInstances.tweet2).not.toBeNull();
   });
 
   it('Should start all modules using the method start if no parameter is passed', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
-  
+
     Core.start();
 
-    expect(Core.modulesInstances.tweet1).not.toBeNull();
-    expect(Core.modulesInstances.tweet2).not.toBeNull();
+    expect(Core.moduleInstances.tweet1).not.toBeNull();
+    expect(Core.moduleInstances.tweet2).not.toBeNull();
   });
 
   it('Should stop all modules', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
-  
+
     Core.startAll();
     Core.stopAll();
-  
-    expect(Core.modulesInstances.tweet1).toBeUndefined();
-    expect(Core.modulesInstances.tweet2).toBeUndefined();
+
+    expect(Core.moduleInstances.tweet1).toBeUndefined();
+    expect(Core.moduleInstances.tweet2).toBeUndefined();
   });
 
   it('Should stop all modules using the method stop if no parameter is passed', function() {
     Core.register('tweet1', function() {});
     Core.register('tweet2', function() {});
-    
+
     Core.start();
     Core.stop();
 
-    expect(Core.modulesInstances.tweet1).toBeUndefined();
-    expect(Core.modulesInstances.tweet2).toBeUndefined();
+    expect(Core.moduleInstances.tweet1).toBeUndefined();
+    expect(Core.moduleInstances.tweet2).toBeUndefined();
   });
 
   it('Should trigger init when the module is started', function() {

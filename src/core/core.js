@@ -26,7 +26,7 @@ CoreClass.prototype.register = function(module, constructor, factory = false) {
     return false;
   }
   this.modules[module] = {
-    constructor: constructor,
+    constructor,
     factory
   };
 };
@@ -44,20 +44,20 @@ CoreClass.prototype.start = function(moduleName, alias = moduleName) {
   }
 
   var moduleWrapper = this.modules[moduleName];
-  
+
   if (!moduleWrapper) {
     console.error(`Could not start ${moduleName}, it must be registered first`);
     return false;
   }
 
-  if (!this.moduleInstances[alias] && !moduleWrapper.factory) {
+  if (this.moduleInstances[alias] && !moduleWrapper.factory) {
     err('!start', moduleName);
     return false;
   }
 
   const instance = new moduleWrapper.constructor(new Sandbox(alias));
   this.moduleInstances[alias] = instance;
-  
+
   if(instance.init) {
       return instance.init();
   }
@@ -76,8 +76,8 @@ CoreClass.prototype.stop = function(moduleName) {
   }
 
   const instance = this.moduleInstances[moduleName];
-  
-  
+
+
   if (!instance) {
     //err('!stop', module);
     return false;
@@ -87,7 +87,7 @@ CoreClass.prototype.stop = function(moduleName) {
   if(instance.destroy) {
       stopReturn = instance.destroy();
   }
-  
+
   delete this.moduleInstances[moduleName];
 
   Sandbox.clearNotifications(moduleName);
