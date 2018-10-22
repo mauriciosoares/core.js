@@ -10,6 +10,7 @@ import {Sandbox} from "../sandbox/sandbox.js";
 */
 var CoreClass = function() {
   this.modules = {};
+  this.moduleInstances = {};
 };
 
 /**
@@ -26,7 +27,6 @@ CoreClass.prototype.register = function(module, constructor, factory = false) {
   }
   this.modules[module] = {
     constructor: constructor,
-    instance: null,
     factory
   };
 };
@@ -50,17 +50,16 @@ CoreClass.prototype.start = function(moduleName, alias = moduleName) {
     return false;
   }
 
-  if (!moduleWrapper.instance && !moduleWrapper.factory) {
+  if (!this.moduleInstances[alias] && !moduleWrapper.factory) {
     err('!start', moduleName);
     return false;
   }
 
+  const instance = new moduleWrapper.constructor(new Sandbox(alias));
+  this.moduleInstances[alias] = instance;
   
-  moduleWrapper.instance = new moduleWrapper.constructor(new Sandbox(alias));
-
-
-  if(moduleWrapper.instance.init) {
-      return moduleWrapper.instance.init();
+  if(instance.init) {
+      return instance.init();
   }
   return true;
 };
@@ -76,18 +75,20 @@ CoreClass.prototype.stop = function(moduleName) {
       return this.stopAll();
   }
 
-  var moduleWrapper = this.modules[moduleName];
-  var stopReturn;
+  const instance = this.moduleInstances[moduleName];
   
-  if(!moduleWrapper || !moduleWrapper.instance) {
+  
+  if (!instance) {
     //err('!stop', module);
     return false;
   }
 
-  if(moduleWrapper.instance.destroy) {
-      stopReturn = moduleWrapper.instance.destroy();
+  var stopReturn;
+  if(instance.destroy) {
+      stopReturn = instance.destroy();
   }
-  moduleWrapper.instance = null;
+  
+  delete this.moduleInstances[moduleName];
 
   Sandbox.clearNotifications(moduleName);
 
@@ -119,7 +120,7 @@ CoreClass.prototype.startAll = function() {
 * @param {string} method the method that will be triggered
 */
 CoreClass.prototype.xAll = function(method) {
-  for(var module in this.modules) {
+  for(var module in this.moduleInstances) {
     if(this.modules.hasOwnProperty(module)) this[method](module);
   }
 };
