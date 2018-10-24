@@ -71,9 +71,9 @@ Sandbox.prototype.listen = function(notification) {
 Sandbox.prototype.addNotification = function(notification, callback, context, replace) {
   var addNotification = false;
 
-  if(!notifications[this.module] || !notifications[this.module][notification]) {
+  if (!notifications[this.module] || !notifications[this.module][notification]) {
     addNotification = true;
-  } else if(replace) {
+  } else if (replace) {
     addNotification = true;
   } else {
     err('!!listen', notification);

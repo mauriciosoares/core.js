@@ -1,6 +1,6 @@
 {
   "name": "core.js",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Lightweight framework for scalable applications",
   "author": "Mauricio Soares",
   "homepage": "https://github.com/msodeveloper/core.js",
@@ -10,6 +10,7 @@
     "url": "https://github.com/msodeveloper/core.js.git"
   },
   "main": "dist/core.js",
+  "module": "src/core/core.js",
   "scripts": {
     "bundle": "rollup --config tools/rollup.config.js",
     "test": "jasmine --config=tests/jasmine.json"

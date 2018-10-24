@@ -10,6 +10,7 @@ import {Sandbox} from "../sandbox/sandbox.js";
 */
 var CoreClass = function() {
   this.modules = {};
+  this.moduleInstances = {};
 };
 
 /**
@@ -19,51 +20,48 @@ var CoreClass = function() {
 * @param {string} module the name of the new module
 * @param {function} constructor the constructor of the new module
 */
-CoreClass.prototype.register = function(module, constructor) {
+CoreClass.prototype.register = function(module, constructor, factory = false) {
   if(this.modules[module]) {
     err('!!module', module);
     return false;
   }
   this.modules[module] = {
-    constructor: constructor,
-    instance: null
+    constructor,
+    factory
   };
-};
-
-/**
-* Check if the module is already initialized or not
-*
-* @method moduleCheck
-* @param {string} module the name of the module that will be checked
-* @param {boolean} destroy check if the module exists, but is already destroyed
-* @return {boolean} if the module exists or already have an instance
-*/
-CoreClass.prototype.moduleCheck = function(module, destroy) {
-  if (destroy) return !module || !module.instance;
-
-  return !module || module.instance;
 };
 
 /**
 * Starts a registered module, if no module is passed, it starts all modules
 *
 * @method start
-* @param {string} module the name of the module
+* @param {string} moduleName
+* @param {string|undefined} alias
 */
-CoreClass.prototype.start = function(module) {
-  if(!module) return this.startAll();
+CoreClass.prototype.start = function(moduleName, alias = moduleName) {
+  if (!moduleName) {
+      return this.startAll();
+  }
 
-  var cModule = this.modules[module];
+  var moduleWrapper = this.modules[moduleName];
 
-  if(this.moduleCheck(cModule)) {
-    err('!start', module);
+  if (!moduleWrapper) {
+    console.error(`Could not start ${moduleName}, it must be registered first`);
     return false;
   }
 
-  cModule.instance = new cModule.constructor(new Sandbox(module));
+  if (this.moduleInstances[alias] && !moduleWrapper.factory) {
+    err('!start', moduleName);
+    return false;
+  }
 
+  const instance = new moduleWrapper.constructor(new Sandbox(alias));
+  this.moduleInstances[alias] = instance;
 
-  if(cModule.instance.init) return cModule.instance.init();
+  if(instance.init) {
+      return instance.init();
+  }
+  return true;
 };
 
 /**
@@ -72,21 +70,27 @@ CoreClass.prototype.start = function(module) {
 * @method start
 * @param {string} module the name of the module
 */
-CoreClass.prototype.stop = function(module) {
-  if(!module) return this.stopAll();
+CoreClass.prototype.stop = function(moduleName) {
+  if (!moduleName) {
+      return this.stopAll();
+  }
 
-  var cModule = this.modules[module], stopReturn;
+  const instance = this.moduleInstances[moduleName];
 
-  if(this.moduleCheck(cModule, true)) {
+
+  if (!instance) {
     //err('!stop', module);
     return false;
   }
 
-  if(cModule.instance.destroy) stopReturn = cModule.instance.destroy();
+  var stopReturn;
+  if(instance.destroy) {
+      stopReturn = instance.destroy();
+  }
 
-  cModule.instance = null;
+  delete this.moduleInstances[moduleName];
 
-  Sandbox.clearNotifications(module);
+  Sandbox.clearNotifications(moduleName);
 
   return stopReturn;
 };
@@ -116,7 +120,7 @@ CoreClass.prototype.startAll = function() {
 * @param {string} method the method that will be triggered
 */
 CoreClass.prototype.xAll = function(method) {
-  for(var module in this.modules) {
+  for(var module in this.moduleInstances) {
     if(this.modules.hasOwnProperty(module)) this[method](module);
   }
 };
