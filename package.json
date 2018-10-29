@@ -1,6 +1,6 @@
 {
   "name": "@eroc/core",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Lightweight framework for scalable applications",
   "author": "Mauricio Soares",
   "homepage": "https://github.com/msodeveloper/core.js",
