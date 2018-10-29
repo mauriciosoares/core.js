@@ -9,8 +9,8 @@
     "type": "git",
     "url": "https://github.com/msodeveloper/core.js.git"
   },
-  "main": "dist/core.js",
-  "module": "src/core/core.js",
+  "main": "dist/core.umd.js",
+  "module": "dist/core.js",
   "scripts": {
     "bundle": "rollup --config tools/rollup.config.js",
     "test": "jasmine --config=tests/jasmine.json"
