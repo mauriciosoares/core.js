@@ -4,13 +4,6 @@ __Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https:/
 
 It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
 
-## Installing
-
-You can install __Core.js__ using Bower running the following command:
-
-```
-bower install core_js
-```
 
 ## tl;dr
 
@@ -30,6 +23,27 @@ So let's think about the twitter page, and how we could re-build it using the __
 ![Twitter Modules](https://cloud.githubusercontent.com/assets/2321259/5558085/3caa2e2c-8d00-11e4-8eba-4613b593193f.png)
 
 Everything inside a red square is a module, they work in a way that they don't depend on any other modules, and they should be programmed that way as well.
+
+
+## Installing
+
+
+`npm i @eroc/core`
+
+
+## Import
+
+Raw import
+
+`import {Core} from "./node_modules/@eroc/core/dist/core.js";`
+
+With rollup, webpack or parcel
+
+`import {Core} from "@eroc/core";`
+
+NodeJs or Browserify
+
+`const {Core} = require("@eroc/core");`
 
 Let's start with the tweet module.
 
@@ -273,12 +287,14 @@ New features? Would you mind testing it? :)
 
 You need [NodeJS](http://nodejs.org/) installed on your machine
 
-1. Run `npm install`
-2. Run `npm install -g grunt-cli` to install the grunt command
-3. Run `grunt jasmine`
+1. `npm i`
+2. `npm run bundle`
+3. `npm t`
 
 ## Release History
 
+* 2018-10-29   v0.12.0  Drop bower and publish on npm
+* 2018                  Various changes
 * 2015-06-15   v0.7.3   Refactor UMD
 * 2015-05-14   v0.7.2   Hotfix with ID's
 * 2015-02-15   v0.7.0   Deprecate `Core.stopAll`

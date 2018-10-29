@@ -1,6 +1,6 @@
 {
-  "name": "core.js",
-  "version": "0.10.0",
+  "name": "@eroc/core",
+  "version": "0.12.1",
   "description": "Lightweight framework for scalable applications",
   "author": "Mauricio Soares",
   "homepage": "https://github.com/msodeveloper/core.js",
@@ -9,8 +9,15 @@
     "type": "git",
     "url": "https://github.com/msodeveloper/core.js.git"
   },
-  "main": "dist/core.js",
-  "module": "src/core/core.js",
+  "main": "dist/core.umd.js",
+  "module": "dist/core.js",
+  "files": [
+      "dist/core.umd.js",
+      "dist/core.iife.js",
+      "dist/core.js",
+      "LICENSE",
+      "README.md"
+  ],
   "scripts": {
     "bundle": "rollup --config tools/rollup.config.js",
     "test": "jasmine --config=tests/jasmine.json"
@@ -27,5 +34,5 @@
   "devDependencies": {
     "jasmine": "^3.2.0",
     "rollup": "^0.66.6"
-  }
+}
 }
