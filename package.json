@@ -1,5 +1,5 @@
 {
-  "name": "core.js",
+  "name": "@eroc/core",
   "version": "0.10.0",
   "description": "Lightweight framework for scalable applications",
   "author": "Mauricio Soares",
