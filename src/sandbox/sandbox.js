@@ -43,13 +43,13 @@ notify (notification) {
 * @param {string | array} notification the notification that the module will be listening to
 */
 listen(notification) {
-  const args = Array.from(arguments);
   if(!Array.isArray(notification)) return this.addNotification.apply(this, arguments);
+  const args = Array.from(arguments);
 
-  for(let i = 0, len = notification.length; i < len; i += 1) {
-    args[0] = notification[i];
-    this.addNotification.apply(this, args);
-  }
+  notification.forEach(aNotification => {
+    args[0] = aNotification;
+    this.addNotification.apply(this, args);  
+  });
 }
 
 /**
