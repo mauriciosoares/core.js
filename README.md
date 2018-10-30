@@ -221,7 +221,7 @@ Core.start('module');
 
 
 #### Core.stop( moduleName )
-Stops the named module. If a value is returned in the `destroy` method, it can be grabbed in the return of the method `Core.stop`
+Stops the named module. If a value is returned in the `destroy` method, it can be grabbed in the return of the method `Core.stop`, If no parameters are passed, it stop all modules.
 
 - `moduleName` (string): The name of the module
 
@@ -229,24 +229,6 @@ __Usage__
 
 ```js
 Core.stop('module');
-```
-
-#### Core.startAll() - _deprecated_
-Starts all modules. (You should use `Core.start()` with no parameters instead)
-
-__Usage__
-
-```js
-Core.startAll();
-```
-
-#### Core.stopAll() - _deprecated_
-Stops all modules. (You should use `Core.stop()` with no parameters instead)
-
-__Usage__
-
-```js
-Core.stopAll();
 ```
 
 #### sandbox.listen( notification, callback, context, force )
