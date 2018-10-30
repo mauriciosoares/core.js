@@ -40,7 +40,7 @@ CoreClass.prototype.register = function(module, constructor, factory = false) {
 */
 CoreClass.prototype.start = function(moduleName, alias = moduleName) {
   if (!moduleName) {
-      return this.startAll();
+      return this.xAll('start');
   }
 
   var moduleWrapper = this.modules[moduleName];
@@ -72,7 +72,7 @@ CoreClass.prototype.start = function(moduleName, alias = moduleName) {
 */
 CoreClass.prototype.stop = function(moduleName) {
   if (!moduleName) {
-      return this.stopAll();
+      return this.xAll('stop');
   }
 
   const instance = this.moduleInstances[moduleName];
@@ -95,23 +95,6 @@ CoreClass.prototype.stop = function(moduleName) {
   return stopReturn;
 };
 
-/**
-* Stop all started modules
-*
-* @method stopAll
-*/
-CoreClass.prototype.stopAll = function() {
-  this.xAll('stop');
-};
-
-/**
-* Stop all started modules
-*
-* @method stopAll
-*/
-CoreClass.prototype.startAll = function() {
-  this.xAll('start');
-};
 
 /**
 * Helper for startAll and stopAll

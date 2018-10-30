@@ -2,7 +2,7 @@ var {Core} = require('../../dist/core.umd.js')
 
 describe('Testing Sandbox', function() {
   afterEach(function() {
-    Core.stopAll();
+    Core.stop();
     Core.modules = {};
   });
 

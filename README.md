@@ -293,6 +293,7 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 ## Release History
 
+* 2018-10-30   v0.13.0  remove deprecated startAll and stopAll 
 * 2018-10-29   v0.12.0  Drop bower and publish on npm
 * 2018                  Various changes
 * 2015-06-15   v0.7.3   Refactor UMD
