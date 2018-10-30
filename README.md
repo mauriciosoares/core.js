@@ -1,6 +1,6 @@
-# Core.js [![Build Status](https://travis-ci.org/mauriciosoares/core.js.svg?branch=master)](https://travis-ci.org/mauriciosoares/core.js) [![Coverage Status](https://img.shields.io/coveralls/mauriciosoares/core.js.svg)](https://coveralls.io/r/mauriciosoares/core.js) [![Code Climate](https://codeclimate.com/github/mauriciosoares/core.js/badges/gpa.svg)](https://codeclimate.com/github/mauriciosoares/core.js)
+# core [![Build Status](https://travis-ci.org/mauriciosoares/core.js.svg?branch=master)](https://travis-ci.org/mauriciosoares/core.js) [![Coverage Status](https://img.shields.io/coveralls/mauriciosoares/core.js.svg)](https://coveralls.io/r/mauriciosoares/core.js) [![Code Climate](https://codeclimate.com/github/mauriciosoares/core.js/badges/gpa.svg)](https://codeclimate.com/github/mauriciosoares/core.js)
 
-__Core.js__ is a concept introduced by Nicholas C. Zakas in this [video](https://www.youtube.com/watch?v=b5pFv9NB9fs)
+__core__ is a concept introduced by Nicholas C. Zakas in this [video](https://www.youtube.com/watch?v=b5pFv9NB9fs)
 
 It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
 
@@ -18,7 +18,7 @@ A module should never talk directly to another module, for that you use a combin
 
 ## Getting Started
 
-So let's think about the twitter page, and how we could re-build it using the __Core.js__ concept
+So let's think about the twitter page, and how we could re-build it using the __core__ concept
 
 ![Twitter Modules](https://cloud.githubusercontent.com/assets/2321259/5558085/3caa2e2c-8d00-11e4-8eba-4613b593193f.png)
 
@@ -118,7 +118,7 @@ Core.register('tweet', function(sandbox) {
           type: 'new-tweet',
           data: {
             author: 'Mauricio Soares',
-            text: 'Core.js is pretty #cool'
+            text: 'core is pretty #cool'
           }
         })
       }, 5 * 1000)
@@ -192,7 +192,7 @@ A module should not talk to other modules directly anything else but the `sandbo
 
 ### Last thoughts
 
-This is basically how Core.js works, below you will find the documentation of methods and parameters.
+This is basically how core works, below you will find the documentation of methods and parameters.
 
 ## Docs
 
@@ -253,7 +253,7 @@ Notifies other modules
 
 ## Contributing
 
-1. [Fork](http://help.github.com/forking/) Core.js
+1. [Fork](http://help.github.com/forking/) core
 2. Create a topic branch - `git checkout -b my_branch`
 3. Push to your branch - `git push origin my_branch`
 4. Send me a [Pull Request](https://help.github.com/articles/using-pull-requests)
