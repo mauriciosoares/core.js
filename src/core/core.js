@@ -8,19 +8,20 @@ import {Sandbox} from "../sandbox/sandbox.js";
 * @class CoreClass
 * @constructor
 */
-const CoreClass = function() {
-  this.modules = {};
-  this.moduleInstances = {};
-};
-
-/**
+const CoreClass = class {
+  constructor() {  
+    this.modules = {};
+    this.moduleInstances = {};
+  }
+  
+  /**
 * Registers a new module
 *
 * @method register
 * @param {string} module the name of the new module
 * @param {function} constructor the constructor of the new module
 */
-CoreClass.prototype.register = function(module, constructor, factory = false) {
+register (module, constructor, factory = false) {
   if(this.modules[module]) {
     err('!!module', module);
     return false;
@@ -38,7 +39,7 @@ CoreClass.prototype.register = function(module, constructor, factory = false) {
 * @param {string} moduleName
 * @param {string|undefined} alias
 */
-CoreClass.prototype.start = function(moduleName, alias = moduleName) {
+start(moduleName, alias = moduleName) {
   if (!moduleName) {
       return this.xAll('start');
   }
@@ -62,7 +63,7 @@ CoreClass.prototype.start = function(moduleName, alias = moduleName) {
       return instance.init();
   }
   return true;
-};
+}
 
 /**
 * Stops a registered module
@@ -70,7 +71,7 @@ CoreClass.prototype.start = function(moduleName, alias = moduleName) {
 * @method start
 * @param {string} module the name of the module
 */
-CoreClass.prototype.stop = function(moduleName) {
+stop (moduleName) {
   if (!moduleName) {
       return this.xAll('stop');
   }
@@ -93,7 +94,7 @@ CoreClass.prototype.stop = function(moduleName) {
   Sandbox.clearNotifications(moduleName);
 
   return stopReturn;
-};
+}
 
 
 /**
@@ -102,10 +103,13 @@ CoreClass.prototype.stop = function(moduleName) {
 * @method xAll
 * @param {string} method the method that will be triggered
 */
-CoreClass.prototype.xAll = function(method) {
-  for(let module in this.moduleInstances) {
-    if(this.modules.hasOwnProperty(module)) this[method](module);
+ xAll(method) {
+    for(let module in this.moduleInstances) {
+      if(this.modules.hasOwnProperty(module)) this[method](module);
+    }
   }
 };
+
+
 
 const Core = new CoreClass();
