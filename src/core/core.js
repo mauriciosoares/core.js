@@ -8,7 +8,7 @@ import {Sandbox} from "../sandbox/sandbox.js";
 * @class CoreClass
 * @constructor
 */
-var CoreClass = function() {
+const CoreClass = function() {
   this.modules = {};
   this.moduleInstances = {};
 };
@@ -43,7 +43,7 @@ CoreClass.prototype.start = function(moduleName, alias = moduleName) {
       return this.xAll('start');
   }
 
-  var moduleWrapper = this.modules[moduleName];
+  const moduleWrapper = this.modules[moduleName];
 
   if (!moduleWrapper) {
     console.error(`Could not start ${moduleName}, it must be registered first`);
@@ -83,8 +83,8 @@ CoreClass.prototype.stop = function(moduleName) {
     return false;
   }
 
-  var stopReturn;
-  if(instance.destroy) {
+  let stopReturn;
+  if (instance.destroy) {
       stopReturn = instance.destroy();
   }
 
@@ -103,9 +103,9 @@ CoreClass.prototype.stop = function(moduleName) {
 * @param {string} method the method that will be triggered
 */
 CoreClass.prototype.xAll = function(method) {
-  for(var module in this.moduleInstances) {
+  for(let module in this.moduleInstances) {
     if(this.modules.hasOwnProperty(module)) this[method](module);
   }
 };
 
-var Core = new CoreClass();
+const Core = new CoreClass();

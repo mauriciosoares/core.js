@@ -7,7 +7,7 @@ import {err} from "../helpers/err.js";
 * @class Sandbox
 * @constructor
 */
-var Sandbox = function(module) {
+const Sandbox = function(module) {
   this.module = module;
 };
 
@@ -16,7 +16,7 @@ var Sandbox = function(module) {
 *
 * @private
 */
-var notifications = {};
+const notifications = {};
 
 /**
 * Clear all notifications from an specific module
@@ -35,8 +35,8 @@ Sandbox.clearNotifications = function(module) {
 * @param {object} notification the object with notifications configs
 */
 Sandbox.prototype.notify = function(notification) {
-  for(var module in notifications) {
-    var listening = notifications[module][notification.type];
+  for(let module in notifications) {
+    const listening = notifications[module][notification.type];
     if(listening) {
       listening.callback.call(listening.context, notification.data);
     }
@@ -50,10 +50,10 @@ Sandbox.prototype.notify = function(notification) {
 * @param {string | array} notification the notification that the module will be listening to
 */
 Sandbox.prototype.listen = function(notification) {
-  var args = Array.from(arguments);
+  const args = Array.from(arguments);
   if(!Array.isArray(notification)) return this.addNotification.apply(this, arguments);
 
-  for(var i = 0, len = notification.length; i < len; i += 1) {
+  for(let i = 0, len = notification.length; i < len; i += 1) {
     args[0] = notification[i];
     this.addNotification.apply(this, args);
   }
@@ -69,7 +69,7 @@ Sandbox.prototype.listen = function(notification) {
 * @param {boolean} replace if the notification already exists, it forces to rewrite it
 */
 Sandbox.prototype.addNotification = function(notification, callback, context, replace) {
-  var addNotification = false;
+  let addNotification = false;
 
   if (!notifications[this.module] || !notifications[this.module][notification]) {
     addNotification = true;
