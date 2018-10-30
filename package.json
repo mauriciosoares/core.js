@@ -12,11 +12,11 @@
   "main": "dist/core.umd.js",
   "module": "dist/core.js",
   "files": [
-      "dist/core.umd.js",
-      "dist/core.iife.js",
-      "dist/core.js",
-      "LICENSE",
-      "README.md"
+    "dist/core.umd.js",
+    "dist/core.iife.js",
+    "dist/core.js",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "bundle": "rollup --config tools/rollup.config.js",
@@ -34,5 +34,5 @@
   "devDependencies": {
     "jasmine": "^3.2.0",
     "rollup": "^0.66.6"
-}
+  }
 }
