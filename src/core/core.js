@@ -42,7 +42,9 @@ register (module, constructor, factory = false) {
 start(moduleName, alias = moduleName) {
   if (!moduleName) {
       Object.keys(this.modules).forEach(moduleName => {
-          this.start(moduleName);
+          if (!this.moduleInstances[moduleName]) {
+              this.start(moduleName);
+          }
       });
       return;
   }
