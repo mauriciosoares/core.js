@@ -41,7 +41,10 @@ register (module, constructor, factory = false) {
 */
 start(moduleName, alias = moduleName) {
   if (!moduleName) {
-      return this.xAll('start');
+      Object.keys(this.modules).forEach(moduleName => {
+          this.start(moduleName);
+      });
+      return;
   }
 
   const moduleWrapper = this.modules[moduleName];
@@ -73,7 +76,10 @@ start(moduleName, alias = moduleName) {
 */
 stop (moduleName) {
   if (!moduleName) {
-      return this.xAll('stop');
+      Object.keys(this.moduleInstances).forEach(alias => {
+          this.stop(alias);
+      });
+      return;
   }
 
   const instance = this.moduleInstances[moduleName];
@@ -96,18 +102,6 @@ stop (moduleName) {
   return stopReturn;
 }
 
-
-/**
-* Helper for startAll and stopAll
-*
-* @method xAll
-* @param {string} method the method that will be triggered
-*/
- xAll(method) {
-  Object.keys(this.moduleInstances).forEach(alias => {
-      this[method](alias);
-  });
-}
 }
 
 
