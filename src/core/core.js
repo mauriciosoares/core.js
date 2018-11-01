@@ -22,7 +22,7 @@ const CoreClass = class {
 * @param {function} constructor the constructor of the new module
 */
 register (module, constructor, factory = false) {
-  if(this.modules[module]) {
+  if (this.modules[module]) {
     err('!!module', module);
     return false;
   }
@@ -62,7 +62,7 @@ start(moduleName, alias = moduleName) {
   const instance = new moduleWrapper.constructor(new Sandbox(alias));
   this.moduleInstances[alias] = instance;
 
-  if(instance.init) {
+  if (instance.init) {
       return instance.init();
   }
   return true;

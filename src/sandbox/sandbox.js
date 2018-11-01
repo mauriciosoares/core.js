@@ -43,7 +43,9 @@ notify (notification) {
 * @param {string | array} notification the notification that the module will be listening to
 */
 listen(notification) {
-  if(!Array.isArray(notification)) return this.addNotification.apply(this, arguments);
+  if (!Array.isArray(notification)) {
+      return this.addNotification.apply(this, arguments);
+  }
   const args = Array.from(arguments);
 
   notification.forEach(aNotification => {
@@ -72,7 +74,7 @@ addNotification(notification, callback, context, replace) {
     err('!!listen', notification);
   }
 
-  if(addNotification) {
+  if (addNotification) {
     notifications[this.module] = notifications[this.module] || {};
     notifications[this.module][notification] = {
       callback: callback,
