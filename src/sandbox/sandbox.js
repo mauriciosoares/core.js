@@ -19,7 +19,7 @@ const Sandbox = class {
     constructor(module) {
         this.module = module;
     }
-    
+
 
 /**
 * Notifies other modules from an specific notification
@@ -28,12 +28,12 @@ const Sandbox = class {
 * @param {object} notification the object with notifications configs
 */
 notify (notification) {
-  for(let module in notifications) {
-    const listening = notifications[module][notification.type];
-    if(listening) {
-      listening.callback.call(listening.context, notification.data);
-    }
-  }
+  Object.values(notifications).forEach(listener => {
+      const listening = listener[notification.type];
+      if (listening) {
+          listening.callback.call(listening.context, notification.data);
+      }
+  });
 }
 
 /**
@@ -48,7 +48,7 @@ listen(notification) {
 
   notification.forEach(aNotification => {
     args[0] = aNotification;
-    this.addNotification.apply(this, args);  
+    this.addNotification.apply(this, args);
   });
 }
 

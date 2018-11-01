@@ -9,11 +9,11 @@ import {Sandbox} from "../sandbox/sandbox.js";
 * @constructor
 */
 const CoreClass = class {
-  constructor() {  
+  constructor() {
     this.modules = {};
     this.moduleInstances = {};
   }
-  
+
   /**
 * Registers a new module
 *
@@ -104,12 +104,11 @@ stop (moduleName) {
 * @param {string} method the method that will be triggered
 */
  xAll(method) {
-    for(let module in this.moduleInstances) {
-      if(this.modules.hasOwnProperty(module)) this[method](module);
-    }
-  }
-};
-
+  Object.keys(this.moduleInstances).forEach(alias => {
+      this[method](alias);
+  });
+}
+}
 
 
 const Core = new CoreClass();
