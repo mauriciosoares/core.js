@@ -1,32 +1,25 @@
 export {Sandbox};
 import {err} from "../helpers/err.js";
 
-/**
-* The constructor of Sandbox
-*
-* @class Sandbox
-* @constructor
-*/
-var Sandbox = function(module) {
-  this.module = module;
-};
 
 /**
 * All notifications from sandbox
 *
 * @private
 */
-var notifications = {};
+const notifications = {};
 
 /**
-* Clear all notifications from an specific module
+* The constructor of Sandbox
 *
-* @method clearNotifications
-* @param {string} module the name of the module
+* @class Sandbox
+* @constructor
 */
-Sandbox.clearNotifications = function(module) {
-  delete notifications[module];
-};
+const Sandbox = class {
+    constructor(module) {
+        this.module = module;
+    }
+
 
 /**
 * Notifies other modules from an specific notification
@@ -34,14 +27,14 @@ Sandbox.clearNotifications = function(module) {
 * @method notify
 * @param {object} notification the object with notifications configs
 */
-Sandbox.prototype.notify = function(notification) {
-  for(var module in notifications) {
-    var listening = notifications[module][notification.type];
-    if(listening) {
-      listening.callback.call(listening.context, notification.data);
-    }
-  }
-};
+notify (notification) {
+  Object.values(notifications).forEach(listener => {
+      const listening = listener[notification.type];
+      if (listening) {
+          listening.callback.call(listening.context, notification.data);
+      }
+  });
+}
 
 /**
 * Makes a module listen to an specific notification
@@ -49,15 +42,17 @@ Sandbox.prototype.notify = function(notification) {
 * @method listen
 * @param {string | array} notification the notification that the module will be listening to
 */
-Sandbox.prototype.listen = function(notification) {
-  var args = Array.from(arguments);
-  if(!Array.isArray(notification)) return this.addNotification.apply(this, arguments);
-
-  for(var i = 0, len = notification.length; i < len; i += 1) {
-    args[0] = notification[i];
-    this.addNotification.apply(this, args);
+listen(notification) {
+  if (!Array.isArray(notification)) {
+      return this.addNotification.apply(this, arguments);
   }
-};
+  const args = Array.from(arguments);
+
+  notification.forEach(aNotification => {
+    args[0] = aNotification;
+    this.addNotification.apply(this, args);
+  });
+}
 
 /**
 * Adds the module listener to the notifications configuration
@@ -68,8 +63,8 @@ Sandbox.prototype.listen = function(notification) {
 * @param {object} context the value of "this"
 * @param {boolean} replace if the notification already exists, it forces to rewrite it
 */
-Sandbox.prototype.addNotification = function(notification, callback, context, replace) {
-  var addNotification = false;
+addNotification(notification, callback, context, replace) {
+  let addNotification = false;
 
   if (!notifications[this.module] || !notifications[this.module][notification]) {
     addNotification = true;
@@ -79,11 +74,23 @@ Sandbox.prototype.addNotification = function(notification, callback, context, re
     err('!!listen', notification);
   }
 
-  if(addNotification) {
+  if (addNotification) {
     notifications[this.module] = notifications[this.module] || {};
     notifications[this.module][notification] = {
       callback: callback,
       context: context || undefined
     };
   }
+}
+
+};
+
+    /**
+* Clear all notifications from an specific module
+*
+* @method clearNotifications
+* @param {string} module the name of the module
+*/
+Sandbox.clearNotifications = function(module) {
+  delete notifications[module];
 };
