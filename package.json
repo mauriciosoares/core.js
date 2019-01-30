@@ -20,6 +20,7 @@
   ],
   "scripts": {
     "bundle": "rollup --config tools/rollup.config.js",
+    "prepublishOnly": "npm run bundle",
     "test": "jasmine --config=tests/jasmine.json"
   },
   "bugs": {
