@@ -19,6 +19,7 @@
     "README.md"
   ],
   "scripts": {
+    "serve": "npm run serve",
     "bundle": "rollup --config tools/rollup.config.js",
     "prepublishOnly": "npm run bundle",
     "test": "jasmine --config=tests/jasmine.json"
@@ -34,6 +35,7 @@
   ],
   "devDependencies": {
     "jasmine": "^3.3.1",
-    "rollup": "^1.1.2"
+    "rollup": "^1.1.2",
+    "serve": "^10.1.1"
   }
 }
