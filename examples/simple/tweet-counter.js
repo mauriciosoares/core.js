@@ -1,5 +1,4 @@
-import {Core} from "../src/core/core.js";
-
+import {Core} from "../../src/core/core.js";
 // tweet-form.js
 Core.register('tweet-counter', function(sandbox) {
     return {

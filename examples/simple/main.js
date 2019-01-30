@@ -1,4 +1,4 @@
-import {Core} from "../src/core/core.js";
+import {Core} from "../../src/core/core.js";
 import "./tweet-form.js";
 import "./tweet-list.js";
 import "./tweet-counter.js";
