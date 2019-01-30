@@ -1,4 +1,5 @@
 import {Core} from "../../src/core/core.js";
+import {$, fetcher, events} from "./projectCommon.js";
 
 
 Core.register('tweet-list', function(sandbox) {
@@ -10,7 +11,7 @@ Core.register('tweet-list', function(sandbox) {
       },
 
       listen: function() {
-        sandbox.listen('new-tweet', this.newTweet, this);
+        sandbox.listen(events.receiveTweet, this.newTweet, this);
       },
 
       newTweet: function(data) {

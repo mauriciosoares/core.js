@@ -1,4 +1,5 @@
 import {Core} from "../../src/core/core.js";
+import {$, fetcher, events} from "./projectCommon.js";
 
 Core.register('tweet-counter', function(sandbox) {
     return {
@@ -11,7 +12,7 @@ Core.register('tweet-counter', function(sandbox) {
       },
 
       listen: function() {
-        sandbox.listen('new-tweet', this.newTweet, this);
+        sandbox.listen(events.receiveTweet, this.newTweet, this);
       },
 
       updateCount: function() {

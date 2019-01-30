@@ -1,4 +1,5 @@
 import {Core} from "../../src/core/core.js";
+import {$, fetcher, events} from "./projectCommon.js";
 
 
 Core.register('tweet-form', function(sandbox) {
@@ -20,7 +21,7 @@ Core.register('tweet-form', function(sandbox) {
         var newTweet = this.$input[0].value;
         this.$input[0].value = '';
 
-        this.notify(newTweet);
+        this.notify(events.submitTweet);
       },
 
       notify: function(tweet) {
