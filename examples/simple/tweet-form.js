@@ -1,36 +1,38 @@
-import {Core} from "../../src/core/core.js";
+export { start, stop };
+import { NEW_TWEET } from "./eventNames.js";
+// import { x, y } from "./dependencies.js";
+// import { configuration } from "./configuration.js";
 
 
-Core.register('tweet-form', function(sandbox) {
-    return {
-      init: function() {
-        this.$form = $('#tweet-form');
-        this.$input = this.$form.find('input');
+const start = function (emitter) {
+  const form = document.getElementById(`tweet-form`);
+  const input = form[`input`];
 
-        this.addListeners();
-      },
+  const instance = {
+    form,
+    input,
+    onSubmit: undefined,
+    emitter,
+  };
+  instance.onSubmit = submit.bind(undefined, instance);
 
-      addListeners: function() {
-        this.$form.on('submit', this.onSubmit.bind(this));
-      },
+  form.addEventListener(`submit`, instance.onSubmit, false);
 
-      onSubmit: function(e) {
-        e.preventDefault();
+  return instance;
+};
 
-        var newTweet = this.$input[0].value;
-        this.$input[0].value = '';
+const stop = function (instance) {
+  instance.form.removeEventListener(`submit`, instance.onSubmit, false);
+};
 
-        this.notify(newTweet);
-      },
+const submit = function (instance, event) {
+  event.preventDefault();
 
-      notify: function(tweet) {
-        sandbox.notify({
-          type: 'new-tweet',
-          data: {
-            tweet: tweet,
-            author: '@omauriciosoares'
-          }
-        });
-      }
-    }
-});
+  const newTweet = instance.input.value;
+  instance.input.value = ``;
+
+  instance.emitter.emit(NEW_TWEET, {
+    tweet: newTweet,
+    author: `@omauriciosoares`
+  });
+};

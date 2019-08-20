@@ -1,10 +1,10 @@
-import {Core} from "../../src/core/core.js";
-import "./tweet-form.js";
-import "./tweet-list.js";
-import "./tweet-counter.js";
+import { Core } from "../../src/core/core.js";
+import * as tweetForm from "./tweet-form.js";
+import * as tweetList from "./tweet-list.js";
+import * as tweetCounter from "./tweet-counter.js";
 
-
-Core.start('tweet-counter', 'first counter');
-Core.start('tweet-form');
-Core.start('tweet-list');
-Core.start('tweet-counter', 'second counter');
+const core = new Core();
+core.start(tweetForm);
+core.start(tweetList);
+core.start(tweetCounter, { name: 'first counter' });
+core.start(tweetCounter, { name: 'second counter' });

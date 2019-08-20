@@ -50,13 +50,16 @@ Let's start with the tweet module.
 ### Building modules
 
 ```js
-Core.register('tweet', function(sandbox) {
-  return {
-    init: function() {
-      console.log('starting tweet module');
-    }
-  }
-});
+export { start, stop };
+
+
+const start = function (emitter) {
+  return {};
+};
+
+const stop = function (instance) {
+  // instance is what start returned
+};
 ```
 
 This way you can register a new module, and the method `init` will be called once the module is started, if it exists.
