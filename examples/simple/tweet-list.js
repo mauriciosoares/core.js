@@ -20,9 +20,6 @@ const stop = function (instance) {
 const newTweet = function (instance, data) {
   const tweetElement = createElementWithTweet(data);
   instance.list.prepend(tweetElement);
-  console.log(instance, data)
-  console.log(tweetElement)
-  console.log()
 };
 
 const createElementWithTweet = function (data) {

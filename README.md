@@ -5,16 +5,12 @@ __core__ is a concept introduced by Nicholas C. Zakas in this [video](https://ww
 It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
 
 
-## tl;dr
-
-* Check out [this video](https://www.youtube.com/watch?v=s9tdZSa74jo) - Introduction (portuguese)
-* Check out [this video](https://www.youtube.com/watch?v=smYbfRrXSEs) - Isolation of DOM (portuguese)
 
 ## The Idea
 
 Conceptually, everything in your application is a module, and your modules should work independently from each other, so if one module breaks, the others should not.
 
-A module should never talk directly to another module, for that you use a combination of listeners and notifications.
+A module should never talks directly to another module, for that you use a combination of listeners and notifications.
 
 ## Getting Started
 
@@ -35,19 +31,21 @@ Everything inside a red square is a module, they work in a way that they don't d
 
 Raw import
 
-`import {Core} from "./node_modules/@eroc/core/dist/core.js";`
+`import { Core } from "./node_modules/@eroc/core/dist/core.js";`
 
 With rollup, webpack or parcel
 
-`import {Core} from "@eroc/core";`
+`import { Core } from "@eroc/core";`
 
 NodeJs or Browserify
 
-`const {Core} = require("@eroc/core");`
+`const { Core } = require("@eroc/core");`
 
 Let's start with the tweet module.
 
 ### Building modules
+
+A module exports start and optionally a stop function.
 
 ```js
 export { start, stop };
@@ -62,215 +60,124 @@ const stop = function (instance) {
 };
 ```
 
-This way you can register a new module, and the method `init` will be called once the module is started, if it exists.
+To start this module in your main file:
 
 ```js
-Core.start('tweet'); // Log: starting tweet module
+import { Core } from "@eroc/core";
+import * as exampleModule from "./exampleModule.js";
+
+const core = new Core();
+core.start(exampleModule);
 ```
 
-For every module you have an enviroment called sandbox, this is the only guy your module will ever speak to.
-
-It garantees that if your module tries to call something that doesn't exists or is broken, it won't break the module itself.
-
-Now let's think about the tweet list, which fetches all tweets from your timeline.
+Modules can only communicate via messages with other modules with the emitter received when start is called. It garantees that if a module tries to call something that doesn't exists or is broken, it won't break the module itself.
 
 ```js
-Core.register('tweet-list', function(sandbox) {
-  return {
-    init: function() {
+emitter.on(EVENT_NAME, function (data) {
 
-    }
-  }
 });
+
+emitter.emit(EVENT_NAME, { a: 7 });
 ```
 
-If you have multiple modules you can start everything using `Core.start();` with no parameters, and everything will be started. But if you need some specific order for starting your modules, you can call the modules you want first, and then use `Core.start()`.
+To avoid spelling mistakes, import event names from a common file called eventNames.js.
+
 
 ### Destroying modules
 
 You might want to stop a module in some point, this can be easily done using the method `Core.stop()`.
 
 ```js
-Core.register('tweet-list', function(sandbox) {
-  return {
-    destroy: function() {
-      console.log('Module destroyed');
-    }
-  }
-});
-
-Core.start('tweet-list');
-Core.stop('tweet-list'); // Log: Module destroyed
+const exampleId = Core.start(exampleModule);
+Core.stop(exampleId);
 ```
 
-When you stop a module, the method `destroy` will be called, if it exists.
+When you stop a module, the function `stop` will be called, if it exists.
 
 ### Comunicating between modules
 
-Now, thinking about Twitter, everytime you tweet something, it should appear on your tweet list right? but since our modules don't talk directly to each other, let's use `sandbox` to do this for us:
+Now, thinking about Twitter, everytime you tweet something, it should appear on your tweet list right? but since our modules don't talk directly to each other, let's use the emitter.
 
 First of all, our `tweet` module should notify other modules that something has happened.
 
 ```js
-Core.register('tweet', function(sandbox) {
-  return {
-    init: function(sandbox) {
-      // For the sake of simplicity, I'm gonna use a interval to submit tweets
-      setInterval(function() {
-        sandbox.notify({
-          type: 'new-tweet',
-          data: {
-            author: 'Mauricio Soares',
-            text: 'core is pretty #cool'
-          }
-        })
-      }, 5 * 1000)
-    }
-  }
-});
+export { start };
+
+const start = function(emitter) {
+  // For the sake of simplicity, use an interval
+  setInterval(function() {
+    emitter.emit(NEW_TWEET,  {
+      author: 'Mauricio Soares',
+      text: 'core is pretty #cool'
+    });
+  }, 5 * 1000)
+};
 ```
 
-Every 5 seconds, this module notifies everything that is listening to `new-tweet` that something has happened. If nothing is listening to it, than nothing happens.
+Every 5 seconds, this module notifies everything that is listening to `NEW_TWEET` that something has happened. If nothing is listening to it, then nothing happens.
 
 Our `tweet-list` is going to listen for this notifications.
 
 ```js
-Core.register('tweet-list', function(sandbox) {
-  return {
-    init: function() {
-      sandbox.listen('new-tweet', this.newTweet);
-    },
+export { start };
 
-    newTweet: function(data) {
-      // does something with data
-    }
-  }
-});
+const start = function (emitter) {
+  emitter.on(NEW_TWEET, (data) => {
+      // do something with the data
+  });
+};
 ```
 
 Cool right? If one of those modules stop working, than it won't break the other one!
 
-### Isolation of DOM
 
-If you have a DOM element with the same ID as the module name, it will be accessible inside the module using `this.el`.
-
-```html
-<div id="tweet"></div>
-```
-
-```js
-Core.register('tweet', function() {
-  return {
-    init: function() {
-      console.log(this.el);
-    }
-  }
-});
-
-Core.start('tweet'); // Log: <div id="tweet"></div> (DOM Reference)
-```
-
-If there's no DOM element, then `this.el` will return `null`.
-
-```js
-// lets suppose we have jquery loaded before this
-
-
-Core.register('tweet', function(sandbox) {
-  return {
-    init: function() {
-      jQuery('#tweet').on('click', this.newTweet);
-    },
-
-    newTweet: function() {
-      // handles click
-    }
-  };
-});
-```
-
-
-
-A module should not talk to other modules directly anything else but the `sandbox`.
-
-### Last thoughts
-
-This is basically how core works, below you will find the documentation of methods and parameters.
 
 ## Docs
 
-#### Core.register( moduleName, constructor )
-Register a new module.
+#### Core.start( module, options )
 
-- `moduleName` (string): The name of the module
-- `constructor` (function): The implementation of the module
 
-__Usage__
-
-```js
-Core.register('module', function() {})
-```
-
-#### Core.start( moduleName )
-Starts the named module. If a value is returned in the `init` method, it can be grabbed in the return of the method `Core.start`. If no parameters are passed, it starts all unstarted modules.
-
-- `moduleName` (string): The name of the module
+- `module`  The module as a name-space (import * as exampleModule from "./exampleModule.js")
+- `options` (function): The implementation of the module
 
 __Usage__
 
 ```js
-Core.start('module');
+Core.start(exampleModule)
 ```
 
 
-#### Core.stop( moduleName )
-Stops the named module. If a value is returned in the `destroy` method, it can be grabbed in the return of the method `Core.stop`, If no parameters are passed, it stop all modules.
+#### Core.stop( moduleInstanceId )
 
-- `moduleName` (string): The name of the module
+moduleInstanceId is what is returned by Core.start or the name used with Core.start
 
 __Usage__
 
 ```js
-Core.stop('module');
+Core.stop(moduleInstanceId);
 ```
 
-#### sandbox.listen( notification, callback, context, force )
-Listens to other modules notifications, to overwrite a notification you must use the parameter force
+## tl;dr
 
-- `notification` (string | array): The name of the notification you are listening to
-- `callback` (function): The callback when the notification is triggered
-- `context` (object): The value of `this` inside the callback
-- `force` (boolean): If you want to overwrite a notification, use `true` here
+* Check out [this video](https://www.youtube.com/watch?v=s9tdZSa74jo) - Introduction (portuguese) (Old API)
 
-#### sandbox.notify( config )
-Notifies other modules
+## Maintainers
 
-- `config` (object): The configuration object
-  - `type` (string): The notification that will be triggered
-  - `data` (function | string | number | boolean | array): The data that will be passed in the callback
-
-
-## Maintainer
-
-- Mauricio Soares - <http://github.com/mauriciosoares>
+- Mauricio Soares - https://github.com/mauriciosoares
+- GrosSacASac
 
 ## Contributing
 
-1. [Fork](http://help.github.com/forking/) core
+1. [Fork](https://help.github.com/forking/) core
 2. Create a topic branch - `git checkout -b my_branch`
-3. Push to your branch - `git push origin my_branch`
-4. Send me a [Pull Request](https://help.github.com/articles/using-pull-requests)
-5. That's it!
+3. Change some files and git commit
+4. Push to your branch - `git push origin my_branch`
+5. Send a [Pull Request](https://help.github.com/articles/using-pull-requests)
 
-Please respect the indentation rules and code style.
-
-Use 2 spaces, not tabs.
-
-New features? Would you mind testing it? :)
 
 ## Testing
 
-You need [NodeJS](http://nodejs.org/) installed on your machine
+You need [NodeJS](https://nodejs.org/) installed on your machine
 
 1. `npm i`
 2. `npm run bundle`
@@ -278,6 +185,7 @@ You need [NodeJS](http://nodejs.org/) installed on your machine
 
 ## Release History
 
+* 0.15.0 major architecture change
 * 2018-10-30   v0.13.0  remove deprecated startAll and stopAll 
 * 2018-10-29   v0.12.0  Drop bower and publish on npm
 * 2018                  Various changes
