@@ -1,290 +1,295 @@
-var {CoreClass} = require('../../dist/core.umd.js')
+var { Core, ALL } = require('../../dist/core.umd.js')
 
-let Core;
-describe('Testing Core', function() {
+let core;
+describe('Testing Core', function () {
 
   beforeEach(function () {
-      Core = new CoreClass();
+    core = new Core();
   });
 
-  afterEach(function() {
-    Core.stop();
+  afterEach(function () {
   });
 
-  it('Should create a new module', function() {
-    Core.register('tweet', function() {});
+  it('should call start of that module', function () {
+    let started = false;
+    const module = {
+      start: function () {
+        started = true;
+      }
+    }
+    core.start(module);
 
-    expect(Core.modules['tweet']).not.toBeUndefined();
+    expect(started).toBe(true);
   });
 
-  it('Should return false and throw a log if the module is already registered', function() {
+  it('Should return false and throw a log if the module is already registered', function () {
     //spyOn(err);
-    Core.register('tweet', function() {});
+    core.register('tweet', function () { });
 
-    expect(Core.register('tweet', function() {})).toBeFalsy();
+    expect(core.register('tweet', function () { })).toBeFalsy();
     //expect(err).toHaveBeenCalled();
   });
 
-  it('Should start a new module', function() {
-    Core.register('tweet', function() {});
-    Core.start('tweet');
+  it('Should start a new module', function () {
+    core.register('tweet', function () { });
+    core.start('tweet');
 
-    expect(Core.moduleInstances.tweet).not.toBeUndefined();
+    expect(core.moduleInstances.tweet).not.toBeUndefined();
   });
 
-  it('Should return false and throw a log if the module is already started', function() {
+  it('Should return false and throw a log if the module is already started', function () {
     //spyOn(err);
-    Core.register('tweet', function() {});
-    Core.start('tweet');
+    core.register('tweet', function () { });
+    core.start('tweet');
 
-    expect(Core.start('tweet')).toBeFalsy();
+    expect(core.start('tweet')).toBeFalsy();
     //expect(err).toHaveBeenCalled();
   });
 
-  it('Should stop a new module', function() {
-    Core.register('tweet', function() {});
-    Core.start('tweet');
-    Core.stop('tweet');
+  it('Should stop a new module', function () {
+    core.register('tweet', function () { });
+    core.start('tweet');
+    core.stop('tweet');
 
-    expect(Core.moduleInstances.tweet).toBeUndefined();
+    expect(core.moduleInstances.tweet).toBeUndefined();
   });
 
-  it('Should return false and throw a log if the module is already stopped', function() {
+  it('Should return false and throw a log if the module is already stopped', function () {
     //spyOn(err);
-    Core.register('tweet', function() {});
-    Core.start('tweet');
-    Core.stop('tweet');
+    core.register('tweet', function () { });
+    core.start('tweet');
+    core.stop('tweet');
 
-    expect(Core.stop('tweet')).toBeFalsy();
+    expect(core.stop('tweet')).toBeFalsy();
     //expect(err).toHaveBeenCalled();
   });
 
 
-  it('Should start non singleton modules with an alias', function() {
-    Core.register('user', function () {
-        return {
-            "init": function() {}
-        }
+  it('Should start non singleton modules with an alias', function () {
+    core.register('user', function () {
+      return {
+        "init": function () { }
+      }
     }, true);
-    Core.start('user', 'Moritz');
-    Core.stop('Moritz');
+    core.start('user', 'Moritz');
+    core.stop('Moritz');
 
-    expect(Core.stop('Moritz')).toBeFalsy();
+    expect(core.stop('Moritz')).toBeFalsy();
   });
 
-   it('Should not return false and when a factory is already used with different alias', function() {
-    Core.register('user', function () {
-        return {
-            "init": function() {
-                return true;
-            }
+  it('Should not return false and when a factory is already used with different alias', function () {
+    core.register('user', function () {
+      return {
+        "init": function () {
+          return true;
         }
+      }
     }, true);
-    Core.start('user', 'Moritz');
+    core.start('user', 'Moritz');
 
 
-    expect(Core.start('user', 'Max')).toBeTruthy();
-    Core.stop('Moritz');
-    Core.stop('Max');
+    expect(core.start('user', 'Max')).toBeTruthy();
+    core.stop('Moritz');
+    core.stop('Max');
     //expect(err).toHaveBeenCalled();
   });
 
-  xit('Should start all modules', function() {
-    Core.register('tweet1', function() {});
-    Core.register('tweet2', function() {});
+  xit('Should start all modules', function () {
+    core.register('tweet1', function () { });
+    core.register('tweet2', function () { });
 
-    Core.startAll();
+    core.startAll();
 
-    expect(Core.moduleInstances.tweet1).not.toBeNull();
-    expect(Core.moduleInstances.tweet2).not.toBeNull();
+    expect(core.moduleInstances.tweet1).not.toBeNull();
+    expect(core.moduleInstances.tweet2).not.toBeNull();
   });
 
-  it('Should start all modules using the method start if no parameter is passed', function() {
-    Core.register('tweet1', function() {});
-    Core.register('tweet2', function() {});
+  it('Should start all modules using the method start if no parameter is passed', function () {
+    core.register('tweet1', function () { });
+    core.register('tweet2', function () { });
 
-    Core.start();
+    core.start();
 
-    expect(Core.moduleInstances.tweet1).not.toBeNull();
-    expect(Core.moduleInstances.tweet2).not.toBeNull();
+    expect(core.moduleInstances.tweet1).not.toBeNull();
+    expect(core.moduleInstances.tweet2).not.toBeNull();
   });
 
-  xit('Should stop all modules', function() {
-    Core.register('tweet1', function() {});
-    Core.register('tweet2', function() {});
+  xit('Should stop all modules', function () {
+    core.register('tweet1', function () { });
+    core.register('tweet2', function () { });
 
-    Core.startAll();
-    Core.stopAll();
+    core.startAll();
+    core.stopAll();
 
-    expect(Core.moduleInstances.tweet1).toBeUndefined();
-    expect(Core.moduleInstances.tweet2).toBeUndefined();
+    expect(core.moduleInstances.tweet1).toBeUndefined();
+    expect(core.moduleInstances.tweet2).toBeUndefined();
   });
 
-  it('Should stop all modules using the method stop if no parameter is passed', function() {
-    Core.register('tweet1', function() {});
-    Core.register('tweet2', function() {});
+  it('Should stop all modules using the method stop if no parameter is passed', function () {
+    core.register('tweet1', function () { });
+    core.register('tweet2', function () { });
 
-    Core.start();
-    Core.stop();
+    core.start();
+    core.stop();
 
-    expect(Core.moduleInstances.tweet1).toBeUndefined();
-    expect(Core.moduleInstances.tweet2).toBeUndefined();
+    expect(core.moduleInstances.tweet1).toBeUndefined();
+    expect(core.moduleInstances.tweet2).toBeUndefined();
   });
 
-  it('Should trigger init when the module is started', function() {
+  it('Should trigger init when the module is started', function () {
     var spying = {
-      tweet: function() {}
+      tweet: function () { }
     };
 
     spyOn(spying, 'tweet');
-    Core.register('tweet', function() {
+    core.register('tweet', function () {
       return {
-        init: function() {
+        init: function () {
           spying.tweet();
         }
       };
     });
 
-    Core.start('tweet');
+    core.start('tweet');
 
     expect(spying.tweet).toHaveBeenCalled();
   });
 
-  it('Should trigger init from the modules that where started', function() {
+  it('Should trigger init from the modules that where started', function () {
     var spying = {
-      tweet1: function() {},
-      tweet2: function() {},
-      tweet3: function() {}
+      tweet1: function () { },
+      tweet2: function () { },
+      tweet3: function () { }
     };
 
     spyOn(spying, 'tweet1');
     spyOn(spying, 'tweet2');
     spyOn(spying, 'tweet3');
 
-    Core.register('tweet1', function() {
+    core.register('tweet1', function () {
       return {
-        init: function() {
+        init: function () {
           spying.tweet1();
         }
       };
     });
 
-    Core.register('tweet2', function() {
+    core.register('tweet2', function () {
       return {
-        init: function() {
+        init: function () {
           spying.tweet2();
         }
       };
     });
 
-    Core.register('tweet3', function() {
+    core.register('tweet3', function () {
       return {
-        init: function() {
+        init: function () {
           spying.tweet3();
         }
       };
     });
 
-    Core.start('tweet1');
-    Core.start('tweet3');
+    core.start('tweet1');
+    core.start('tweet3');
 
     expect(spying.tweet1).toHaveBeenCalled();
     expect(spying.tweet2).not.toHaveBeenCalled();
     expect(spying.tweet3).toHaveBeenCalled();
   });
 
-  it('Should trigger destroy when module is stoped', function() {
+  it('Should trigger destroy when module is stoped', function () {
     var spying = {
-      tweet: function() {}
+      tweet: function () { }
     };
 
     spyOn(spying, 'tweet');
-    Core.register('tweet', function() {
+    core.register('tweet', function () {
       return {
-        destroy: function() {
+        destroy: function () {
           spying.tweet();
         }
       };
     });
 
-    Core.start('tweet');
-    Core.stop('tweet');
+    core.start('tweet');
+    core.stop('tweet');
 
     expect(spying.tweet).toHaveBeenCalled();
   });
 
-  it('Should trigger destroy from the modules that where stopped', function() {
+  it('Should trigger destroy from the modules that where stopped', function () {
     var spying = {
-      tweet1: function() {},
-      tweet2: function() {},
-      tweet3: function() {}
+      tweet1: function () { },
+      tweet2: function () { },
+      tweet3: function () { }
     };
 
     spyOn(spying, 'tweet1');
     spyOn(spying, 'tweet2');
     spyOn(spying, 'tweet3');
 
-    Core.register('tweet1', function() {
+    core.register('tweet1', function () {
       return {
-        destroy: function() {
+        destroy: function () {
           spying.tweet1();
         }
       };
     });
 
-    Core.register('tweet2', function() {
+    core.register('tweet2', function () {
       return {
-        destroy: function() {
+        destroy: function () {
           spying.tweet2();
         }
       };
     });
 
-    Core.register('tweet3', function() {
+    core.register('tweet3', function () {
       return {
-        destroy: function() {
+        destroy: function () {
           spying.tweet3();
         }
       };
     });
 
-    Core.start('tweet1');
-    Core.start('tweet2');
-    Core.start('tweet3');
+    core.start('tweet1');
+    core.start('tweet2');
+    core.start('tweet3');
 
-    Core.stop('tweet1');
-    Core.stop('tweet3');
+    core.stop('tweet1');
+    core.stop('tweet3');
 
     expect(spying.tweet1).toHaveBeenCalled();
     expect(spying.tweet2).not.toHaveBeenCalled();
     expect(spying.tweet3).toHaveBeenCalled();
   });
 
-  describe('Testing return in Start and Stop methods', function() {
-    it('Should return in the Start method the value returned from the init method inside the module', function() {
-      Core.register('tweet', function() {
+  describe('Testing return in Start and Stop methods', function () {
+    it('Should return in the Start method the value returned from the init method inside the module', function () {
+      core.register('tweet', function () {
         return {
-          init: function() {
+          init: function () {
             return true;
           }
         }
       });
 
-      expect(Core.start('tweet')).toBeTruthy();
+      expect(core.start('tweet')).toBeTruthy();
 
     });
 
-    it('Should return in the Stop method the value returned from the destroy method inside the module', function() {
-      Core.register('tweet', function() {
+    it('Should return in the Stop method the value returned from the destroy method inside the module', function () {
+      core.register('tweet', function () {
         return {
-          destroy: function() {
+          destroy: function () {
             return true;
           }
         }
       });
 
-      Core.start('tweet')
-      expect(Core.stop('tweet')).toBeTruthy();
+      core.start('tweet')
+      expect(core.stop('tweet')).toBeTruthy();
 
     });
   });
