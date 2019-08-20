@@ -1,4 +1,4 @@
-import { Core } from "../../src/core/core.js";
+import { Core, ALL } from "../../src/core/core.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
@@ -15,6 +15,18 @@ core.start(tweetCounter, { name: 'first counter' });
 core.start(tweetCounter, { name: 'second counter' });
 
 
+// extras
+
+
+// stop a module
 setTimeout(() => {
+    console.info('stopping the second tweet counter');
     core.stop('second counter');
 }, 10 * 1000);
+
+
+// listen for all events
+core.on(ALL, ({ name, data }) => {
+    console.debug(`event ${String(name)} with data`, data);
+});
+

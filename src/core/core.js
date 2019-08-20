@@ -1,11 +1,14 @@
-export { Core };
+export { Core, ALL };
 import { err } from "../helpers/err.js";
 import EventEmitter from "../../node_modules/event-e3/event-e3.js";
 
 
+const ALL = Symbol();
+
 const Core = class {
   constructor() {
     this.moduleInstances = new Map();
+    EventEmitter(this);
   }
 
   register() {
@@ -17,6 +20,8 @@ const Core = class {
 
     // emulate emitter.on(ANY, (name, data) => {
     emitter.emit = (name, data) => {
+      this.emit(name, data);
+      this.emit(ALL, { name, data });
       this.moduleInstances.forEach(({ emitter }) => {
         EventEmitter.prototype.emit.call(emitter, name, data);
       });
