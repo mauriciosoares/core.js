@@ -1,5 +1,20 @@
 var { Core, ALL } = require('../dist/core.umd.js')
 
+const createModuleMock = () => {
+    const module = {
+        started: 0,
+        stopped: 0,
+    };
+    Object.assign(module, {
+        start() {
+            module.started += 1;
+        },
+        stop() {
+            module.stopped += 1;
+        },
+    });
+};
+
 let core;
 describe('Testing Core', function () {
 
@@ -11,47 +26,51 @@ describe('Testing Core', function () {
     });
 
     it('should call start of that module', function () {
-        let started = false;
-        const module = {
-            start: function () {
-                started = true;
-            }
-        }
+        const module = createModuleMock();
         core.start(module);
 
-        expect(started).toBe(true);
+        expect(module.started).toBe(1);
     });
 
-    it('Should return false and throw a log if the module is already registered', function () {
-        //spyOn(err);
-        core.register('tweet', function () { });
+    it('should fail if start is undefined', function () {
+        const module = createModuleMock();
+        delete module[`start`];
+        core.start(module);
 
-        expect(core.register('tweet', function () { })).toBeFalsy();
-        //expect(err).toHaveBeenCalled();
+        expect(module.started).toBe(0);
     });
 
-    it('Should start a new module', function () {
-        core.register('tweet', function () { });
-        core.start('tweet');
+    it('should call stop of that module', function () {
+        const module = createModuleMock();
+        const id = core.start(module);
+        core.stop(id);
 
-        expect(core.moduleInstances.tweet).not.toBeUndefined();
+        expect(module.stopped).toBe(1);
     });
 
-    it('Should return false and throw a log if the module is already started', function () {
-        //spyOn(err);
-        core.register('tweet', function () { });
-        core.start('tweet');
+    it('should not fail if stop is undefined', function () {
+        const module = createModuleMock();
+        delete module[`stop`];
+        const id = core.start(module);
+        core.stop(id);
 
-        expect(core.start('tweet')).toBeFalsy();
-        //expect(err).toHaveBeenCalled();
+        expect(module.started).toBe(1);
     });
 
-    it('Should stop a new module', function () {
-        core.register('tweet', function () { });
-        core.start('tweet');
-        core.stop('tweet');
+    it('should use the name as id if it was provided', function () {
+        const name = `myName`;
+        const module = createModuleMock();
+        const id = core.start(module, { name });
 
-        expect(core.moduleInstances.tweet).toBeUndefined();
+        expect(id).toBe(name);
+    });
+
+    it('should allow multiple instances start', function () {
+        const module = createModuleMock();
+        core.start(module);
+        core.start(module);
+
+        expect(module.started).toBe(2);
     });
 
     it('Should return false and throw a log if the module is already stopped', function () {

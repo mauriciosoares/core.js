@@ -1,5 +1,5 @@
 export { Core, ALL };
-import EventEmitter from "../../node_modules/event-e3/event-e3.js";
+import EventEmitter from "../node_modules/event-e3/event-e3.js";
 
 
 const ALL = Symbol();
