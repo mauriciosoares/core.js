@@ -1,33 +1,30 @@
-import {Core} from "../../src/core/core.js";
+export { start, stop };
+import { NEW_TWEET } from "./eventNames.js";
+// import { x, y } from "./dependencies.js";
+// import { configuration } from "./configuration.js";
 
 
-Core.register('tweet-list', function(sandbox) {
-    return {
-      init: function() {
-        this.$list = $('#tweet-list');
+const start = function (emitter) {
+  const instance = {
+    list: document.getElementById(`tweet-list`),
+  };
 
-        this.listen();
-      },
+  emitter.on(NEW_TWEET, newTweet.bind(undefined, instance));
+  return instance;
+};
 
-      listen: function() {
-        sandbox.listen('new-tweet', this.newTweet, this);
-      },
+const stop = function (instance) {
+  instance.list.innerHTML = ``;
+};
 
-      newTweet: function(data) {
-        var newTweetHtml = this.getHtml(data);
+const newTweet = function (instance, data) {
+  const tweetElement = createElementWithTweet(data);
+  instance.list.prepend(tweetElement);
+};
 
-        this.$list.prepend(newTweetHtml);
-      },
-
-      getHtml: function(data) {
-        var li = $(
-        `<li class="tweetlist-item">
-            ${data.author}<br>
-            ${data.tweet}
-        </li>`);
-        li.append();
-
-        return li;
-      }
-    }
-});
+const createElementWithTweet = function (data) {
+  const li = document.createElement(`li`);
+  li.className = `tweetlist-item`;
+  li.innerHTML = `${data.author}<br>${data.tweet}`;
+  return li;
+};

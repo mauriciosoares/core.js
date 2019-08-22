@@ -1,10 +1,32 @@
-import {Core} from "../../src/core/core.js";
-import "./tweet-form.js";
-import "./tweet-list.js";
-import "./tweet-counter.js";
+import { Core, ALL } from "../../src/core/core.js";
+// import {  } from "./eventNames.js";
+// import { x, y } from "./dependencies.js";
+// import { configuration } from "./configuration.js";
+
+import * as tweetForm from "./tweet-form.js";
+import * as tweetList from "./tweet-list.js";
+import * as tweetCounter from "./tweet-counter.js";
 
 
-Core.start('tweet-counter', 'first counter');
-Core.start('tweet-form');
-Core.start('tweet-list');
-Core.start('tweet-counter', 'second counter');
+const core = new Core();
+core.start(tweetForm);
+core.start(tweetList);
+core.start(tweetCounter, { name: 'first counter' });
+core.start(tweetCounter, { name: 'second counter' });
+
+
+// extras
+
+
+// stop a module
+setTimeout(() => {
+    console.info('stopping the second tweet counter');
+    core.stop('second counter');
+}, 10 * 1000);
+
+
+// listen for all events
+core.on(ALL, ({ name, data }) => {
+    console.debug(`event ${String(name)} with data`, data);
+});
+

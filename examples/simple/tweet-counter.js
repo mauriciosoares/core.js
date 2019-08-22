@@ -1,30 +1,31 @@
-import {Core} from "../../src/core/core.js";
+export { start, stop };
+import { NEW_TWEET } from "./eventNames.js";
+// import { x, y } from "./dependencies.js";
+// import { configuration } from "./configuration.js";
 
-Core.register('tweet-counter', function(sandbox) {
-    return {
-      init: function() {
-        this.counter = document.createElement("output")
-        this.count = 0;
-        this.updateCount();
-        document.body.appendChild(this.counter);
-        this.listen();
-      },
+const initialCount = 0;
 
-      listen: function() {
-        sandbox.listen('new-tweet', this.newTweet, this);
-      },
+const start = function (emitter) {
+  const counter = document.createElement(`output`);
+  const instance = {
+    counter,
+    count: initialCount,
+  };
+  updateCount(instance);
+  document.body.appendChild(counter);
+  emitter.on(NEW_TWEET, newTweet.bind(undefined, instance));
+  return instance;
+};
 
-      updateCount: function() {
-          this.counter.textContent = this.count;
-      },
+const stop = function (instance) {
+  instance.counter.remove();
+};
 
-      newTweet: function(data) {
-          this.count++;
-          this.updateCount();
-      },
+const updateCount = function (instance) {
+  instance.counter.textContent = instance.count;
+};
 
-      destroy: function() {
-          this.counter.remove();
-      }
-    }
-}, true);
+const newTweet = function (instance) {
+  instance.count += 1;
+  updateCount(instance);
+};

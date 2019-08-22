@@ -1,15 +1,16 @@
 {
   "name": "@eroc/core",
-  "version": "0.14.0",
+  "version": "1.0.0",
   "main": "dist/core.umd.js",
-  "module": "dist/core.js",
+  "module": "dist/core.es.js",
   "description": "Lightweight framework for scalable applications",
   "author": "Mauricio Soares",
   "homepage": "https://github.com/msodeveloper/core.js",
   "license": "MIT",
   "scripts": {
-    "serve": "serve",
+    "serve": "serve . -p 8080",
     "bundle": "rollup --config tools/rollup.config.js",
+    "bundle-watch": "rollup --config tools/rollup.config.js --watch",
     "prepublishOnly": "npm run bundle",
     "test": "jasmine --config=tests/jasmine.json"
   },
@@ -27,14 +28,18 @@
     "url": "https://github.com/msodeveloper/core.js/issues"
   },
   "keywords": [
-    "Framework",
     "core.js",
+    "core",
+    "framework",
     "lightweight",
     "scalable"
   ],
   "devDependencies": {
-    "jasmine": "^3.3.1",
-    "rollup": "^1.1.2",
-    "serve": "^10.1.1"
+    "jasmine": "^3.4.0",
+    "rollup": "^1.19.4",
+    "serve": "^11.1.0"
+  },
+  "dependencies": {
+    "event-e3": "^8.0.2"
   }
 }
