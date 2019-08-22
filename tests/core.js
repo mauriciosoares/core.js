@@ -35,9 +35,10 @@ describe('Testing Core', function () {
     it('should fail if start is undefined', function () {
         const module = createModuleMock();
         delete module[`start`];
-        core.start(module);
 
-        expect(module.started).toBe(0);
+        expect(function () {
+            core.start(module);
+        }).toThrow();
     });
 
     it('should call stop of that module', function () {

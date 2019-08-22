@@ -183,7 +183,7 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 2. `npm run bundle`
 3. `npm t`
 
-## Release History
+## Changelog
 
 * 0.15.0 major architecture change
 * 2018-10-30   v0.13.0  remove deprecated startAll and stopAll 

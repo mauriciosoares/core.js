@@ -15,6 +15,10 @@ const Core = class {
     };
 
     start(module, { name = Symbol() } = {}) {
+        if (this.moduleInstances.has(name)) {
+            throw `module with name ${name} already started`;
+        }
+
         const emitter = new EventEmitter();
 
         // emulate emitter.on(ANY, (name, data) => {
