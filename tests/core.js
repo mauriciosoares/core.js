@@ -1,4 +1,4 @@
-var { Core, ALL } = require('../dist/core.umd.js')
+const { Core, ALL } = require(`../dist/core.umd.js`);
 
 const createModuleMock = () => {
     const module = {
@@ -16,7 +16,7 @@ const createModuleMock = () => {
 };
 
 let core;
-describe('Testing Core', function () {
+describe(`Testing Core`, function () {
 
     beforeEach(function () {
         core = new Core();
@@ -25,14 +25,14 @@ describe('Testing Core', function () {
     afterEach(function () {
     });
 
-    it('should call start of that module', function () {
+    it(`should call start of that module`, function () {
         const module = createModuleMock();
         core.start(module);
 
         expect(module.started).toBe(1);
     });
 
-    it('should fail if start is undefined', function () {
+    it(`should fail if start is undefined`, function () {
         const module = createModuleMock();
         delete module[`start`];
 
@@ -41,7 +41,7 @@ describe('Testing Core', function () {
         }).toThrow();
     });
 
-    it('should call stop of that module', function () {
+    it(`should call stop of that module`, function () {
         const module = createModuleMock();
         const id = core.start(module);
         core.stop(id);
@@ -49,7 +49,7 @@ describe('Testing Core', function () {
         expect(module.stopped).toBe(1);
     });
 
-    it('should not fail if stop is undefined', function () {
+    it(`should not fail if stop is undefined`, function () {
         const module = createModuleMock();
         delete module[`stop`];
         const id = core.start(module);
@@ -58,7 +58,7 @@ describe('Testing Core', function () {
         expect(module.started).toBe(1);
     });
 
-    it('should use the name as id if it was provided', function () {
+    it(`should use the name as id if it was provided`, function () {
         const name = `myName`;
         const module = createModuleMock();
         const id = core.start(module, { name });
@@ -66,7 +66,7 @@ describe('Testing Core', function () {
         expect(id).toBe(name);
     });
 
-    it('should allow multiple instances start', function () {
+    it(`should allow multiple instances start`, function () {
         const module = createModuleMock();
         core.start(module);
         core.start(module);
@@ -74,7 +74,7 @@ describe('Testing Core', function () {
         expect(module.started).toBe(2);
     });
 
-    it('start multiple instances with the same name should throw', function () {
+    it(`start multiple instances with the same name should throw`, function () {
         const name = `myName`;
         const module = createModuleMock();
         core.start(module, { name });
@@ -84,7 +84,7 @@ describe('Testing Core', function () {
         }).toThrow();
     });
 
-    it('should silently proceed if stop is called on something already stopped', function () {
+    it(`should silently proceed if stop is called on something already stopped`, function () {
         const module = createModuleMock();
         const id = core.start(module);
         core.stop(id);
@@ -94,8 +94,8 @@ describe('Testing Core', function () {
     });
 
 
-    it('stop should receive as first argument the return of the start', function () {
-        const x = Symbol()
+    it(`stop should receive as first argument the return of the start`, function () {
+        const x = Symbol();
         const module = {
             start() {
                 return x;
@@ -108,7 +108,7 @@ describe('Testing Core', function () {
         core.stop(id);
     });
 
-    it('start should receive an emitter to be able to communcicate with other modules', function () {
+    it(`start should receive an emitter to be able to communcicate with other modules`, function () {
         const module = {
             start(emitter) {
                 expect(emitter.on).toBeDefined();

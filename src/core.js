@@ -12,7 +12,7 @@ const Core = class {
 
     register() {
 
-    };
+    }
 
     start(module, { name = Symbol() } = {}) {
         if (this.moduleInstances.has(name)) {
