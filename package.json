@@ -1,6 +1,6 @@
 {
   "name": "@eroc/core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/core.umd.js",
   "module": "dist/core.es.js",
   "description": "Lightweight framework for scalable applications",
@@ -38,7 +38,7 @@
   ],
   "devDependencies": {
     "eslint": "^6.2.2",
-    "eslint-config-red": "^1.0.1",
+    "eslint-config-red": "^1.1.0",
     "jasmine": "^3.4.0",
     "rollup": "^1.19.4",
     "serve": "^11.1.0"
@@ -47,7 +47,9 @@
     "event-e3": "^8.0.2"
   },
   "eslintConfig": {
-    "extends": ["eslint:recommended", "red"],
+    "extends": [
+      "red"
+    ],
     "parserOptions": {
       "ecmaVersion": 2020,
       "sourceType": "module",
