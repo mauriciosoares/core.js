@@ -24,7 +24,7 @@ const Core = class {
         // emulate emitter.on(ANY, (name, data) => {
         emitter.emit = (name, data) => {
             this.emit(name, data);
-            this.emit(ALL, { name, data });
+            this.emit(ALL, { name, data, time: Date.now() });
             this.moduleInstances.forEach(({ emitter }) => {
                 EventEmitter.prototype.emit.call(emitter, name, data);
             });
