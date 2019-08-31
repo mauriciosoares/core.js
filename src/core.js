@@ -7,6 +7,7 @@ const ALL = Symbol();
 const Core = class {
     constructor() {
         this.moduleInstances = new Map();
+        this.boundModuleEmit = this.moduleEmit.bind(this);
         EventEmitter(this);
     }
 
@@ -21,14 +22,7 @@ const Core = class {
 
         const emitter = new EventEmitter();
 
-        // emulate emitter.on(ANY, (name, data) => {
-        emitter.emit = (name, data) => {
-            this.emit(name, data);
-            this.emit(ALL, { name, data, time: Date.now() });
-            this.moduleInstances.forEach(({ emitter }) => {
-                EventEmitter.prototype.emit.call(emitter, name, data);
-            });
-        };
+        emitter.emit = this.boundModuleEmit;
 
         this.moduleInstances.set(name, {
             module,
@@ -56,5 +50,13 @@ const Core = class {
         this.moduleInstances.delete(name);
 
         return true;
+    }
+
+    moduleEmit(name, data) {
+        this.emit(name, data);
+        this.emit(ALL, { name, data, time: Date.now() });
+        this.moduleInstances.forEach(({ emitter }) => {
+            EventEmitter.prototype.emit.call(emitter, name, data);
+        });
     }
 };
