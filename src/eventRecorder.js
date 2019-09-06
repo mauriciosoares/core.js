@@ -23,5 +23,4 @@ const stopEventRecorder = (core, eventRecorder) => {
         listener,
     } = eventRecorder;
     core.off(ALL, listener);
-    events.length = 0;
 };
