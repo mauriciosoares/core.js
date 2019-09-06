@@ -38,7 +38,6 @@ const Core = class {
         const wrapper = this.moduleInstances.get(name);
 
         if (!wrapper) {
-            //err('!stop', module);
             return false;
         }
 
