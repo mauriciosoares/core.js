@@ -14,7 +14,6 @@ const replayEvents = (core, events, options = {}) => {
         return;
     }
 
-    const baseTime = events[0].time;
     const { length } = events;
     let i = 0;
     const playNext = () => {

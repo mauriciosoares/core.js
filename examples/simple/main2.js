@@ -54,7 +54,6 @@ core.on(ALL, ({ name, data, time }) => {
 
 setTimeout(() => {
     const previousEvents = eventRecording.events;
-    console.log(JSON.stringify(previousEvents, null, 2));
     restart();
     replayEvents(core, previousEvents, { sameSpeed: true });
 }, 10000);
