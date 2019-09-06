@@ -14,6 +14,13 @@ import * as tweetCounter from "./tweet-counter.js";
 
 
 const core = new Core();
+
+// listen for all events
+core.on(ALL, ({ name, data, time }) => {
+    const timeString = new Date(time).toISOString();
+    console.debug(`${timeString} event ${String(name)} with data`, data);
+});
+
 let eventRecording;
 let moduleInstanceNames = [];
 
@@ -24,6 +31,7 @@ const restart = () => {
     });
 
     eventRecording = startEventRecorder(core);
+
     const tweetFormName = core.start(tweetForm);
     const tweetListName = core.start(tweetList);
     const tweetCounterFirstName = core.start(tweetCounter, { name: `first counter` });
@@ -45,12 +53,6 @@ setTimeout(() => {
     core.stop(`second counter`);
 }, 5 * 1000);
 
-
-// listen for all events
-core.on(ALL, ({ name, data, time }) => {
-    const timeString = new Date(time).toISOString();
-    console.debug(`${timeString} event ${String(name)} with data`, data);
-});
 
 setTimeout(() => {
     const previousEvents = eventRecording.events;

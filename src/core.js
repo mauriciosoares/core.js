@@ -6,6 +6,7 @@ const ALL = Symbol();
 
 const Core = class {
     constructor() {
+        this.paused = false;
         this.moduleInstances = new Map();
         this.boundModuleEmit = this.moduleEmit.bind(this);
         EventEmitter(this);
@@ -52,6 +53,13 @@ const Core = class {
     }
 
     moduleEmit(name, data) {
+        if (this.paused) {
+            return;
+        }
+        this.moduleEmitDirect(name, data);
+    }
+
+    moduleEmitDirect(name, data) {
         this.emit(name, data);
         this.emit(ALL, { name, data, time: Date.now() });
         this.moduleInstances.forEach(({ emitter }) => {

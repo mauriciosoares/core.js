@@ -6,11 +6,16 @@ const replayEvents = (core, events, options = {}) => {
         return;
     }
 
-    const { sameSpeed } = options;
+    const { sameSpeed, pauseEmits = true } = options;
+    if (pauseEmits) {
+        core.paused = true;
+    }
+
     if (!sameSpeed) {
         events.forEach(event => {
-            core.moduleEmit(event.name, event.data);
+            core.moduleEmitDirect(event.name, event.data);
         });
+        core.paused = false;
         return;
     }
 
@@ -18,13 +23,14 @@ const replayEvents = (core, events, options = {}) => {
     let i = 0;
     const playNext = () => {
         const event = events[i];
-        core.moduleEmit(event.name, event.data);
+        core.moduleEmitDirect(event.name, event.data);
         i += 1;
-        if (i === length) {
+        if (i < length) {
+            const timeDifference = events[i].time - event.time;
+            setTimeout(playNext, timeDifference); v
             return;
         }
-        const timeDifference = events[i].time - event.time;
-        setTimeout(playNext, timeDifference);
+        core.paused = false;
     };
     playNext();
 };
