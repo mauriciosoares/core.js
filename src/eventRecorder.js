@@ -15,6 +15,9 @@ const startEventRecorder = (core) => {
 };
 
 const stopEventRecorder = (core, eventRecorder) => {
+    if (!eventRecorder) {
+        return;
+    }
     const {
         events,
         listener,
