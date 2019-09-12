@@ -185,6 +185,8 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## Changelog
 
+* 1.1.0 introduce event recorder and player
+* 1.0.0 stable release
 * 0.15.0 major architecture change
 * 2018-10-30   v0.13.0  remove deprecated startAll and stopAll 
 * 2018-10-29   v0.12.0  Drop bower and publish on npm
