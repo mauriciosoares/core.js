@@ -1,4 +1,4 @@
-import { Core, ALL } from "../../src/core/core.js";
+import { Core, ALL } from "../../src/core.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
@@ -26,7 +26,8 @@ setTimeout(() => {
 
 
 // listen for all events
-core.on(ALL, ({ name, data }) => {
-    console.debug(`event ${String(name)} with data`, data);
+core.on(ALL, ({ name, data, time }) => {
+    const timeString = new Date(time).toISOString();
+    console.debug(`${timeString} event ${String(name)} with data`, data);
 });
 
