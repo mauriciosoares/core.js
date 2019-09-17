@@ -25,14 +25,18 @@ const Core = class {
 
         emitter.emit = this.boundModuleEmit;
 
-        this.moduleInstances.set(name, {
-            module,
-            instance: module.start(emitter),
-            name,
-            emitter,
+        return Promise.resolve().then(() => {
+            return module.start(emitter);
+        }).then(instance => {
+            this.moduleInstances.set(name, {
+                module,
+                instance: module.start(emitter),
+                name,
+                emitter,
+            });
+        }).then(() => {
+            return name;
         });
-
-        return name;
     }
 
     stop(name) {
