@@ -24,18 +24,19 @@ core.on(ALL, ({ name, data, time }) => {
 let eventRecording;
 let moduleInstanceNames = [];
 
-const restart = () => {
+const restart = async () => {
     stopEventRecorder(core, eventRecording);
-    moduleInstanceNames.forEach(moduleInstanceName => {
-        core.stop(moduleInstanceName);
+    //todo properly
+    moduleInstanceNames.forEach(async (moduleInstanceName) => {
+        await core.stop(moduleInstanceName);
     });
 
     eventRecording = startEventRecorder(core);
 
-    const tweetFormName = core.start(tweetForm);
-    const tweetListName = core.start(tweetList);
-    const tweetCounterFirstName = core.start(tweetCounter, { name: `first counter` });
-    const tweetCounterSecondName = core.start(tweetCounter, { name: `second counter` });
+    const tweetFormName = await core.start(tweetForm);
+    const tweetListName = await core.start(tweetList);
+    const tweetCounterFirstName = await core.start(tweetCounter, { name: `first counter` });
+    const tweetCounterSecondName = await core.start(tweetCounter, { name: `second counter` });
     moduleInstanceNames = [
         tweetFormName,
         tweetListName,
@@ -54,8 +55,8 @@ setTimeout(() => {
 }, 5 * 1000);
 
 
-setTimeout(() => {
+setTimeout(async () => {
     const previousEvents = eventRecording.events;
-    restart();
+    await restart();
     replayEvents(core, previousEvents, { sameSpeed: true });
 }, 10000);

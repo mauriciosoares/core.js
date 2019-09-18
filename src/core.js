@@ -18,38 +18,44 @@ const Core = class {
 
     start(module, { name = Symbol() } = {}) {
         if (this.moduleInstances.has(name)) {
-            throw `module with name ${name} already started`;
+            return Promise.reject(`module with name ${name} already started`);
         }
 
         const emitter = new EventEmitter();
 
         emitter.emit = this.boundModuleEmit;
 
-        this.moduleInstances.set(name, {
-            module,
-            instance: module.start(emitter),
-            name,
-            emitter,
+        return Promise.resolve().then(() => {
+            return module.start(emitter);
+        }).then(instance => {
+            this.moduleInstances.set(name, {
+                module,
+                instance,
+                name,
+                emitter,
+            });
+        }).then(() => {
+            return name;
         });
-
-        return name;
     }
 
     stop(name) {
         const wrapper = this.moduleInstances.get(name);
 
         if (!wrapper) {
-            return false;
+            return Promise.resolve(false);
         }
 
         wrapper.emitter.off();
-        if (wrapper.module.stop) {
-            wrapper.module.stop(wrapper.instance);
-        }
 
-        this.moduleInstances.delete(name);
-
-        return true;
+        return Promise.resolve().then(() => {
+            this.moduleInstances.delete(name);
+            if (wrapper.module.stop) {
+                wrapper.module.stop(wrapper.instance);
+            }
+        }).then(() => {
+            return true;
+        });
     }
 
     moduleEmit(name, data) {

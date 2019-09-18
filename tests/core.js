@@ -25,76 +25,76 @@ describe(`Testing Core`, function () {
     afterEach(function () {
     });
 
-    it(`should call start of that module`, function () {
+    it(`should call start of that module`, async function () {
         const module = createModuleMock();
-        core.start(module);
+        await core.start(module);
 
         expect(module.started).toBe(1);
     });
 
-    it(`should fail if start is undefined`, function () {
+    it(`should fail if start is undefined`, async function () {
         const module = createModuleMock();
         delete module[`start`];
 
-        expect(function () {
-            core.start(module);
-        }).toThrow();
+        await expectAsync(
+            core.start(module)
+        ).toBeRejected();
     });
 
-    it(`should call stop of that module`, function () {
+    it(`should call stop of that module`, async function () {
         const module = createModuleMock();
-        const id = core.start(module);
-        core.stop(id);
+        const id = await core.start(module);
+        await core.stop(id);
 
         expect(module.stopped).toBe(1);
     });
 
-    it(`should not fail if stop is undefined`, function () {
+    it(`should not fail if stop is undefined`, async function () {
         const module = createModuleMock();
         delete module[`stop`];
-        const id = core.start(module);
-        core.stop(id);
+        const id = await core.start(module);
+        await core.stop(id);
 
         expect(module.started).toBe(1);
     });
 
-    it(`should use the name as id if it was provided`, function () {
+    it(`should use the name as id if it was provided`, async function () {
         const name = `myName`;
         const module = createModuleMock();
-        const id = core.start(module, { name });
+        const id = await core.start(module, { name });
 
         expect(id).toBe(name);
     });
 
-    it(`should allow multiple instances start`, function () {
+    it(`should allow multiple instances start`, async function () {
         const module = createModuleMock();
-        core.start(module);
-        core.start(module);
+        await core.start(module);
+        await core.start(module);
 
         expect(module.started).toBe(2);
     });
 
-    it(`start multiple instances with the same name should throw`, function () {
+    it(`start multiple instances with the same name should throw`, async function () {
         const name = `myName`;
         const module = createModuleMock();
-        core.start(module, { name });
+        await core.start(module, { name });
 
-        expect(function () {
-            core.start(module, { name });
-        }).toThrow();
+        await expectAsync(
+            core.start(module, { name })
+        ).toBeRejected();
     });
 
-    it(`should silently proceed if stop is called on something already stopped`, function () {
+    it(`should silently proceed if stop is called on something already stopped`, async function () {
         const module = createModuleMock();
-        const id = core.start(module);
-        core.stop(id);
-        core.stop(id);
+        const id = await core.start(module);
+        await core.stop(id);
+        await core.stop(id);
 
         expect(module.stopped).toBe(1);
     });
 
 
-    it(`stop should receive as first argument the return of the start`, function () {
+    it(`stop should receive as first argument the return of the start`, async function () {
         const x = Symbol();
         const module = {
             start() {
@@ -104,11 +104,11 @@ describe(`Testing Core`, function () {
                 expect(arg1).toBe(x);
             },
         };
-        const id = core.start(module);
-        core.stop(id);
+        const id = await core.start(module);
+        await core.stop(id);
     });
 
-    it(`start should receive an emitter to be able to communcicate with other modules`, function () {
+    it(`start should receive an emitter to be able to communcicate with other modules`, async function () {
         const module = {
             start(emitter) {
                 expect(emitter.on).toBeDefined();
@@ -116,6 +116,6 @@ describe(`Testing Core`, function () {
                 expect(emitter.emit).toBeDefined();
             },
         };
-        core.start(module);
+        await core.start(module);
     });
 });

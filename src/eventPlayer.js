@@ -27,7 +27,7 @@ const replayEvents = (core, events, options = {}) => {
         i += 1;
         if (i < length) {
             const timeDifference = events[i].time - event.time;
-            setTimeout(playNext, timeDifference); v
+            setTimeout(playNext, timeDifference);
             return;
         }
         core.paused = false;
