@@ -43,17 +43,19 @@ const Core = class {
         const wrapper = this.moduleInstances.get(name);
 
         if (!wrapper) {
-            return false;
+            return Promise.resolve(false);
         }
 
         wrapper.emitter.off();
-        if (wrapper.module.stop) {
-            wrapper.module.stop(wrapper.instance);
-        }
 
-        this.moduleInstances.delete(name);
-
-        return true;
+        return Promise.resolve().then(() => {
+            this.moduleInstances.delete(name);
+            if (wrapper.module.stop) {
+                wrapper.module.stop(wrapper.instance);
+            }
+        }).then(() => {
+            return true;
+        });
     }
 
     moduleEmit(name, data) {
