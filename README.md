@@ -10,6 +10,8 @@ It helps you create scalable applications written in Javascript, giving you some
 
 Conceptually, everything in your application is a module, and your modules should work independently from each other, so if one module breaks, the others should not.
 
+The central piece is the core.
+
 A module should never talks directly to another module, for that you use a combination of listeners and notifications.
 
 ## Getting Started
@@ -60,7 +62,7 @@ const stop = function (instance) {
 };
 ```
 
-To start this module in your main file:
+To start this module in your core file:
 
 ```js
 import { Core } from "@eroc/core";
@@ -134,27 +136,25 @@ Cool right? If one of those modules stop working, than it won't break the other 
 
 ## Docs
 
-#### Core.start( module, options )
+#### core.start(module, options)
 
 
 - `module`  The module as a name-space (import * as exampleModule from "./exampleModule.js")
-- `options` (function): The implementation of the module
+- `options` optional object
+    - name optional, String or Symbol that become *moduleInstanceId*
 
-__Usage__
+returns a promise that resolves with *moduleInstanceId* that can later be used to stop the module
+
 
 ```js
-Core.start(exampleModule)
+const exampleInstanceId = await Core.start(exampleModule);
 ```
 
 
-#### Core.stop( moduleInstanceId )
-
-moduleInstanceId is what is returned by Core.start or the name used with Core.start
-
-__Usage__
+#### core.stop(moduleInstanceId)
 
 ```js
-Core.stop(moduleInstanceId);
+await core.stop(exampleInstanceId);
 ```
 
 ## tl;dr
@@ -184,6 +184,12 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 3. `npm t`
 
 ## Changelog
+
+* 2.0.0
+
+core.start, core.stop return Promises
+
+the module start and stop can return a promise
 
 * 1.1.0 introduce event recorder and player
 * 1.0.0 stable release
