@@ -18,7 +18,7 @@ const Core = class {
 
     start(module, { name = Symbol() } = {}) {
         if (this.moduleInstances.has(name)) {
-            throw `module with name ${name} already started`;
+            return Promise.reject(`module with name ${name} already started`);
         }
 
         const emitter = new EventEmitter();
