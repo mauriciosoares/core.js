@@ -30,7 +30,7 @@ const Core = class {
         }).then(instance => {
             this.moduleInstances.set(name, {
                 module,
-                instance: module.start(emitter),
+                instance,
                 name,
                 emitter,
             });
