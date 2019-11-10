@@ -8,9 +8,9 @@ import { replayEvents } from "../../src/eventPlayer.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 
-import * as tweetForm from "./tweet-form.js";
-import * as tweetList from "./tweet-list.js";
-import * as tweetCounter from "./tweet-counter.js";
+import * as tweetForm from "../simple/tweet-form.js";
+import * as tweetList from "../simple/tweet-list.js";
+import * as tweetCounter from "../simple/tweet-counter.js";
 
 
 const core = new Core();
@@ -46,14 +46,6 @@ const restart = async () => {
 };
 
 restart();
-
-
-// stop a module
-setTimeout(() => {
-    console.info(`stopping the second tweet counter`);
-    core.stop(`second counter`);
-}, 5 * 1000);
-
 
 setTimeout(async () => {
     const previousEvents = eventRecording.events;
