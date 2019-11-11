@@ -1,8 +1,9 @@
-export { Core, ALL };
+export { Core, ALL, ERROR };
 import EventEmitter from "../node_modules/event-e3/event-e3.js";
 
 
 const ALL = Symbol();
+const ERROR = Symbol();
 
 const Core = class {
     constructor() {
@@ -36,6 +37,13 @@ const Core = class {
             });
         }).then(() => {
             return name;
+        }).catch(errorModuleStart => {
+            // we assume only module.start can throw
+            this.emit(ERROR, {
+                time: Date.now(),
+                phase: `module.start`,
+                error: errorModuleStart,
+            });
         });
     }
 
