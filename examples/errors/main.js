@@ -1,9 +1,8 @@
 import { Core, ALL, ERROR } from "../../src/core.js";
 
-import * as tweetForm from "./tweet-form.js";
-import * as tweetList from "./tweet-list.js";
-import * as tweetCounter from "./tweet-counter.js";
-
+import * as errorStart from "./errorStart.js";
+import * as errorStop from "./errorStop.js";
+import * as errorRuntime from "./errorRuntime.js";
 
 const core = new Core();
 // listen for all events
@@ -18,20 +17,8 @@ core.on(ERROR, ({ time, phase, error }) => {
     console.error(`Error during phase ${phase} at ${timeString}`);
     console.error(error);
 });
-core.start(tweetForm);
-core.start(tweetList);
-core.start(tweetCounter, { name: `first counter` });
-core.start(tweetCounter, { name: `second counter` });
 
-
-// extras
-
-
-// stop a module
-setTimeout(() => {
-    console.info(`stopping the second tweet counter`);
-    core.stop(`second counter`);
-}, 10 * 1000);
-
-
+core.start(errorStart);
+core.start(errorRuntime);
+core.start(errorStop);
 
