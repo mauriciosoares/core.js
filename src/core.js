@@ -38,7 +38,6 @@ const Core = class {
         }).then(() => {
             return name;
         }).catch(errorModuleStart => {
-            // we assume only module.start can throw
             this.emit(ERROR, {
                 time: Date.now(),
                 phase: `module.start`,
@@ -61,6 +60,12 @@ const Core = class {
             if (wrapper.module.stop) {
                 wrapper.module.stop(wrapper.instance);
             }
+        }).catch(errorModuleStop => {
+            this.emit(ERROR, {
+                time: Date.now(),
+                phase: `module.stop`,
+                error: errorModuleStop,
+            });
         }).then(() => {
             return true;
         });
@@ -77,7 +82,15 @@ const Core = class {
         this.emit(name, data);
         this.emit(ALL, { name, data, time: Date.now() });
         this.moduleInstances.forEach(({ emitter }) => {
-            EventEmitter.prototype.emit.call(emitter, name, data);
+            try {
+                EventEmitter.prototype.emit.call(emitter, name, data);
+            } catch (error) {
+                this.emit(ERROR, {
+                    time: Date.now(),
+                    phase: `module runtime (emitter.on)`,
+                    error: error,
+                });
+            }
         });
     }
 };

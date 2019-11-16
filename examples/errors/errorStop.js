@@ -2,9 +2,9 @@ export { start, stop };
 
 
 const start = function (emitter) {
-    console.log('successful start')
+    // console.log('successful start');
 };
 
 const stop = function (emitter) {
-    throw `Error`;
+    throw new Error(`force error during stop`);
 };
