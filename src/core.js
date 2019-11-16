@@ -22,6 +22,10 @@ const Core = class {
             return Promise.reject(`module with name ${name} already started`);
         }
 
+        if (!module.start) {
+            return Promise.reject(`module must have start defined`);
+        }
+
         const emitter = new EventEmitter();
 
         emitter.emit = this.boundModuleEmit;
