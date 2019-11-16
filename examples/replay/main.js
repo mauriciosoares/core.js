@@ -26,10 +26,9 @@ let moduleInstanceNames = [];
 
 const restart = async () => {
     stopEventRecorder(core, eventRecording);
-    //todo properly
-    moduleInstanceNames.forEach(async (moduleInstanceName) => {
-        await core.stop(moduleInstanceName);
-    });
+    await Promise.all(moduleInstanceNames.map(moduleInstanceName => {
+        return core.stop(moduleInstanceName);
+    }));
 
     eventRecording = startEventRecorder(core);
 

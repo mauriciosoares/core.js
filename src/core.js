@@ -1,8 +1,9 @@
-export { Core, ALL };
+export { Core, ALL, ERROR };
 import EventEmitter from "../node_modules/event-e3/event-e3.js";
 
 
 const ALL = Symbol();
+const ERROR = Symbol();
 
 const Core = class {
     constructor() {
@@ -21,6 +22,10 @@ const Core = class {
             return Promise.reject(`module with name ${name} already started`);
         }
 
+        if (!module.start) {
+            return Promise.reject(`module must have start defined`);
+        }
+
         const emitter = new EventEmitter();
 
         emitter.emit = this.boundModuleEmit;
@@ -36,6 +41,12 @@ const Core = class {
             });
         }).then(() => {
             return name;
+        }).catch(errorModuleStart => {
+            this.emit(ERROR, {
+                time: Date.now(),
+                phase: `module.start`,
+                error: errorModuleStart,
+            });
         });
     }
 
@@ -53,6 +64,12 @@ const Core = class {
             if (wrapper.module.stop) {
                 wrapper.module.stop(wrapper.instance);
             }
+        }).catch(errorModuleStop => {
+            this.emit(ERROR, {
+                time: Date.now(),
+                phase: `module.stop`,
+                error: errorModuleStop,
+            });
         }).then(() => {
             return true;
         });
@@ -69,7 +86,15 @@ const Core = class {
         this.emit(name, data);
         this.emit(ALL, { name, data, time: Date.now() });
         this.moduleInstances.forEach(({ emitter }) => {
-            EventEmitter.prototype.emit.call(emitter, name, data);
+            try {
+                EventEmitter.prototype.emit.call(emitter, name, data);
+            } catch (error) {
+                this.emit(ERROR, {
+                    time: Date.now(),
+                    phase: `module runtime (emitter.on)`,
+                    error,
+                });
+            }
         });
     }
 };

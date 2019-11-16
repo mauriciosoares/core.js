@@ -33,15 +33,15 @@ Everything inside a red square is a module, they work in a way that they don't d
 
 Raw import
 
-`import { Core } from "./node_modules/@eroc/core/dist/core.js";`
+`import { Core, ALL, ERROR } from "./node_modules/@eroc/core/dist/core.js";`
 
 With rollup, webpack or parcel
 
-`import { Core } from "@eroc/core";`
+`import { Core, ALL, ERROR } from "@eroc/core";`
 
 NodeJs or Browserify
 
-`const { Core } = require("@eroc/core");`
+`const { Core, ALL, ERROR } = require("@eroc/core");`
 
 Let's start with the tweet module.
 
@@ -59,6 +59,7 @@ const start = function (emitter) {
 
 const stop = function (instance) {
   // instance is what start returned
+  // this allows to close open files, sockets, etc
 };
 ```
 
@@ -87,11 +88,11 @@ To avoid spelling mistakes, import event names from a common file called eventNa
 
 ### Destroying modules
 
-You might want to stop a module in some point, this can be easily done using the method `Core.stop()`.
+You might want to stop a module in some point, this can be easily done using the method `core.stop()`.
 
 ```js
-const exampleId = Core.start(exampleModule);
-Core.stop(exampleId);
+const exampleId = core.start(exampleModule);
+core.stop(exampleId);
 ```
 
 When you stop a module, the function `stop` will be called, if it exists.
@@ -138,10 +139,9 @@ Cool right? If one of those modules stop working, than it won't break the other 
 
 #### core.start(module, options)
 
-
-- `module`  The module as a name-space (import * as exampleModule from "./exampleModule.js")
-- `options` optional object
-    - name optional, String or Symbol that become *moduleInstanceId*
+ * `module`  The module as a name-space (import * as exampleModule from "./exampleModule.js")
+ * `options` optional object
+   * name optional, String or Symbol that become *moduleInstanceId*
 
 returns a promise that resolves with *moduleInstanceId* that can later be used to stop the module
 
@@ -155,6 +155,31 @@ const exampleInstanceId = await Core.start(exampleModule);
 
 ```js
 await core.stop(exampleInstanceId);
+```
+
+#### ALL
+
+Constant to listen to all events
+
+```js
+// listen for all events
+core.on(ALL, ({ name, data, time }) => {
+    const timeString = new Date(time).toISOString();
+    console.debug(`${timeString} event ${String(name)} with data`, data);
+});
+```
+
+#### ERROR
+
+Constant to listen to most errors
+
+```js
+// listen for errors
+core.on(ERROR, ({ time, phase, error }) => {
+    const timeString = new Date(time).toISOString();
+    console.error(`Error during phase ${phase} at ${timeString}`);
+    console.error(error);
+});
 ```
 
 ## tl;dr
@@ -185,28 +210,28 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## Changelog
 
-* 2.0.0
+### 2.0.0
 
-core.start, core.stop return Promises
+ * core.start, core.stop return Promises
+ * the module start and stop can return a promise
+ * errors are emitted
 
-the module start and stop can return a promise
-
-* 1.1.0 introduce event recorder and player
-* 1.0.0 stable release
-* 0.15.0 major architecture change
-* 2018-10-30   v0.13.0  remove deprecated startAll and stopAll 
-* 2018-10-29   v0.12.0  Drop bower and publish on npm
-* 2018                  Various changes
-* 2015-06-15   v0.7.3   Refactor UMD
-* 2015-05-14   v0.7.2   Hotfix with ID's
-* 2015-02-15   v0.7.0   Deprecate `Core.stopAll`
-* 2015-02-12   v0.6.0   Deprecate `Core.startAll`
-* 2015-02-05   v0.5.0   Changes `x` to `use` in `Sandbox`
-* 2015-01-17   v0.4.0   Add UMD
-* 2015-01-15   v0.3.0   Ability to return values from init and destroy methods
-* 2015-01-10   v0.2.1   Improve error messages
-* 2014-12-30   v0.2.0   Isolation of DOM in modules
-* 2014-12-21   v0.1.0   Release usable version
+### 1.1.0 introduce event recorder and player
+### 1.0.0 stable release
+### 0.15.0 major architecture change
+### 2018-10-30   v0.13.0  remove deprecated startAll and stopAll 
+### 2018-10-29   v0.12.0  Drop bower and publish on npm
+### 2018                  Various changes
+### 2015-06-15   v0.7.3   Refactor UMD
+### 2015-05-14   v0.7.2   Hotfix with ID's
+### 2015-02-15   v0.7.0   Deprecate `Core.stopAll`
+### 2015-02-12   v0.6.0   Deprecate `Core.startAll`
+### 2015-02-05   v0.5.0   Changes `x` to `use` in `Sandbox`
+### 2015-01-17   v0.4.0   Add UMD
+### 2015-01-15   v0.3.0   Ability to return values from init and destroy methods
+### 2015-01-10   v0.2.1   Improve error messages
+### 2014-12-30   v0.2.0   Isolation of DOM in modules
+### 2014-12-21   v0.1.0   Release usable version
 
 ## License
 

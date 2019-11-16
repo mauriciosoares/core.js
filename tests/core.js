@@ -93,7 +93,6 @@ describe(`Testing Core`, function () {
         expect(module.stopped).toBe(1);
     });
 
-
     it(`stop should receive as first argument the return of the start`, async function () {
         const x = Symbol();
         const module = {
