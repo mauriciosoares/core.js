@@ -88,7 +88,7 @@ const Core = class {
                 this.emit(ERROR, {
                     time: Date.now(),
                     phase: `module runtime (emitter.on)`,
-                    error: error,
+                    error,
                 });
             }
         });

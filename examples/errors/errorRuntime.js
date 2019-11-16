@@ -11,5 +11,5 @@ const stop = function (emitter) {
 
 
 setTimeout(() => {
-    throw new Error(`async Runtime error`)
-}, 1500);
+    throw new Error(`async Runtime error`);
+}, 2 ** 10);
