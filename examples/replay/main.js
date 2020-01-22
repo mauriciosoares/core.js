@@ -1,9 +1,9 @@
-import { Core, ALL } from "../../src/core.js";
-import {
+import { Core,
+    ALL,
     startEventRecorder,
     stopEventRecorder,
-} from "../../src/eventRecorder.js";
-import { replayEvents } from "../../src/eventPlayer.js";
+    replayEvents,
+} from "../../src/core.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
