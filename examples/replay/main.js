@@ -44,10 +44,19 @@ const restart = async () => {
     ];
 };
 
-restart();
-
-setTimeout(async () => {
+const replayEvents = async () => {
     const previousEvents = eventRecording.events;
     await restart();
     replayEvents(core, previousEvents, { sameSpeed: true });
-}, 10000);
+};
+const controlZ =  async () => {
+    const previousEvents = eventRecording.events;
+    previousEvents.pop(); // forget last
+    await restart();
+    replayEvents(core, previousEvents, { sameSpeed: false });
+};
+
+restart();
+
+setTimeout(replayEvents, 10000);
+setTimeout(controlZ, 20000);
