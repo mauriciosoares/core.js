@@ -1,9 +1,10 @@
-import { Core, ALL } from "../../src/core.js";
-import {
+import { 
+    Core,
+    ALL,
     startEventRecorder,
     stopEventRecorder,
-} from "../../src/eventRecorder.js";
-import { replayEvents } from "../../src/eventPlayer.js";
+    replayEvents,
+} from "../../src/core.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
@@ -44,10 +45,21 @@ const restart = async () => {
     ];
 };
 
-restart();
-
-setTimeout(async () => {
+const replay = async () => {
     const previousEvents = eventRecording.events;
     await restart();
     replayEvents(core, previousEvents, { sameSpeed: true });
-}, 10000);
+};
+const controlZ =  async () => {
+    const previousEvents = eventRecording.events;
+    previousEvents.pop(); // forget last
+    await restart();
+    replayEvents(core, previousEvents, { sameSpeed: false });
+};
+
+document.getElementById(`undo`).addEventListener(`click`, controlZ);
+
+restart();
+
+setTimeout(replay, 10000);
+setTimeout(controlZ, 20000);

@@ -11,14 +11,21 @@ const replayEvents = (core, events, options = {}) => {
         core.paused = true;
     }
 
-    if (!sameSpeed) {
-        events.forEach(event => {
-            core.moduleEmitDirect(event.name, event.data);
-        });
-        core.paused = false;
-        return;
+    if (sameSpeed) {
+        replayEventsSameSpeed(core, events);
+    } else {
+        replayEventsInstantly(core, events);
     }
+};
 
+const replayEventsInstantly = (core, events) => {    
+    events.forEach(event => {
+        core.moduleEmitDirect(event.name, event.data);
+    });
+    core.paused = false;
+};
+
+const replayEventsSameSpeed = (core, events) => {
     const { length } = events;
     let i = 0;
     const playNext = () => {

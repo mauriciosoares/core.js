@@ -210,6 +210,10 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## Changelog
 
+### 2.1.0
+
+ * eventPlayer, eventRecorder optionals are importable directly from the core
+
 ### 2.0.0
 
  * core.start, core.stop return Promises
