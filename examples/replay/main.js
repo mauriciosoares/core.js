@@ -1,4 +1,5 @@
-import { Core,
+import { 
+    Core,
     ALL,
     startEventRecorder,
     stopEventRecorder,
@@ -44,7 +45,7 @@ const restart = async () => {
     ];
 };
 
-const replayEvents = async () => {
+const replay = async () => {
     const previousEvents = eventRecording.events;
     await restart();
     replayEvents(core, previousEvents, { sameSpeed: true });
@@ -56,7 +57,9 @@ const controlZ =  async () => {
     replayEvents(core, previousEvents, { sameSpeed: false });
 };
 
+document.getElementById(`undo`).addEventListener(`click`, controlZ);
+
 restart();
 
-setTimeout(replayEvents, 10000);
+setTimeout(replay, 10000);
 setTimeout(controlZ, 20000);
