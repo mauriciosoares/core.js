@@ -2,7 +2,7 @@ export { useDefaultLogging };
 import {ALL, ERROR} from "./core.js";
 
 
-const useDefaultLogging = (core, { logger = console }) => {
+const useDefaultLogging = (core, { logger = console } = {}) => {
     // listen for all events
     core.on(ALL, ({ name, data, time }) => {
         const timeString = new Date(time).toISOString();
