@@ -177,8 +177,7 @@ Constant to listen to most errors
 // listen for errors
 core.on(ERROR, ({ time, phase, error }) => {
     const timeString = new Date(time).toISOString();
-    console.error(`Error during phase ${phase} at ${timeString}`);
-    console.error(error);
+    console.error(`Error during phase ${phase} at ${timeString}`, error);
 });
 ```
 

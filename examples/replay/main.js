@@ -1,9 +1,9 @@
 import { 
     Core,
-    ALL,
     startEventRecorder,
     stopEventRecorder,
     replayEvents,
+    useDefaultLogging,
 } from "../../src/core.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
@@ -17,10 +17,7 @@ import * as tweetCounter from "../simple/tweet-counter.js";
 const core = new Core();
 
 // listen for all events
-core.on(ALL, ({ name, data, time }) => {
-    const timeString = new Date(time).toISOString();
-    console.debug(`${timeString} event ${String(name)} with data`, data);
-});
+useDefaultLogging(core);
 
 let eventRecording;
 let moduleInstanceNames = [];

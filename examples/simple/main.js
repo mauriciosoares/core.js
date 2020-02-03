@@ -1,4 +1,4 @@
-import { Core, ALL } from "../../src/core.js";
+import { Core, useDefaultLogging } from "../../src/core.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
@@ -11,10 +11,7 @@ import * as tweetCounter from "./tweet-counter.js";
 const core = new Core();
 
 // listen for all events
-core.on(ALL, ({ name, data, time }) => {
-    const timeString = new Date(time).toISOString();
-    console.debug(`${timeString} event ${String(name)} with data`, data);
-});
+useDefaultLogging(core);
 
 core.start(tweetForm);
 core.start(tweetList);

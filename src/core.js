@@ -1,6 +1,7 @@
 export { Core, ALL, ERROR };
 export { startEventRecorder, stopEventRecorder } from "./eventRecorder.js";
 export { replayEvents } from "./eventPlayer.js";
+export { useDefaultLogging } from "./logging.js";
 import EventEmitter from "../node_modules/event-e3/event-e3.js";
 
 
