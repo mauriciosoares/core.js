@@ -1,12 +1,12 @@
 {
   "name": "@eroc/core",
   "version": "2.2.0",
-  "main": "dist/core.umd.js",
-  "module": "dist/core.es.js",
   "description": "Lightweight framework for scalable applications",
+  "license": "MIT",
   "author": "Mauricio Soares",
   "homepage": "https://github.com/msodeveloper/core.js",
-  "license": "MIT",
+  "main": "dist/core.umd.js",
+  "module": "dist/core.es.js",
   "scripts": {
     "serve": "serve . -p 8080",
     "bundle": "rollup --config tools/rollup.config.js",
@@ -16,26 +16,6 @@
     "prepublishOnly": "npm run bundle",
     "test": "jasmine --config=tests/jasmine.json"
   },
-  "files": [
-    "src",
-    "dist",
-    "LICENSE",
-    "README.md"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/msodeveloper/core.js.git"
-  },
-  "bugs": {
-    "url": "https://github.com/msodeveloper/core.js/issues"
-  },
-  "keywords": [
-    "core.js",
-    "core",
-    "framework",
-    "lightweight",
-    "scalable"
-  ],
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-red": "^1.1.0",
@@ -62,5 +42,25 @@
       "node": true
     },
     "rules": {}
-  }
+  },
+  "files": [
+    "src",
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/msodeveloper/core.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/msodeveloper/core.js/issues"
+  },
+  "keywords": [
+    "core.js",
+    "core",
+    "framework",
+    "lightweight",
+    "scalable"
+  ]
 }
