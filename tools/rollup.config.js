@@ -1,5 +1,7 @@
 // rollup.config.js
 import _package from "../package.json";
+import resolve from '@rollup/plugin-node-resolve';
+
 
 const { version, name, license } = _package;
 const GLOBAL_NAME = `Core`;
@@ -37,8 +39,9 @@ const commonOutputOptions = {
 export default { // can be an array (for multiple inputs)
     // core input options
     input: `src/core.js`,     // required
+    plugins: [resolve()],
+    
     // external: [],
-    //plugins: [],
 
     // advanced input options
     // onwarn,
@@ -48,8 +51,8 @@ export default { // can be an array (for multiple inputs)
     // acorn,
     // acornInjectPlugins,
     treeshake: {
-        pureExternalModules: false,
-        propertyReadSideEffects: false // assume reading properties has no side effect
+        moduleSideEffects: true,
+        moduleSideEffects: `no-external`,
     },
     // context,
     // moduleContext,
@@ -66,7 +69,7 @@ export default { // can be an array (for multiple inputs)
         }, commonOutputOptions),
         Object.assign({
             format: `umd`,
-            file: `dist/core.umd.js`,
+            file: `dist/core.umd.cjs`,
             amd: {
                 id: GLOBAL_NAME
             }

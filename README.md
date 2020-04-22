@@ -209,6 +209,15 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## Changelog
 
+### 3.0.0
+
+ * Use abstract name to import for dependencies. Change default main. Convert to ES module.
+ * Rename dist/core.umd.js into dist/core.umd.cjs
+ 
+### 2.2.0
+
+ * Add default logger
+
 ### 2.1.0
 
  * eventPlayer, eventRecorder optionals are importable directly from the core

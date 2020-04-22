@@ -1,12 +1,12 @@
 {
   "name": "@eroc/core",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Lightweight framework for scalable applications",
   "license": "MIT",
   "author": "Mauricio Soares",
   "homepage": "https://github.com/msodeveloper/core.js",
-  "main": "dist/core.umd.js",
-  "module": "dist/core.es.js",
+  "type": "module",
+  "main": "src/core.js",
   "scripts": {
     "serve": "serve . -p 8080",
     "bundle": "rollup --config tools/rollup.config.js",
@@ -17,10 +17,11 @@
     "test": "jasmine --config=tests/jasmine.json"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^7.1.3",
     "eslint": "^6.8.0",
-    "eslint-config-red": "^1.1.0",
+    "eslint-config-red": "^1.7.0",
     "jasmine": "^3.5.0",
-    "rollup": "^1.19.4",
+    "rollup": "^2.7.1",
     "serve": "^11.3.0"
   },
   "dependencies": {
