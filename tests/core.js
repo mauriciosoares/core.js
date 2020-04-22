@@ -37,7 +37,7 @@ describe(`Testing Core`, function () {
         delete module[`start`];
 
         await expectAsync(
-            core.start(module)
+            core.start(module),
         ).toBeRejected();
     });
 
@@ -80,7 +80,7 @@ describe(`Testing Core`, function () {
         await core.start(module, { name });
 
         await expectAsync(
-            core.start(module, { name })
+            core.start(module, { name }),
         ).toBeRejected();
     });
 

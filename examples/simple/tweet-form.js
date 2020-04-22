@@ -33,6 +33,6 @@ const submit = function (instance, event) {
 
   instance.emitter.emit(NEW_TWEET, {
     tweet: newTweet,
-    author: `@omauriciosoares`
+    author: `@omauriciosoares`,
   });
 };

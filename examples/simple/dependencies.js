@@ -1,7 +1,7 @@
 /* this file imports the common dependencies for the project and re exports as a common interface
 common things: ui, network, etc ... */
 
-export { fetcher, /* x, y, */ };
+export { fetcher /* x, y, */ };
 // import { x } from "z";
 // import { y } from "w";
 
