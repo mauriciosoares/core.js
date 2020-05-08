@@ -18,9 +18,6 @@ const stopEventRecorder = (core, eventRecorder) => {
     if (!eventRecorder) {
         return;
     }
-    const {
-        events,
-        listener,
-    } = eventRecorder;
+    const { listener } = eventRecorder;
     core.off(ALL, listener);
 };

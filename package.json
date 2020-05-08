@@ -1,6 +1,6 @@
 {
   "name": "@eroc/core",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Lightweight framework for scalable applications",
   "license": "MIT",
   "author": "Mauricio Soares",
@@ -37,7 +37,7 @@
       "ecmaFeatures": {}
     },
     "env": {
-      "es6": true,
+      "es2020": true,
       "browser": true,
       "jasmine": true,
       "node": true
@@ -62,6 +62,9 @@
     "core",
     "framework",
     "lightweight",
-    "scalable"
+    "scalable",
+    "modules",
+    "architecture",
+    "structure"
   ]
 }

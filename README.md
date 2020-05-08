@@ -20,7 +20,7 @@ So let's think about the twitter page, and how we could re-build it using the __
 
 ![Twitter Modules](https://cloud.githubusercontent.com/assets/2321259/5558085/3caa2e2c-8d00-11e4-8eba-4613b593193f.png)
 
-Everything inside a red square is a module, they work in a way that they don't depend on any other modules, and they should be programmed that way as well.
+Everything inside a red square is a module, they work independently.
 
 
 ## Installing
@@ -33,17 +33,16 @@ Everything inside a red square is a module, they work in a way that they don't d
 
 Raw import
 
-`import { Core, ALL, ERROR } from "./node_modules/@eroc/core/dist/core.js";`
+`import { Core, ALL, ERROR } from "./node_modules/@eroc/core/dist/core.es.js";`
 
-With rollup, webpack or parcel
+With node, rollup, webpack or parcel
 
 `import { Core, ALL, ERROR } from "@eroc/core";`
 
-NodeJs or Browserify
+With old NodeJs or Browserify
 
-`const { Core, ALL, ERROR } = require("@eroc/core");`
+`const { Core, ALL, ERROR } = require("@eroc/core/dist/core.umd.cjs");`
 
-Let's start with the tweet module.
 
 ### Building modules
 
@@ -88,7 +87,7 @@ To avoid spelling mistakes, import event names from a common file called eventNa
 
 ### Destroying modules
 
-You might want to stop a module in some point, this can be easily done using the method `core.stop()`.
+To stop a module use the method `core.stop()`.
 
 ```js
 const exampleId = core.start(exampleModule);
@@ -101,17 +100,21 @@ When you stop a module, the function `stop` will be called, if it exists.
 
 Now, thinking about Twitter, everytime you tweet something, it should appear on your tweet list right? but since our modules don't talk directly to each other, let's use the emitter.
 
-First of all, our `tweet` module should notify other modules that something has happened.
+Our `tweet` module should notify other modules that something has happened.
+
+#### tweet.js
 
 ```js
 export { start };
+import { NEW_TWEET } from "./eventNames.js";
+
 
 const start = function(emitter) {
   // For the sake of simplicity, use an interval
   setInterval(function() {
     emitter.emit(NEW_TWEET,  {
-      author: 'Mauricio Soares',
-      text: 'core is pretty #cool'
+      author: `Mauricio Soares`,
+      text: `core is pretty #cool`
     });
   }, 5 * 1000)
 };
@@ -121,8 +124,12 @@ Every 5 seconds, this module notifies everything that is listening to `NEW_TWEET
 
 Our `tweet-list` is going to listen for this notifications.
 
+#### tweet-list.js
+
 ```js
 export { start };
+import { NEW_TWEET } from "./eventNames.js";
+
 
 const start = function (emitter) {
   emitter.on(NEW_TWEET, (data) => {
@@ -131,15 +138,21 @@ const start = function (emitter) {
 };
 ```
 
-Cool right? If one of those modules stop working, than it won't break the other one!
+Cool right? If one of those modules stop working, then it will not break the other one!
 
 
 
-## Docs
+## API 
 
-#### core.start(module, options)
+### Core
 
- * `module`  The module as a name-space (import * as exampleModule from "./exampleModule.js")
+#### `new Core()`
+
+Returns a new instance of core.
+
+#### `core.start(module, options)`
+
+ * `module`  The module as a name-space ( `import * as exampleModule from "./exampleModule.js"` )
  * `options` optional object
    * name optional, String or Symbol that become *moduleInstanceId*
 
@@ -147,17 +160,17 @@ returns a promise that resolves with *moduleInstanceId* that can later be used t
 
 
 ```js
-const exampleInstanceId = await Core.start(exampleModule);
+const exampleInstanceId = await core.start(exampleModule);
 ```
 
 
-#### core.stop(moduleInstanceId)
+#### `core.stop(moduleInstanceId)`
 
 ```js
 await core.stop(exampleInstanceId);
 ```
 
-#### ALL
+#### `ALL`
 
 Constant to listen to all events
 
@@ -169,7 +182,7 @@ core.on(ALL, ({ name, data, time }) => {
 });
 ```
 
-#### ERROR
+#### `ERROR`
 
 Constant to listen to most errors
 
@@ -181,14 +194,66 @@ core.on(ERROR, ({ time, phase, error }) => {
 });
 ```
 
-## tl;dr
+### logging
 
-* Check out [this video](https://www.youtube.com/watch?v=s9tdZSa74jo) - Introduction (portuguese) (Old API)
+Optional logging to get started
+
+#### `useDefaultLogging(core, logger=console)`
+
+```js
+import { Core, useDefaultLogging } from "@eroc/core";
+
+
+const core = new Core();
+
+// listen for all events
+useDefaultLogging(core);
+```
+
+### eventRecorder
+
+Utility to record all events. [example](./examples/replay/main.js)
+
+#### `startEventRecorder(core)`
+
+returns an eventRecording. Access `eventRecording.events` to view all past events.
+
+#### `stopEventRecorder(core, eventRecording);`
+
+stops an eventRecording.
+
+```js
+import { Core, useDefaultLogging } from "@eroc/core";
+
+
+const core = new Core();
+let eventRecording = startEventRecorder(core);
+stopEventRecorder(core, eventRecording);
+```
+
+### eventPlayer
+
+Helper to replay events.
+
+#### `replayEvents(core, previousEvents, { sameSpeed = false })`
+
+Will replay previousEvents on core. previousEvents could come from `eventRecording.events` or from a database. Make sure to initialize modules before for it to have any effect. While events are replayed regulare event emits are disabled. This avoids duplicated events in case you emit events as a consequence of another event.
+
+
+```js
+import { Core, replayEvents } from "@eroc/core";
+
+
+const core = new Core();
+// ... initialize modules
+const events = // get events
+replayEvents(core, events, { sameSpeed: true }); 
+```
 
 ## Maintainers
 
 - Mauricio Soares - https://github.com/mauriciosoares
-- GrosSacASac
+- GrosSacASac 
 
 ## Contributing
 
@@ -247,23 +312,4 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## License
 
-(The MIT License)
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[MIT License](./LICENSE)
