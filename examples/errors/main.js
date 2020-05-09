@@ -1,4 +1,4 @@
-import { Core, useDefaultLogging } from "../../src/core.js";
+import { Core, useDefaultLogging } from "../../dist/core.es.js";
 
 import * as errorStart from "./errorStart.js";
 import * as errorStop from "./errorStop.js";

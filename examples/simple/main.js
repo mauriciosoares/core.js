@@ -1,4 +1,4 @@
-import { Core, useDefaultLogging } from "../../src/core.js";
+import { Core, useDefaultLogging } from "../../dist/core.es.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";

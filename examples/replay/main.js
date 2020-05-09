@@ -4,7 +4,7 @@ import {
     stopEventRecorder,
     replayEvents,
     useDefaultLogging,
-} from "../../src/core.js";
+} from "../../dist/core.es.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
