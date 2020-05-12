@@ -8,11 +8,11 @@ const start = function (emitter) {
     let x1 = 0;
     let y1 = 0;  
     const canvas = document.getElementById(`canvas`);
-    canvas.addEventListener(`mousedown`, function (event) {
+    canvas.addEventListener(`pointerdown`, function (event) {
         x1 = event.clientX;
         y1 = event.clientY;
     });
-    canvas.addEventListener(`mouseup`, function (event) {
+    canvas.addEventListener(`pointerup`, function (event) {
         emitter.emit(WANT_DRAW, {
             x1,
             y1,
