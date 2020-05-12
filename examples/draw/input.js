@@ -8,22 +8,32 @@ const start = function (emitter) {
     let x1 = 0;
     let y1 = 0;  
     const canvas = document.getElementById(`canvas`);
-    canvas.addEventListener(`pointerdown`, function (event) {
+    const onpointerdown = function (event) {
         x1 = event.clientX;
         y1 = event.clientY;
-    });
-    canvas.addEventListener(`pointerup`, function (event) {
+    };
+    const onpointerup = function (event) {
         emitter.emit(WANT_DRAW, {
             x1,
             y1,
             x2: event.clientX,
             y2: event.clientY,
         });
-    });
-    const instance = {    };
+    };
+    canvas.addEventListener(`pointerdown`, onpointerdown);
+    canvas.addEventListener(`pointerup`, onpointerup);
+    const instance = { 
+        onpointerdown,
+        onpointerup,
+    };
     return instance;
 };
 
 const stop = function (instance) {
-
+    const { 
+        onpointerdown,
+        onpointerup,
+    } = instance;
+    canvas.removeEventListener(`pointerdown`, onpointerdown);
+    canvas.removeEventListener(`pointerup`, onpointerup);
 };
