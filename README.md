@@ -274,6 +274,14 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## Changelog
 
+### 3.1.0
+
+ * Add optional getState and restoreState function as part as a module
+ * Add getState to the core
+ * Add getAllStates to the core
+ * Add restoreState to the core
+ * Add restoreAllStates to the core
+
 ### 3.0.0
 
  * Use abstract name to import for dependencies. Change default main. Convert to ES module.
