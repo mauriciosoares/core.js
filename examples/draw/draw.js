@@ -19,7 +19,7 @@ const draw = function (context, coordinates) {
 
 const start = function (emitter) {
   const canvas = document.getElementById(`canvas`);
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext(`2d`);
   const instance = {
     context,
     drawn: [],
@@ -28,9 +28,9 @@ const start = function (emitter) {
   canvas.height = height;
 
 
-  context.fillStyle = '#000000';
+  context.fillStyle = `#000000`;
   context.fillRect(0, 0, width, height);
-  context.strokeStyle = '#FFFFFF';
+  context.strokeStyle = `#FFFFFF`;
   emitter.on(WANT_DRAW, (coordinates) => {
     draw(context, coordinates);
     instance.drawn.push(coordinates);
@@ -48,7 +48,7 @@ const restoreState = function (instance, state) {
   instance.drawn.forEach(coordinates => {
     draw(instance.context, coordinates);
   });
-}
+};
 
 const stop = function (instance) {
   const { context } = instance;

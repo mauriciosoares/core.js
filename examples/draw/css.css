@@ -4,3 +4,8 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.loader {
+    position: absolute;
+    right: 40px;
+}

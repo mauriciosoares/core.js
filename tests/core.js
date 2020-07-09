@@ -137,7 +137,7 @@ describe(`Testing Core`, function () {
         const name = `test`;
         await core.start(createModuleMock(), {name});
         const result = await core.getState(name);
-        expect(result).toBeInstanceOf(Object)
+        expect(result).toBeInstanceOf(Object);
     });
 
     it(`getAllStates should return an object with key values similar to getState`, async function () {

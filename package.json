@@ -18,11 +18,11 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^7.1.3",
-    "eslint": "^6.8.0",
+    "eslint": "^7.4.0",
     "eslint-config-red": "^1.7.0",
     "jasmine": "^3.5.0",
-    "rollup": "^2.8.2",
-    "serve": "^11.3.0"
+    "rollup": "^2.19.0",
+    "serve": "^11.3.2"
   },
   "dependencies": {
     "event-e3": "^8.0.2"
