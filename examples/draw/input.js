@@ -44,6 +44,12 @@ const startUiInput = function (emitter, instance) {
         };
         loadButton.addEventListener(`click`, onLoadClick);
     }
+
+    
+    const saveButton = document.getElementById(`save`);
+    loadButton.addEventListener(`click`, function (event) {
+        emitter.emit(WANT_SAVE);
+    });
 };
 
 const stop = function (instance) {

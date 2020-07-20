@@ -13,6 +13,8 @@ const start = function (emitter) {
         3: flower,
     };
     emitter.on(WANT_LOAD, (id) => {
-        emitter.emit(LOAD, map[id]);
+        if (map[id]) {
+            emitter.emit(LOAD, map[id]);
+        }
     });
 };
