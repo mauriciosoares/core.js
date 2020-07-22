@@ -282,6 +282,11 @@ Expects an object with keys being modules names and values being the state to re
 
 Returns all states. Resolved value is the same shape as what `core.restoreAllStates` expects. Has no effect for modules that do not define a `getState` function.
 
+
+## Fast load with restoreAllState + eventPlayer
+
+Ideally neither restoreAllState nor eventPlayer are used to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
+
 ## Maintainers
 
 - Mauricio Soares - https://github.com/mauriciosoares
