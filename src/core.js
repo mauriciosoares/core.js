@@ -3,6 +3,7 @@ export { startEventRecorder, stopEventRecorder } from "./eventRecorder.js";
 export { replayEvents } from "./eventPlayer.js";
 export { useDefaultLogging } from "./logging.js";
 import EventEmitter from "event-e3";
+import { deepCopyAdded } from "utilsac/deep.js";
 
 
 const ALL = Symbol();
@@ -61,7 +62,8 @@ const Core = class {
             return Promise.resolve();
         }
         return Promise.resolve().then(() => {
-            return wrapper.module.restoreState(wrapper.instance, state);
+            const stateCopy = deepCopyAdded(state); // avoid mutations
+            return wrapper.module.restoreState(wrapper.instance, stateCopy);
         });
 
     }

@@ -25,7 +25,8 @@
     "serve": "^11.3.2"
   },
   "dependencies": {
-    "event-e3": "^8.0.2"
+    "event-e3": "^8.0.2",
+    "utilsac": "^12.3.1"
   },
   "eslintConfig": {
     "extends": [

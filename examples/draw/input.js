@@ -1,5 +1,5 @@
 export { start, stop };
-import { WANT_DRAW, WANT_LOAD } from "./eventNames.js";
+import { WANT_DRAW, WANT_LOAD, WANTS_SAVE } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 
@@ -37,7 +37,7 @@ const startDrawInput = function (emitter, instance) {
 };
 
 const startUiInput = function (emitter, instance) {
-    for (let i = 1; i < 4; i += 1) {
+    for (let i = 1; i < 5; i += 1) {
         const loadButton = document.getElementById(String(i));
         const onLoadClick = function (event) {
             emitter.emit(WANT_LOAD, i);
@@ -47,8 +47,8 @@ const startUiInput = function (emitter, instance) {
 
     
     const saveButton = document.getElementById(`save`);
-    loadButton.addEventListener(`click`, function (event) {
-        emitter.emit(WANT_SAVE);
+    saveButton.addEventListener(`click`, function (event) {
+        emitter.emit(WANTS_SAVE);
     });
 };
 
