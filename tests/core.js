@@ -117,4 +117,52 @@ describe(`Testing Core`, function () {
         };
         await core.start(module);
     });
+
+    it(`get state should return what the module returns`, async function () {
+        const x = Symbol();
+        const module = {
+            start() {
+            },
+            getState() {
+                return x;
+            },
+        };
+        const name = `test`;
+        await core.start(module, {name});
+        const result = await core.getState(name);
+        expect(result).toBe(x);
+    });
+
+    it(`get state should return empty object if not defined`, async function () {
+        const name = `test`;
+        await core.start(createModuleMock(), {name});
+        const result = await core.getState(name);
+        expect(result).toBeInstanceOf(Object);
+    });
+
+    it(`getAllStates should return an object with key values similar to getState`, async function () {
+        const x = Symbol();
+        const y = Symbol();
+        const module1 = {
+            start() {
+            },
+            getState() {
+                return x;
+            },
+        };
+        const module2 = {
+            start() {
+            },
+            getState() {
+                return y;
+            },
+        };
+        const name1 = `test`;
+        const name2 = `tes2`;
+        await core.start(module1, {name: name1});
+        await core.start(module2, {name: name2});
+        const result = await core.getAllStates();
+        expect(result[name1]).toBe(x);
+        expect(result[name2]).toBe(y);
+    });
 });

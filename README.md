@@ -46,7 +46,7 @@ With old NodeJs or Browserify
 
 ### Building modules
 
-A module exports start and optionally a stop function.
+A module exports start.
 
 ```js
 export { start, stop };
@@ -55,10 +55,33 @@ export { start, stop };
 const start = function (emitter) {
   return {};
 };
+```
 
+A module may export a stop function.
+  
+  Optional:
+  
+   * stop
+   * getState
+   * restoreState 
+
+
+```js
 const stop = function (instance) {
   // instance is what start returned
   // this allows to close open files, sockets, etc
+};
+
+const restoreState = function (instance, state) {
+  // instance is what start returned
+  // do what is necessary to restore sate
+};
+
+
+const getState = function (instance) {
+  // return the current state
+  // for example in a drawing application , all the coordinates and shapes drawn
+  //return instance.drawn;
 };
 ```
 
@@ -237,7 +260,7 @@ Helper to replay events.
 
 #### `replayEvents(core, previousEvents, { sameSpeed = false })`
 
-Will replay previousEvents on core. previousEvents could come from `eventRecording.events` or from a database. Make sure to initialize modules before for it to have any effect. While events are replayed regulare event emits are disabled. This avoids duplicated events in case you emit events as a consequence of another event.
+Will replay previousEvents on core. previousEvents could come from `eventRecording.events` or from a database. Make sure to initialize modules before for it to have any effect. While events are replayed regular event emits are disabled. This avoids duplicated events in case you emit events as a consequence of another event.
 
 
 ```js
@@ -249,6 +272,20 @@ const core = new Core();
 const events = // get events
 replayEvents(core, events, { sameSpeed: true }); 
 ```
+
+### `await core.restoreAllStates({})`
+
+ReplayEvents might not be possible past a certain limit. That is why you may want to implement a state restoring mechanism.
+Expects an object with keys being modules names and values being the state to restore. Modules need a `restoreState` function for this to have any effect.
+
+### `await core.getAllStates()`
+
+Returns all states. Resolved value is the same shape as what `core.restoreAllStates` expects. Has no effect for modules that do not define a `getState` function.
+
+
+## Fast load with restoreAllState + eventPlayer
+
+Ideally neither restoreAllState nor eventPlayer are used to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
 
 ## Maintainers
 
@@ -273,6 +310,14 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 3. `npm t`
 
 ## Changelog
+
+### 3.1.0
+
+ * Add optional getState and restoreState function as part as a module
+ * Add getState to the core
+ * Add getAllStates to the core
+ * Add restoreState to the core
+ * Add restoreAllStates to the core
 
 ### 3.0.0
 

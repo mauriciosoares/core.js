@@ -3,6 +3,7 @@ export { startEventRecorder, stopEventRecorder } from "./eventRecorder.js";
 export { replayEvents } from "./eventPlayer.js";
 export { useDefaultLogging } from "./logging.js";
 import EventEmitter from "event-e3";
+import { deepCopyAdded } from "utilsac/deep.js";
 
 
 const ALL = Symbol();
@@ -16,8 +17,61 @@ const Core = class {
         EventEmitter(this);
     }
 
-    register() {
+    getState(name) {
+        if (!this.moduleInstances.has(name)) {
+            return Promise.reject(`module with name ${name} does not exist`);
+        }
 
+        const wrapper = this.moduleInstances.get(name);
+        if (!wrapper.module.getState) {
+            return Promise.resolve({});
+        }
+        return Promise.resolve().then(() => {
+            return wrapper.module.getState(wrapper.instance);
+        });
+    }
+
+    /* returns a promise with an object 
+        as keys the names of the module instances
+        as value the state received */
+    getAllStates() {
+        const promises = [];
+        const names = []; // freeze names in case something is added ore removed while the promise is being resolved 
+        this.moduleInstances.forEach((wrapper, name) => {
+            promises.push(this.getState(name));
+            names.push(name);
+        });
+
+        return Promise.all(promises).then((results) => {
+            // Promise.all preserves order
+            const resultsAsObject = {};
+            results.forEach((result, i) => {
+                resultsAsObject[names[i]] = result;
+            });
+            return resultsAsObject;
+        });
+    }
+
+    restoreState (name, state) {
+        if (!this.moduleInstances.has(name)) {
+            return Promise.reject(`module with name ${name} does not exist`);
+        }
+
+        const wrapper = this.moduleInstances.get(name);
+        if (!wrapper.module.restoreState) {
+            return Promise.resolve();
+        }
+        return Promise.resolve().then(() => {
+            const stateCopy = deepCopyAdded(state); // avoid mutations
+            return wrapper.module.restoreState(wrapper.instance, stateCopy);
+        });
+
+    }
+
+    restoreAllStates(states) {
+        return Promise.all(Object.entries(states).map(([name, state]) => {
+            return this.restoreState(name, state);
+        }));
     }
 
     start(module, { name = Symbol() } = {}) {
