@@ -39,6 +39,7 @@ const restart = async () => {
         await core.start(time, {name: `time`}),
         await core.start(gameLoop, {name: `gameLoop`}),
     ]
+    
 };
 
 const replay = async () => {
@@ -46,16 +47,30 @@ const replay = async () => {
     await restart();
     replayEvents(core, previousEvents, { sameSpeed: true, pauseEmits: true });
 };
-const controlZ =  async () => {
-    const previousEvents = eventRecording.events;
-    previousEvents.pop(); // forget last
-    await restart();
-    replayEvents(core, previousEvents, { sameSpeed: false });
-};
 
+
+// test
 setTimeout(() => {
     replay();
 },5000)
 
 
 restart();
+
+core.on(TRAVEL_TIME, destination => {
+    const previousEvents = eventRecording.events;
+    
+    const lastIndex = previousEvents.reduce((currentIndex, event, i) => {
+        const { name, data, time } = event;
+        if (currentIndex === 0) {
+            if (time > destination) {
+                return i
+            }
+            return currentIndex
+        }
+    }, 0);
+    previousEvents.pop(); // forget last
+    await restart();
+    replayEvents(core, previousEvents, { sameSpeed: false });
+
+})

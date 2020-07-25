@@ -39,6 +39,11 @@ const startUiInput = function (emitter, instance) {
         }
         paused = !paused;
     });
+
+    const slider = document.getElementById(`slider`);
+    slider.addEventListener(`input`, function (event) {
+        emitter.emit(WANTS_TRAVEL_TIME, event.target.value / 100);
+    });
 };
 
 const stop = function (instance) {

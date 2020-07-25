@@ -16,9 +16,14 @@ const start = function (emitter) {
     const timer = document.getElementById(`time`);
     emitter.on(TICK, () => {
         const now = Date.now();
-        const timePassed = now - instance.firstTick;
-        timer.textContent = Math.floor(timePassed / 1000);
+        instance.timePassed = now - instance.firstTick;
+        timer.textContent = Math.floor(timePassed / 1000); // display in s
     });
+
+    emitter.on(WANTS_TRAVEL_TIME, float => {
+        const destination = Date.now() - (instance.timePassed * float);
+        emitter.emit(TRAVEL_TIME, destination);
+    })
     // pauseButton.addEventListener(`click`, function (event) {
     //     if (paused) {
     //         emitter.emit(RESUME);
