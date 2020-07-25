@@ -1,6 +1,6 @@
 export { start, stop, getState, restoreState };
 import { WANT_DRAW } from "./eventNames.js";
-import { initialGrid, alive, dead, size } from "./settings/grid.js";
+import { alive, dead, size } from "./settings/grid.js";
 import { width, height, pixelSize } from "./settings/graphics.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
@@ -20,7 +20,7 @@ const drawGrid = function (context, grid) {
   context.fillStyle = `#000000`;
   context.fillRect(0, 0, width, height);
   // draw
-  initialGrid.forEach((row, x) => {
+  grid.forEach((row, x) => {
     row.forEach((cell, y) => {
       if (cell === alive) {
         drawOne(context, {x, y});
