@@ -1,5 +1,6 @@
 export { start, stop };
-import { WANT_DRAW, WANT_LOAD, WANTS_SAVE } from "./eventNames.js";
+import { WANT_DRAW, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME } from "./eventNames.js";
+import { pixelSize } from "./settings/graphics.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 
@@ -12,53 +13,38 @@ const start = function (emitter) {
 };
 
 const startDrawInput = function (emitter, instance) {
-    // let x1 = 0;
-    // let y1 = 0;  
-    // const canvas = document.getElementById(`canvas`);
-    // const onpointerdown = function (event) {
-    //     x1 = event.clientX;
-    //     y1 = event.clientY;
-    // };
-    // const onpointerup = function (event) {
-    //     emitter.emit(WANT_DRAW, {
-    //         x1,
-    //         y1,
-    //         x2: event.clientX,
-    //         y2: event.clientY,
-    //     });
-    // };
-    // canvas.addEventListener(`pointerdown`, onpointerdown);
-    // canvas.addEventListener(`pointerup`, onpointerup);
-    // return Object.assign(instance, { 
-    //     onpointerdown,
-    //     onpointerup,
-    //     canvas,
-    // });
-    return instance;
+    const canvas = document.getElementById(`canvas`);
+    const onpointerdown = function (event) {
+        emitter.emit(WANTS_TOGGLE, {
+            x: Math.round(event.clientX  / pixelSize - 0.5), // take center of square
+            y: Math.round(event.clientY / pixelSize - 0.5),
+        })
+    };
+
+    canvas.addEventListener(`pointerdown`, onpointerdown);
+    return Object.assign(instance, { 
+        onpointerdown,
+        canvas,
+    });
 };
 
 const startUiInput = function (emitter, instance) {
-    // for (let i = 1; i < 5; i += 1) {
-    //     const loadButton = document.getElementById(String(i));
-    //     const onLoadClick = function (event) {
-    //         emitter.emit(WANT_LOAD, i);
-    //     };
-    //     loadButton.addEventListener(`click`, onLoadClick);
-    // }
-
-    
-    // const saveButton = document.getElementById(`save`);
-    // saveButton.addEventListener(`click`, function (event) {
-    //     emitter.emit(WANTS_SAVE);
-    // });
+    let paused = false;
+    const pauseButton = document.getElementById(`pause`);
+    pauseButton.addEventListener(`click`, function (event) {
+        if (paused) {
+            emitter.emit(RESUME);
+        } else {
+            emitter.emit(PAUSE);
+        }
+        paused = !paused;
+    });
 };
 
 const stop = function (instance) {
     const { 
         onpointerdown,
-        onpointerup,
         canvas,
     } = instance;
     canvas.removeEventListener(`pointerdown`, onpointerdown);
-    canvas.removeEventListener(`pointerup`, onpointerup);
 };
