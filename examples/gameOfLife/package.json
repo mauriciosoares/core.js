@@ -1,0 +1,7 @@
+{
+  "name": "gameoflife",
+  "version": "1.0.0",
+  "dependencies": {
+    "utilsac": "^12.3.1"
+  }
+}

@@ -1,5 +1,5 @@
 
  * implement gmae of life ok
  * single responsability ok
- * toggle cells
+ * toggle cells ok
  * clickable time bar
