@@ -5,14 +5,17 @@ import { TICK, PAUSE, RESUME } from "./eventNames.js";
 
 
 const start = (emitter) => {
-    let intervalId = startInterval(emitter);
+    const instance = {
+        intervalId: startInterval(emitter),
+    };
+    
     emitter.on(PAUSE, () => {
-        stop(intervalId);
+        stop(instance);
     });
     emitter.on(RESUME, () => {
-        intervalId = startInterval(emitter);
+        instance.intervalId = startInterval(emitter);
     });
-    return intervalId;
+    return instance;
 };
 
 const startInterval = (emitter) => {
@@ -21,6 +24,6 @@ const startInterval = (emitter) => {
     }, period);
 }
 
-const stop = (intervalId) => {
-    clearInterval(intervalId);
+const stop = (instance) => {
+    clearInterval(instance.intervalId);
 };
