@@ -1,7 +1,6 @@
 export { start, stop, getState, restoreState };
 import { WANT_DRAW, TICK, WANTS_TOGGLE } from "./eventNames.js";
 import { initialGrid, alive, dead, size } from "./settings/grid.js";
-import {deepCopy} from "./node_modules/utilsac/deep.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 // SOURCE https://github.com/sklise/conways-game-of-life/blob/gh-pages/js/game.js + EDITS
@@ -30,7 +29,7 @@ function actualModulo(divisor, dividend) {
 
 const start = function (emitter) {
   const instance = {
-    grid: deepCopy(initialGrid),
+    grid: initialGrid,
   };
 
   
