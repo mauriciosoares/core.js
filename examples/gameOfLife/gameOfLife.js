@@ -35,12 +35,12 @@ const start = function (emitter) {
 
   
   emitter.on(TICK, () => {
-    instance.grid = evolveGrid(instance.grid);
+    instance.grid = deepCopy(evolveGrid(instance.grid));
     emitter.emit(WANT_DRAW, instance.grid);
   });
 
   emitter.on(WANTS_TOGGLE, ({x, y}) => {
-    toggleCell(instance.grid, x, y);
+    instance.grid = deepCopy(toggleCell(instance.grid, x, y));
     emitter.emit(WANT_DRAW, instance.grid);
   });
   return instance;
@@ -48,6 +48,7 @@ const start = function (emitter) {
 
 const toggleCell = (grid, x, y) => {
   grid[x][y] = Number(!grid[x][y]);
+  return grid;
 };
 
 //### sumNeighbors

@@ -44,7 +44,7 @@ const restart = async () => {
 const replay = async () => {
     const previousEvents = eventRecording.events;
     await restart();
-    replayEvents(core, previousEvents, { sameSpeed: true });
+    replayEvents(core, previousEvents, { sameSpeed: true, pauseEmits: true });
 };
 const controlZ =  async () => {
     const previousEvents = eventRecording.events;
