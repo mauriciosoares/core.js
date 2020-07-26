@@ -74,7 +74,7 @@ const Core = class {
         }));
     }
 
-    start(module, { name = Symbol() } = {}) {
+    start(module, { name = Symbol(), data = undefined } = {}) {
         if (this.moduleInstances.has(name)) {
             return Promise.reject(`module with name ${name} already started`);
         }
@@ -88,7 +88,7 @@ const Core = class {
         emitter.emit = this.boundModuleEmit;
 
         return Promise.resolve().then(() => {
-            return module.start(emitter);
+            return module.start(emitter, data);
         }).then(instance => {
             this.moduleInstances.set(name, {
                 module,

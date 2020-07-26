@@ -178,6 +178,7 @@ Returns a new instance of core.
  * `module`  The module as a name-space ( `import * as exampleModule from "./exampleModule.js"` )
  * `options` optional object
    * name optional, String or Symbol that become *moduleInstanceId*
+   * data optional, will be passed as second argument to the start function of the module
 
 returns a promise that resolves with *moduleInstanceId* that can later be used to stop the module
 
@@ -310,6 +311,11 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 3. `npm t`
 
 ## Changelog
+
+### 3.2.0
+
+ * core.start accepts addition named data parameter that will be passed to the start function as second argument
+
 
 ### 3.1.0
 
