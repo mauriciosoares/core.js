@@ -1,6 +1,6 @@
 import { Core, useDefaultLogging, stopEventRecorder, startEventRecorder, replayEvents } from "../../dist/core.es.js";
 
-import { LOAD, WANTS_SAVE, SAVE, TICK, TRAVEL_TIME } from "./eventNames.js";
+import { LOAD, WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME } from "./eventNames.js";
 
 import * as draw from "./draw.js";
 import * as gameOfLife from "./gameOfLife.js";
@@ -55,7 +55,6 @@ const replay = async () => {
 // },5000)
 
 
-restart();
 
 core.on(TRAVEL_TIME, async (destination) => {
     const previousEvents = eventRecording.events;
@@ -69,6 +68,15 @@ core.on(TRAVEL_TIME, async (destination) => {
         return true;
     });
     previousEvents.length = lastIndex;
+    const withoutTimeEvents = previousEvents.filter(event => {
+        return name !== TRAVEL_TIME && name !== WANTS_TRAVEL_TIME;
+    });
     await restart();
-    replayEvents(core, previousEvents, { sameSpeed: false });
+    replayEvents(core, withoutTimeEvents, { sameSpeed: false });
+    // does not need to emit resume as the event was recorded and replayed
+});
+
+
+restart().then(() => {
+    core.moduleEmit(RESUME);
 });

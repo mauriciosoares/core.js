@@ -6,7 +6,7 @@ import { TICK, PAUSE, RESUME } from "./eventNames.js";
 
 const start = (emitter) => {
     const instance = {
-        intervalId: startInterval(emitter),
+        intervalId: undefined,
     };
     
     emitter.on(PAUSE, () => {
@@ -22,8 +22,11 @@ const startInterval = (emitter) => {
     return setInterval(() => {
         emitter.emit(TICK);
     }, period);
-}
+};
 
 const stop = (instance) => {
-    clearInterval(instance.intervalId);
+    if (instance.intervalId !== undefined) {
+        clearInterval(instance.intervalId);
+        instance.intervalId = undefined;
+    }
 };

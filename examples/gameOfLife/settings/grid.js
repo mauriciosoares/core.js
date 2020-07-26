@@ -5,10 +5,10 @@ export {
     size,
 };
 
-const size = 50;
+const size = 12;
 const dead = 0;
 const alive = 1;
-const deadRatio = 0.7;
+const deadRatio = 0.85;
 
 // generate random grid
 const initialGrid = [];

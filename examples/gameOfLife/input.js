@@ -31,25 +31,48 @@ const startDrawInput = function (emitter, instance) {
 const startUiInput = function (emitter, instance) {
     let paused = false;
     const pauseButton = document.getElementById(`pause`);
-    pauseButton.addEventListener(`click`, function (event) {
+    const pauseAction = function (event) {
         if (paused) {
             emitter.emit(RESUME);
         } else {
             emitter.emit(PAUSE);
         }
-        paused = !paused;
+    };
+    pauseButton.addEventListener(`click`, pauseAction);
+    emitter.on(PAUSE, () => {
+        pauseButton.textContent = `RESUME`;
+        paused = true;
+    });
+    emitter.on(RESUME, () => {
+        pauseButton.textContent = `PAUSE`;
+        paused = false;
     });
 
     const slider = document.getElementById(`slider`);
-    slider.addEventListener(`input`, function (event) {
+    slider.value = 100;
+    const sliderAction = function (event) {
         emitter.emit(WANTS_TRAVEL_TIME, event.target.value / 100);
+        event.target.value = 100;
+    };
+    slider.addEventListener(`input`, sliderAction);
+    return Object.assign(instance, {
+        slider,
+        pauseButton,
+        pauseAction,
+        sliderAction,
     });
 };
 
 const stop = function (instance) {
     const { 
+        slider,
+        pauseButton,
         onpointerdown,
+        pauseAction,
+        sliderAction,
         canvas,
     } = instance;
     canvas.removeEventListener(`pointerdown`, onpointerdown);
+    slider.removeEventListener(`input`, sliderAction);
+    pauseButton.removeEventListener(`click`, pauseAction);
 };

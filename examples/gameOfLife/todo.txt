@@ -2,4 +2,8 @@
  * implement gmae of life ok
  * single responsability ok
  * toggle cells ok
- * clickable time bar
+ * clickable time bar ok
+ * time bar cursor should be in correct position ok
+ * when replaying events do not replay the replay event ok
+ * time module needs to restart with data
+ * display something while loading
