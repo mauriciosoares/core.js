@@ -6,7 +6,7 @@ const useDefaultLogging = (core, { logger = console } = {}) => {
     // listen for all events
     core.on(ALL, ({ name, data, time }) => {
         const timeString = new Date(time).toISOString();
-        logger.debug(`${timeString} event ${String(name)} with data`, data);
+        logger.debug(`${timeString} event ${String(name)} data`, data);
     });
 
     

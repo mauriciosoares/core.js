@@ -24,7 +24,7 @@ const start = function (emitter) {
         const destination = Date.now() - (instance.timePassed * float);
         const t = new Date()
         t.setTime(destination);
-        console.log(t.toLocaleTimeString())
+        console.log('destination', t.toLocaleTimeString())
         emitter.emit(TRAVEL_TIME, destination);
     })
     // pauseButton.addEventListener(`click`, function (event) {

@@ -314,6 +314,7 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ### 3.2.0
 
+ * more compact logging
  * core.start accepts addition named data parameter that will be passed to the start function as second argument
 
 
