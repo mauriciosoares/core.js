@@ -1,6 +1,6 @@
 import { Core, useDefaultLogging, stopEventRecorder, startEventRecorder, replayEvents } from "../../dist/core.es.js";
 
-import { LOAD, WANTS_SAVE, SAVE, TICK } from "./eventNames.js";
+import { LOAD, WANTS_SAVE, SAVE, TICK, TRAVEL_TIME } from "./eventNames.js";
 
 import * as draw from "./draw.js";
 import * as gameOfLife from "./gameOfLife.js";
@@ -13,7 +13,7 @@ import * as time from "./time.js";
 
 const core = new Core();
 
-// useDefaultLogging(core);
+useDefaultLogging(core);
 
 
 
@@ -50,27 +50,25 @@ const replay = async () => {
 
 
 // test
-setTimeout(() => {
-    replay();
-},5000)
+// setTimeout(() => {
+//     replay();
+// },5000)
 
 
 restart();
 
-core.on(TRAVEL_TIME, destination => {
+core.on(TRAVEL_TIME, async (destination) => {
     const previousEvents = eventRecording.events;
-    
-    const lastIndex = previousEvents.reduce((currentIndex, event, i) => {
+    let lastIndex = 0;
+    previousEvents.every((event, i) => {
         const { name, data, time } = event;
-        if (currentIndex === 0) {
-            if (time > destination) {
-                return i
-            }
-            return currentIndex
+        if (time > destination) {
+            lastIndex = i;
+            return false;
         }
-    }, 0);
-    previousEvents.pop(); // forget last
+        return true;
+    });
+    previousEvents.length = lastIndex;
     await restart();
     replayEvents(core, previousEvents, { sameSpeed: false });
-
-})
+});

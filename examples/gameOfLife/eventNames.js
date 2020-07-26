@@ -8,6 +8,8 @@ export {
     WANTS_TOGGLE,
     PAUSE,
     RESUME,
+    WANTS_TRAVEL_TIME,
+    TRAVEL_TIME,
 };
 
 
@@ -20,4 +22,6 @@ const TICK = `TICK`;
 const WANTS_TOGGLE = `WANTS_TOGGLE`;
 const PAUSE = `PAUSE`;
 const RESUME = `RESUME`;
+const WANTS_TRAVEL_TIME = `WANTS_TRAVEL_TIME`;
+const TRAVEL_TIME = `TRAVEL_TIME`;
 

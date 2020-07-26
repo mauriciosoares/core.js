@@ -1,5 +1,5 @@
 export { start, stop };
-import { WANT_DRAW, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME } from "./eventNames.js";
+import { WANT_DRAW, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME, WANTS_TRAVEL_TIME } from "./eventNames.js";
 import { pixelSize } from "./settings/graphics.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";

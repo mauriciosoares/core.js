@@ -1,5 +1,5 @@
 export { start, stop };
-import { TICK } from "./eventNames.js";
+import { TICK, WANTS_TRAVEL_TIME, TRAVEL_TIME } from "./eventNames.js";
 import { pixelSize } from "./settings/graphics.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
@@ -17,7 +17,7 @@ const start = function (emitter) {
     emitter.on(TICK, () => {
         const now = Date.now();
         instance.timePassed = now - instance.firstTick;
-        timer.textContent = Math.floor(timePassed / 1000); // display in s
+        timer.textContent = Math.floor(instance.timePassed / 1000); // display in s
     });
 
     emitter.on(WANTS_TRAVEL_TIME, float => {
