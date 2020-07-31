@@ -7,3 +7,4 @@
  * when replaying events do not replay the replay event ok
  * time module needs to restart with data
  * display something while loading
+ * TRAVEL TIME STILL CALLED TWICE

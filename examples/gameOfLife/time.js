@@ -5,9 +5,9 @@ import { pixelSize } from "./settings/graphics.js";
 // import { configuration } from "./configuration.js";
 
 
-const start = function (emitter) {
+const start = function (emitter, firstTick) {
     const instance = {
-        firstTick: Date.now(),
+        firstTick,
 
         timePassed: 0
     };
@@ -27,14 +27,6 @@ const start = function (emitter) {
         console.log('destination', t.toLocaleTimeString())
         emitter.emit(TRAVEL_TIME, destination);
     })
-    // pauseButton.addEventListener(`click`, function (event) {
-    //     if (paused) {
-    //         emitter.emit(RESUME);
-    //     } else {
-    //         emitter.emit(PAUSE);
-    //     }
-    //     paused = !paused;
-    // });
     return instance;
 };
 

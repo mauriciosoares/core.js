@@ -1,6 +1,7 @@
 export { start, stop };
 import { WANT_DRAW, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME, WANTS_TRAVEL_TIME } from "./eventNames.js";
 import { pixelSize } from "./settings/graphics.js";
+import { createThrottled } from "./node_modules/utilsac/utility.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 
@@ -50,10 +51,11 @@ const startUiInput = function (emitter, instance) {
 
     const slider = document.getElementById(`slider`);
     slider.value = 100;
-    const sliderAction = function (event) {
+    const sliderAction = createThrottled(function (event) {
+        console.log('A')
         emitter.emit(WANTS_TRAVEL_TIME, event.target.value / 100);
         event.target.value = 100;
-    };
+    }, 1200);
     slider.addEventListener(`input`, sliderAction);
     return Object.assign(instance, {
         slider,
