@@ -17,27 +17,31 @@ useDefaultLogging(core);
 
 
 let eventRecording;
-let moduleInstanceNames = [];
+let moduleInstanceNamesToRestart = [];
 const firstTick = Date.now(); // keep value after restarts
 
 const restart = async () => {
     stopEventRecorder(core, eventRecording);
-    await Promise.all(moduleInstanceNames.map(moduleInstanceName => {
+    await Promise.all(moduleInstanceNamesToRestart.map(moduleInstanceName => {
         return core.stop(moduleInstanceName);
     }));
 
     eventRecording = startEventRecorder(core);
 
-    moduleInstanceNames = [
-        await core.start(loader),
-        await core.start(saver),
+    moduleInstanceNamesToRestart = [
         await core.start(draw, {name: `draw`}),
         await core.start(gameOfLife, {name: `gameOfLife`}),
-        await core.start(input, {name: `input`}),
-        await core.start(time, {name: `time`, data: firstTick}),
         await core.start(gameLoop, {name: `gameLoop`}),
     ]
-    
+};
+
+const start  = async () => {
+    await core.start(loader);
+    await core.start(saver);
+    await core.start(input);
+    await core.start(time, {data: firstTick});
+    await restart();
+    core.moduleEmit(RESUME);
 };
 
 core.on(TRAVEL_TIME, async (destination) => {
@@ -56,22 +60,15 @@ core.on(TRAVEL_TIME, async (destination) => {
     });
     let t = new Date();
     t.setTime(destination);
-    console.log(t);
-    console.log('index', lastIndex);
-    console.log(deepCopy(previousEvents));
     previousEvents.length = lastIndex;
-    console.log(deepCopy(previousEvents));
     const withoutTimeEvents = previousEvents.filter(event => {
         const {name} = event;
         return name !== TRAVEL_TIME && name !== WANTS_TRAVEL_TIME;
     });
-    console.log(deepCopy(withoutTimeEvents));
     await restart();
     replayEvents(core, withoutTimeEvents, { sameSpeed: false });
     // does not need to emit resume as the event was recorded and replayed
 });
 
 
-restart().then(() => {
-    core.moduleEmit(RESUME);
-});
+start();

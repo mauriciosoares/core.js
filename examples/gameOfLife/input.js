@@ -54,7 +54,10 @@ const startUiInput = function (emitter, instance) {
     const sliderAction = createThrottled(function (event) {
         console.log('A')
         emitter.emit(WANTS_TRAVEL_TIME, event.target.value / 100);
-        event.target.value = 100;
+        // let input and onchange event finish
+        setTimeout(() => {
+            event.target.value = 100;
+        }, 1000);
     }, 1200);
     slider.addEventListener(`input`, sliderAction);
     return Object.assign(instance, {
