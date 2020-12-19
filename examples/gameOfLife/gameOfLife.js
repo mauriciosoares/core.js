@@ -35,7 +35,7 @@ const start = function (emitter) {
 
   
   emitter.on(TICK, () => {
-    instance.grid = deepCopy(evolveGrid(instance.grid));
+    instance.grid = evolveGrid(deepCopy(instance.grid));
     emitter.emit(WANT_DRAW, instance.grid);
   });
 
@@ -43,7 +43,7 @@ const start = function (emitter) {
     if (x >= size || y >= size) {
       return; // out of scope
     }
-    instance.grid = deepCopy(toggleCell(instance.grid, x, y));
+    instance.grid = toggleCell(deepCopy(instance.grid, x, y));
     emitter.emit(WANT_DRAW, instance.grid);
   });
   return instance;
