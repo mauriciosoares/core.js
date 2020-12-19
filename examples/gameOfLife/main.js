@@ -1,19 +1,19 @@
 import { Core, useDefaultLogging, stopEventRecorder, startEventRecorder, replayEvents } from "../../dist/core.es.js";
 
-import { LOAD, WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME } from "./eventNames.js";
+import { LOAD, WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME, PAUSE } from "./eventNames.js";
 
 import * as draw from "./draw.js";
 import * as gameOfLife from "./gameOfLife.js";
 import * as input from "./input.js";
-import * as loader from "./loader.js";
-import * as saver from "./saver.js";
+// import * as loader from "./loader.js";
+// import * as saver from "./saver.js";
 import * as gameLoop from "./gameLoop.js";
 import * as time from "./time.js";
-import { deepCopy } from "./node_modules/utilsac/deep.js";
+// import { deepCopy } from "./node_modules/utilsac/deep.js";
 
 
 const core = new Core();
-useDefaultLogging(core);
+// useDefaultLogging(core);
 
 
 let eventRecording;
@@ -31,42 +31,48 @@ const restart = async () => {
     moduleInstanceNamesToRestart = [
         await core.start(draw, {name: `draw`}),
         await core.start(gameOfLife, {name: `gameOfLife`}),
-        await core.start(gameLoop, {name: `gameLoop`}),
     ]
 };
 
 const start  = async () => {
-    await core.start(loader);
-    await core.start(saver);
+    // await core.start(loader);
+    // await core.start(saver);
     await core.start(input);
     await core.start(time, {data: firstTick});
+    await core.start(gameLoop, {name: `gameLoop`}),
     await restart();
     core.moduleEmit(RESUME);
 };
 
+const metaEvents = [
+    TRAVEL_TIME,
+    WANTS_TRAVEL_TIME,
+    WANTS_SAVE, //todo all load and save
+    PAUSE,
+    RESUME,
+]
+
 core.on(TRAVEL_TIME, async (destination) => {
+    core.moduleEmit(PAUSE);
     const previousEvents = eventRecording.events;
-    let lastIndex = 0;
-    previousEvents.every((event, i) => {
+    let lastIndex = previousEvents.findIndex((event, i) => {
         const { name, data, time } = event;
-        let t = new Date();
-        t.setTime(time);
-        console.log(`${name} at ${t}`, time > destination);
+        // console.log(`${name} at ${t}`, time > destination);
         if (time > destination) {
-            lastIndex = i;
-            return false;
+            return true;
         }
-        return true;
-    });
-    let t = new Date();
-    t.setTime(destination);
-    previousEvents.length = lastIndex;
+    }) ;
+    if (lastIndex !== -1) {
+        previousEvents.length = lastIndex;
+    }
     const withoutTimeEvents = previousEvents.filter(event => {
         const {name} = event;
-        return name !== TRAVEL_TIME && name !== WANTS_TRAVEL_TIME;
+        return !metaEvents.includes(name)
     });
     await restart();
-    replayEvents(core, withoutTimeEvents, { sameSpeed: false });
+    replayEvents(core, withoutTimeEvents, { sameSpeed: true });
+    
+    // core.moduleEmit(PAUSE);
     // does not need to emit resume as the event was recorded and replayed
 });
 

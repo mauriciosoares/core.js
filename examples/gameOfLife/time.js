@@ -8,7 +8,7 @@ import { pixelSize } from "./settings/graphics.js";
 const start = function (emitter, firstTick) {
     const instance = {
         firstTick,
-
+        frame: 0,
         timePassed: 0
     };
     let paused = false;
@@ -16,8 +16,10 @@ const start = function (emitter, firstTick) {
     const timer = document.getElementById(`time`);
     emitter.on(TICK, () => {
         const now = Date.now();
-        instance.timePassed = now - instance.firstTick;
-        timer.textContent = Math.floor(instance.timePassed / 1000); // display in s
+        instance.frame += 1
+        instance.timePassed = now - instance.firstTick; // todo
+        timer.textContent = `frame ${instance.frame}`;
+        // timer.textContent = Math.floor(instance.timePassed / 1000); // display in s
     });
 
     emitter.on(WANTS_TRAVEL_TIME, float => {
