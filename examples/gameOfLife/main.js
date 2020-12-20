@@ -39,7 +39,7 @@ const start  = async () => {
     // await core.start(saver);
     await core.start(input);
     await core.start(time, {data: firstTick});
-    await core.start(gameLoop, {name: `gameLoop`}),
+    await core.start(gameLoop, {name: `gameLoop`});
     await restart();
     core.moduleEmit(RESUME);
 };
@@ -55,7 +55,7 @@ const metaEvents = [
 core.on(TRAVEL_TIME, async (destination) => {
     core.moduleEmit(PAUSE);
     const previousEvents = eventRecording.events;
-    const lastIndex = previousEvents.findIndex((event, i) => {
+    const lastIndex = previousEvents.findIndex((event) => {
         const { name, data, time } = event;
         // console.log(`${name} at ${t}`, time > destination);
         if (time > destination) {

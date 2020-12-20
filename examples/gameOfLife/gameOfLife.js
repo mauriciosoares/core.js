@@ -65,7 +65,9 @@ function sumNeighbors(cells, w, h, x, y) {
 //### census
 // Count up neighbors;
 function census(grid, width, height) {
-  const newNeighborCounts = buildArray(width, height, function() { return 0; });
+  const newNeighborCounts = buildArray(width, height, function() {
+     return 0;
+  });
   grid.forEach(function(rowArray, yIndex) {
     rowArray.forEach(function(cellState, xIndex) {
       newNeighborCounts[yIndex][xIndex] = sumNeighbors(grid, width, height, xIndex, yIndex);
