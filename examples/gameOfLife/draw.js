@@ -25,7 +25,7 @@ const drawGrid = function (context, grid) {
       if (cell === alive) {
         drawOne(context, {x, y});
       }
-    })
+    });
   });
 };
 

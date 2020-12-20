@@ -31,7 +31,7 @@ const restart = async () => {
     moduleInstanceNamesToRestart = [
         await core.start(draw, {name: `draw`}),
         await core.start(gameOfLife, {name: `gameOfLife`}),
-    ]
+    ];
 };
 
 const start  = async () => {
@@ -50,12 +50,12 @@ const metaEvents = [
     WANTS_SAVE, //todo all load and save
     PAUSE,
     RESUME,
-]
+];
 
 core.on(TRAVEL_TIME, async (destination) => {
     core.moduleEmit(PAUSE);
     const previousEvents = eventRecording.events;
-    let lastIndex = previousEvents.findIndex((event, i) => {
+    const lastIndex = previousEvents.findIndex((event, i) => {
         const { name, data, time } = event;
         // console.log(`${name} at ${t}`, time > destination);
         if (time > destination) {
@@ -67,7 +67,7 @@ core.on(TRAVEL_TIME, async (destination) => {
     }
     const withoutTimeEvents = previousEvents.filter(event => {
         const {name} = event;
-        return !metaEvents.includes(name)
+        return !metaEvents.includes(name);
     });
     await restart();
     replayEvents(core, withoutTimeEvents, { sameSpeed: true });

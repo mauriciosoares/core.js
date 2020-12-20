@@ -9,14 +9,14 @@ const start = function (emitter, firstTick) {
     const instance = {
         firstTick,
         frame: 0,
-        timePassed: 0
+        timePassed: 0,
     };
-    let paused = false;
+    const paused = false;
     const slider = document.getElementById(`slider`);
     const timer = document.getElementById(`time`);
     emitter.on(TICK, () => {
         const now = Date.now();
-        instance.frame += 1
+        instance.frame += 1;
         instance.timePassed = now - instance.firstTick; // todo
         timer.textContent = `frame ${instance.frame}`;
         // timer.textContent = Math.floor(instance.timePassed / 1000); // display in s
@@ -24,11 +24,11 @@ const start = function (emitter, firstTick) {
 
     emitter.on(WANTS_TRAVEL_TIME, float => {
         const destination = Date.now() - (instance.timePassed * float);
-        const t = new Date()
+        const t = new Date();
         t.setTime(destination);
-        console.log('destination', t.toLocaleTimeString())
+        console.log(`destination`, t.toLocaleTimeString());
         emitter.emit(TRAVEL_TIME, destination);
-    })
+    });
     return instance;
 };
 

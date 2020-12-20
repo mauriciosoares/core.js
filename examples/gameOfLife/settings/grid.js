@@ -18,7 +18,7 @@ for (let i = 0; i < size; i += 1) {
   for (let j = 0; j < size; j += 1) {
     let cell = dead;
     if (Math.random() > deadRatio) {
-      cell = alive
+      cell = alive;
     }
     initialGrid[i].push(cell);
   }

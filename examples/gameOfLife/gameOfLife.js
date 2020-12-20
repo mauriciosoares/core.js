@@ -19,13 +19,13 @@ import {deepCopy} from "./node_modules/utilsac/deep.js";
 //     -1 % 15 === -1; // Desired result is 14
 //     actualModulo(-1, 15) === 14
 function actualModulo(divisor, dividend) {
-  var fakeMod = divisor % dividend;
+  const fakeMod = divisor % dividend;
 
   if (fakeMod < 0) {
     return dividend + fakeMod;
-  } else {
+  } 
     return fakeMod;
-  }
+  
 }
 
 const start = function (emitter) {
@@ -65,7 +65,7 @@ function sumNeighbors(cells, w, h, x, y) {
 //### census
 // Count up neighbors;
 function census(grid, width, height) {
-  var newNeighborCounts = buildArray(width, height, function() { return 0; });
+  const newNeighborCounts = buildArray(width, height, function() { return 0; });
   grid.forEach(function(rowArray, yIndex) {
     rowArray.forEach(function(cellState, xIndex) {
       newNeighborCounts[yIndex][xIndex] = sumNeighbors(grid, width, height, xIndex, yIndex);
@@ -78,10 +78,10 @@ function census(grid, width, height) {
 // Create a two dimensional array given two dimensions and a function to fill the array
 // the predicate function is passed the x and y coordinates of the array position.
 function buildArray(w, h, pred) {
-  var arr = Array(h);
-  for (var i = 0; i < h; i += 1) {
-    var arrRow = Array(w);
-    for (var j = 0; j < w; j += 1) {
+  const arr = Array(h);
+  for (let i = 0; i < h; i += 1) {
+    const arrRow = Array(w);
+    for (let j = 0; j < w; j += 1) {
       arrRow[j] = pred(j,i);
     }
     arr[i] = arrRow;
@@ -92,7 +92,7 @@ function buildArray(w, h, pred) {
 function nextGeneration(grid, neighborCounts) {
   grid.forEach(function(rowArray, yIndex) {
     rowArray.forEach(function(cellState, xIndex) {
-      var count = neighborCounts[yIndex][xIndex];
+      const count = neighborCounts[yIndex][xIndex];
       var cellState = grid[yIndex][xIndex];
       // If the cell has the proper number of neighbors to turn from dead to alive set
       // the cell to alive. Else, if the cell is currently alive and meets the
