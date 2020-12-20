@@ -1,3 +1,2 @@
  * time module needs to restart with data
  * display something while loading
- * TRAVEL TIME STILL CALLED TWICE
