@@ -43,7 +43,7 @@ const start = function (emitter) {
     if (x >= size || y >= size) {
       return; // out of scope
     }
-    instance.grid = toggleCell(deepCopy(instance.grid, x, y));
+    instance.grid = toggleCell(deepCopy(instance.grid), Math.abs(x), Math.abs(y));
     emitter.emit(WANT_DRAW, instance.grid);
   });
   return instance;

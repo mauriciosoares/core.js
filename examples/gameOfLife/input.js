@@ -17,8 +17,8 @@ const startDrawInput = function (emitter, instance) {
     const canvas = document.getElementById(`canvas`);
     const onpointerdown = function (event) {
         emitter.emit(WANTS_TOGGLE, {
-            x: Math.round(event.clientX  / pixelSize - 0.5), // take center of square
-            y: Math.round(event.clientY / pixelSize - 0.5),
+            x: Math.round(event.offsetX  / pixelSize - 0.5), // take center of square
+            y: Math.round(event.offsetY / pixelSize - 0.5),
         });
     };
 

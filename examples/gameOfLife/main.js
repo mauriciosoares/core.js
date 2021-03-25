@@ -1,8 +1,9 @@
 import { Core, useDefaultLogging, stopEventRecorder, startEventRecorder, replayEvents } from "../../dist/core.es.js";
 
-import { LOAD, WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME, PAUSE } from "./eventNames.js";
+import { LOAD, WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME, PAUSE, STATUS_CHANGED } from "./eventNames.js";
 
 import * as draw from "./draw.js";
+import * as status from "./status.js";
 import * as gameOfLife from "./gameOfLife.js";
 import * as input from "./input.js";
 // import * as loader from "./loader.js";
@@ -13,7 +14,7 @@ import * as time from "./time.js";
 
 
 const core = new Core();
-// useDefaultLogging(core);
+useDefaultLogging(core);
 
 
 let eventRecording;
@@ -40,6 +41,7 @@ const start  = async () => {
     await core.start(input);
     await core.start(time, {data: firstTick});
     await core.start(gameLoop, {name: `gameLoop`});
+    await core.start(status);
     await restart();
     core.moduleEmit(RESUME);
 };
@@ -58,11 +60,10 @@ core.on(TRAVEL_TIME, async (destination) => {
     const lastIndex = previousEvents.findIndex((event) => {
         const { name, data, time } = event;
         // console.log(`${name} at ${t}`, time > destination);
-        if (time > destination) {
-            return true;
-        }
+        return time > destination;
     }) ;
     if (lastIndex !== -1) {
+        // drop all events after
         previousEvents.length = lastIndex;
     }
     const withoutTimeEvents = previousEvents.filter(event => {
@@ -70,7 +71,9 @@ core.on(TRAVEL_TIME, async (destination) => {
         return !metaEvents.includes(name);
     });
     await restart();
+    core.moduleEmit(STATUS_CHANGED, "replaying events");
     replayEvents(core, withoutTimeEvents, { sameSpeed: true });
+    core.moduleEmit(STATUS_CHANGED, "ready");
     
     // core.moduleEmit(PAUSE);
     // does not need to emit resume as the event was recorded and replayed
