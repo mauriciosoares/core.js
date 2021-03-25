@@ -1,4 +1,4 @@
 export { period };
 
-const period = 200;
+const period = 2000;
 

@@ -1,6 +1,5 @@
 export { start, stop };
 import { TICK, WANTS_TRAVEL_TIME, TRAVEL_TIME } from "./eventNames.js";
-import { pixelSize } from "./settings/graphics.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 
