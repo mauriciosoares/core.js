@@ -14,15 +14,14 @@ const start = function (emitter, firstTick) {
     const slider = document.getElementById(`slider`);
     const timer = document.getElementById(`time`);
     emitter.on(TICK, () => {
-        const now = Date.now();
+        const now = Date.now(); 
         instance.frame += 1;
-        instance.timePassed = now - instance.firstTick; // todo
-        timer.textContent = `frame ${instance.frame}`;
-        // timer.textContent = Math.floor(instance.timePassed / 1000); // display in s
+        instance.timePassed = now - instance.firstTick;
+        timer.textContent = `frame ${instance.frame} time ${Math.floor(instance.timePassed / 1000)}s`;
     });
 
     emitter.on(WANTS_TRAVEL_TIME, float => {
-        const destination = Date.now() - (instance.timePassed * float);
+        const destination = Date.now() - (instance.timePassed * (1-float));
         const t = new Date();
         t.setTime(destination);
         console.log(`destination`, t.toLocaleTimeString());
