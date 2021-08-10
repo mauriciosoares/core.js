@@ -74,11 +74,10 @@ core.on(TRAVEL_TIME, async (destination) => {
     });
     await restart();
     core.moduleEmit(STATUS_CHANGED, "replaying events");
-    replayEvents(core, withoutTimeEvents, { sameSpeed: true });
+    await replayEvents(core, withoutTimeEvents, { sameSpeed: true });
     core.moduleEmit(STATUS_CHANGED, "ready");
     
-    // core.moduleEmit(PAUSE);
-    // does not need to emit resume as the event was recorded and replayed
+    core.moduleEmit(RESUME);
 });
 
 

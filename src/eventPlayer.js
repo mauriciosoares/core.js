@@ -12,9 +12,10 @@ const replayEvents = (core, events, options = {}) => {
     }
 
     if (sameSpeed) {
-        replayEventsSameSpeed(core, events);
+        return replayEventsSameSpeed(core, events);
     } else {
         replayEventsInstantly(core, events);
+        return Promise.resolve();
     }
 };
 
@@ -26,18 +27,21 @@ const replayEventsInstantly = (core, events) => {
 };
 
 const replayEventsSameSpeed = (core, events) => {
-    const { length } = events;
-    let i = 0;
-    const playNext = () => {
-        const event = events[i];
-        core.moduleEmitDirect(event.name, event.data);
-        i += 1;
-        if (i < length) {
-            const timeDifference = events[i].time - event.time;
-            setTimeout(playNext, timeDifference);
-            return;
-        }
-        core.paused = false;
-    };
-    playNext();
+    return new Promise(function (resolve) {
+        const { length } = events;
+        let i = 0;
+        const playNext = () => {
+            const event = events[i];
+            core.moduleEmitDirect(event.name, event.data);
+            i += 1;
+            if (i < length) {
+                const timeDifference = events[i].time - event.time;
+                setTimeout(playNext, timeDifference);
+                return;
+            }
+            core.paused = false;
+            resolve();
+        };
+        playNext();
+    })
 };
