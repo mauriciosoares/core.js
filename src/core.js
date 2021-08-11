@@ -46,7 +46,7 @@ const Core = class {
             // Promise.all preserves order
             const resultsAsObject = {};
             results.forEach((result, i) => {
-                resultsAsObject[names[i]] = result;
+                resultsAsObject[names[i]] = deepCopyAdded(result);
             });
             return resultsAsObject;
         });
