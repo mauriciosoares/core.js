@@ -23,7 +23,7 @@ core.on(LOAD, async (drawState) => {
     });
 });
 
-core.on(WANTS_SAVE, async (drawState) => {
+core.on(WANTS_SAVE, async () => {
     const states = await core.getAllStates();
     core.moduleEmit(SAVE, states[`draw`]);
 });
