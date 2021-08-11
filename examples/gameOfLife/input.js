@@ -1,5 +1,5 @@
 export { start, stop };
-import { WANT_DRAW, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME, WANTS_TRAVEL_TIME } from "./eventNames.js";
+import { STATUS_CHANGED, WANT_DRAW, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME, WANTS_TRAVEL_TIME } from "./eventNames.js";
 import { pixelSize } from "./settings/graphics.js";
 import { createThrottled } from "./node_modules/utilsac/utility.js";
 // import { x, y } from "./dependencies.js";
@@ -7,15 +7,25 @@ import { createThrottled } from "./node_modules/utilsac/utility.js";
 
 
 const start = function (emitter) {
-    const instance = {};
+    const instance = {
+        disabled: false,
+    };
     startUiInput(emitter, instance);
     startDrawInput(emitter, instance);
+    emitter.on(STATUS_CHANGED, (data) => {
+        if (data === "ready") {
+            enableAll(instance);
+        }
+    });
     return instance;
 };
 
 const startDrawInput = function (emitter, instance) {
     const canvas = document.getElementById(`canvas`);
     const onpointerdown = function (event) {
+        if (instance.disabled) {
+            return;
+        }
         emitter.emit(WANTS_TOGGLE, {
             x: Math.round(event.offsetX  / pixelSize - 0.5), // take center of square
             y: Math.round(event.offsetY / pixelSize - 0.5),
@@ -53,6 +63,7 @@ const startUiInput = function (emitter, instance) {
     slider.value = 100;
     const sliderAction = createThrottled(function (event) {
         emitter.emit(WANTS_TRAVEL_TIME, event.target.value / 100);
+        disableAll(instance);
         // let input and onchange event finish
         setTimeout(() => {
             event.target.value = 100;
@@ -79,4 +90,16 @@ const stop = function (instance) {
     canvas.removeEventListener(`pointerdown`, onpointerdown);
     slider.removeEventListener(`input`, sliderAction);
     pauseButton.removeEventListener(`click`, pauseAction);
+};
+
+const disableAll = function (instance) {
+    instance.disabled = true;
+    instance.slider.disabled = true;
+    instance.pauseButton.disabled = true;
+};
+
+const enableAll = function (instance) {
+    instance.disabled = false;
+    instance.slider.disabled = false;
+    instance.pauseButton.disabled = false;
 };

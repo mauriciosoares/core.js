@@ -312,6 +312,10 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## Changelog
 
+### 3.3.0
+
+ * replayEvents now returns a promise
+
 ### 3.2.0
 
  * more compact logging

@@ -30,6 +30,7 @@ const restart = async () => {
     eventRecording = startEventRecorder(core);
 
     moduleInstanceNamesToRestart = [
+        await core.start(time, {data: firstTick}),
         await core.start(draw, {name: `draw`}),
         await core.start(gameOfLife, {name: `gameOfLife`}),
     ];
@@ -39,7 +40,6 @@ const start  = async () => {
     // await core.start(loader);
     // await core.start(saver);
     await core.start(input);
-    await core.start(time, {data: firstTick});
     await core.start(gameLoop, {name: `gameLoop`});
     await core.start(status);
     await restart();
@@ -52,6 +52,7 @@ const metaEvents = [
     WANTS_SAVE, //todo all load and save
     PAUSE,
     RESUME,
+    STATUS_CHANGED,
 ];
 
 core.on(TRAVEL_TIME, async (destination) => {
@@ -59,24 +60,24 @@ core.on(TRAVEL_TIME, async (destination) => {
     const previousEvents = eventRecording.events;
     const lastIndex = previousEvents.findIndex((event) => {
         const { name, data, time } = event;
-        // console.log(`${name} at ${t}`, time > destination);
+        console.log(`${name} at ${time}`, time > destination);
         return time > destination;
     }) ;
     if (lastIndex !== -1) {
         // drop all events after
         previousEvents.length = lastIndex;
     }
+    previousEvents.length = lastIndex;
     const withoutTimeEvents = previousEvents.filter(event => {
         const {name} = event;
         return !metaEvents.includes(name);
     });
     await restart();
     core.moduleEmit(STATUS_CHANGED, "replaying events");
-    replayEvents(core, withoutTimeEvents, { sameSpeed: true });
+    await replayEvents(core, withoutTimeEvents, { sameSpeed: true });
     core.moduleEmit(STATUS_CHANGED, "ready");
     
-    // core.moduleEmit(PAUSE);
-    // does not need to emit resume as the event was recorded and replayed
+    core.moduleEmit(RESUME);
 });
 
 

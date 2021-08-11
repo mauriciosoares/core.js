@@ -10,13 +10,16 @@ import * as tweetCounter from "./tweet-counter.js";
 
 const core = new Core();
 
+
+const initialTweetsInHtml = 1;
+
 // listen for all events
 useDefaultLogging(core);
 
 core.start(tweetForm);
 core.start(tweetList);
-core.start(tweetCounter, { name: `first counter` });
-core.start(tweetCounter, { name: `second counter` });
+core.start(tweetCounter, { name: `first counter`, data: initialTweetsInHtml });
+// core.start(tweetCounter, { name: `second counter` });
 
 
 // extras
