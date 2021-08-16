@@ -261,7 +261,7 @@ Helper to replay events.
 
 #### `replayEvents(core, previousEvents, { sameSpeed = false })`
 
-Will replay previousEvents on core. previousEvents could come from `eventRecording.events` or from a database. Make sure to initialize modules before for it to have any effect. While events are replayed regular event emits are disabled. This avoids duplicated events in case you emit events as a consequence of another event.
+Will replay previousEvents on core. previousEvents could come from `eventRecording.events` or from a database. Make sure to initialize modules before, for it to have any effect. While events are replayed regular event emits are disabled. This avoids duplicated events in case you emit events as a consequence of another event.
 
 
 ```js
@@ -286,7 +286,7 @@ Returns all states. Resolved value is the same shape as what `core.restoreAllSta
 
 ## Fast load with restoreAllState + eventPlayer
 
-Ideally neither restoreAllState nor eventPlayer are used to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
+Ideally neither restoreAllState nor eventPlayer are used alone to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
 
 ## Maintainers
 
@@ -314,7 +314,7 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ### 3.3.0
 
- * replayEvents now returns a promise
+ * replayEvents returns a promise
 
 ### 3.2.0
 
