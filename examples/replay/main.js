@@ -40,7 +40,7 @@ const restart = async (initialCount = 0) => {
         tweetCounterFirstName,
     ];
 };
-const controlZ =  async () => {
+const controlZ = async () => {
     const previousEvents = eventRecording.events;
     // omit this and the function is basically a replay
     previousEvents.pop(); // forget last
