@@ -21,8 +21,9 @@ useDefaultLogging(core);
 
 let eventRecording;
 let moduleInstanceNames = [];
+const initialTweetsInHtml = 1;
 
-const restart = async () => {
+const restart = async (initialCount = 0) => {
     stopEventRecorder(core, eventRecording);
     await Promise.all(moduleInstanceNames.map(moduleInstanceName => {
         return core.stop(moduleInstanceName);
@@ -32,31 +33,27 @@ const restart = async () => {
 
     const tweetFormName = await core.start(tweetForm);
     const tweetListName = await core.start(tweetList);
-    const tweetCounterFirstName = await core.start(tweetCounter, { name: `first counter` });
-    const tweetCounterSecondName = await core.start(tweetCounter, { name: `second counter` });
+    const tweetCounterFirstName = await core.start(tweetCounter, { name: `first counter`, data: initialCount});
     moduleInstanceNames = [
         tweetFormName,
         tweetListName,
         tweetCounterFirstName,
-        tweetCounterSecondName,
     ];
 };
-
-const replay = async () => {
+const controlZ = async () => {
     const previousEvents = eventRecording.events;
-    await restart();
-    replayEvents(core, previousEvents, { sameSpeed: true });
-};
-const controlZ =  async () => {
-    const previousEvents = eventRecording.events;
+    // omit this and the function is basically a replay
     previousEvents.pop(); // forget last
     await restart();
     replayEvents(core, previousEvents, { sameSpeed: false });
 };
 
+// const replay = async () => {
+//     const previousEvents = eventRecording.events;
+//     await restart();
+//     replayEvents(core, previousEvents, { sameSpeed: true });
+// };
+
 document.getElementById(`undo`).addEventListener(`click`, controlZ);
 
-restart();
-
-setTimeout(replay, 10000);
-setTimeout(controlZ, 20000);
+restart(initialTweetsInHtml);

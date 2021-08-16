@@ -3,9 +3,8 @@ import { NEW_TWEET } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 
-const initialCount = 0;
 
-const start = function (emitter) {
+const start = function (emitter, initialCount) {
   const counter = document.createElement(`output`);
   const instance = {
     counter,
@@ -22,7 +21,7 @@ const stop = function (instance) {
 };
 
 const updateCount = function (instance) {
-  instance.counter.textContent = instance.count;
+  instance.counter.textContent = `Number of tweets: ${instance.count}`;
 };
 
 const newTweet = function (instance) {

@@ -67,21 +67,18 @@ A module may export a stop function.
 
 
 ```js
-const stop = function (instance) {
-  // instance is what start returned
+const stop = function (startReturn) {
   // this allows to close open files, sockets, etc
 };
 
-const restoreState = function (instance, state) {
-  // instance is what start returned
+const restoreState = function (startReturn, state) {
   // do what is necessary to restore sate
 };
 
 
-const getState = function (instance) {
+const getState = function (startReturn) {
   // return the current state
   // for example in a drawing application , all the coordinates and shapes drawn
-  //return instance.drawn;
 };
 ```
 
@@ -177,7 +174,8 @@ Returns a new instance of core.
 
  * `module`  The module as a name-space ( `import * as exampleModule from "./exampleModule.js"` )
  * `options` optional object
-   * name optional, String or Symbol that become *moduleInstanceId*
+   * name optional, String or Symbol that becomes *moduleInstanceId*
+   * data optional, will be passed as second argument to the start function of the module
 
 returns a promise that resolves with *moduleInstanceId* that can later be used to stop the module
 
@@ -260,7 +258,7 @@ Helper to replay events.
 
 #### `replayEvents(core, previousEvents, { sameSpeed = false })`
 
-Will replay previousEvents on core. previousEvents could come from `eventRecording.events` or from a database. Make sure to initialize modules before for it to have any effect. While events are replayed regular event emits are disabled. This avoids duplicated events in case you emit events as a consequence of another event.
+Will replay previousEvents on core. previousEvents could come from `eventRecording.events` or from a database. Make sure to initialize modules before, for it to have any effect. While events are replayed regular event emits are disabled. This avoids duplicated events in case you emit events as a consequence of another event.
 
 
 ```js
@@ -285,7 +283,7 @@ Returns all states. Resolved value is the same shape as what `core.restoreAllSta
 
 ## Fast load with restoreAllState + eventPlayer
 
-Ideally neither restoreAllState nor eventPlayer are used to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
+Ideally neither restoreAllState nor eventPlayer are used alone to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
 
 ## Maintainers
 
@@ -310,6 +308,16 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 3. `npm t`
 
 ## Changelog
+
+### 3.3.0
+
+ * replayEvents returns a promise
+
+### 3.2.0
+
+ * more compact logging
+ * core.start accepts addition named data parameter that will be passed to the start function as second argument
+
 
 ### 3.1.0
 

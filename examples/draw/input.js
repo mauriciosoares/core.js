@@ -6,7 +6,7 @@ import { WANT_DRAW, WANT_LOAD, WANTS_SAVE } from "./eventNames.js";
 
 const start = function (emitter) {
     const instance = {};
-    startUiInput(emitter, instance);
+    startUiInput(emitter);
     startDrawInput(emitter, instance);
     return instance;
 };
@@ -36,10 +36,10 @@ const startDrawInput = function (emitter, instance) {
     });  
 };
 
-const startUiInput = function (emitter, instance) {
+const startUiInput = function (emitter) {
     for (let i = 1; i < 5; i += 1) {
         const loadButton = document.getElementById(String(i));
-        const onLoadClick = function (event) {
+        const onLoadClick = function () {
             emitter.emit(WANT_LOAD, i);
         };
         loadButton.addEventListener(`click`, onLoadClick);
@@ -47,7 +47,7 @@ const startUiInput = function (emitter, instance) {
 
     
     const saveButton = document.getElementById(`save`);
-    saveButton.addEventListener(`click`, function (event) {
+    saveButton.addEventListener(`click`, function () {
         emitter.emit(WANTS_SAVE);
     });
 };
