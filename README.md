@@ -67,21 +67,18 @@ A module may export a stop function.
 
 
 ```js
-const stop = function (instance) {
-  // instance is what start returned
+const stop = function (startReturn) {
   // this allows to close open files, sockets, etc
 };
 
-const restoreState = function (instance, state) {
-  // instance is what start returned
+const restoreState = function (startReturn, state) {
   // do what is necessary to restore sate
 };
 
 
-const getState = function (instance) {
+const getState = function (startReturn) {
   // return the current state
   // for example in a drawing application , all the coordinates and shapes drawn
-  //return instance.drawn;
 };
 ```
 
