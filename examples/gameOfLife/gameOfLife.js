@@ -2,7 +2,8 @@ export { start, stop, getState, restoreState };
 import { WANT_DRAW, TICK, WANTS_TOGGLE, WANTS_SAVE, SAVE, LOAD } from "./eventNames.js";
 // assume square (size)
 import { initialGrid, alive, dead, size } from "./settings/grid.js";
-import {deepCopy} from "./node_modules/utilsac/deep.js";
+import {deepCopy} from "./dependencies.js";
+
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
 // SOURCE https://github.com/sklise/conways-game-of-life/blob/gh-pages/js/game.js + EDITS
