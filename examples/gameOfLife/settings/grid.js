@@ -5,7 +5,7 @@ export {
     size,
 };
 
-const size = 12;
+const size = 36;
 const dead = 0;
 const alive = 1;
 const deadRatio = 0.85;

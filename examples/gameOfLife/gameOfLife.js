@@ -1,5 +1,6 @@
 export { start, stop, getState, restoreState };
-import { WANT_DRAW, TICK, WANTS_TOGGLE } from "./eventNames.js";
+import { WANT_DRAW, TICK, WANTS_TOGGLE, WANTS_SAVE, SAVE, LOAD } from "./eventNames.js";
+// assume square (size)
 import { initialGrid, alive, dead, size } from "./settings/grid.js";
 import {deepCopy} from "./node_modules/utilsac/deep.js";
 // import { x, y } from "./dependencies.js";
@@ -31,6 +32,7 @@ function actualModulo(divisor, dividend) {
 const start = function (emitter) {
   const instance = {
     grid: deepCopy(initialGrid),
+    size,
   };
 
   
@@ -39,8 +41,18 @@ const start = function (emitter) {
     emitter.emit(WANT_DRAW, instance.grid);
   });
 
+  emitter.on(WANTS_SAVE, () => {
+    emitter.emit(SAVE, instance.grid);
+  });
+
+  emitter.on(LOAD, (data) => {
+    instance.grid = data;
+    instance.size = data.length;
+    emitter.emit(WANT_DRAW, instance.grid);
+  });
+
   emitter.on(WANTS_TOGGLE, ({x, y}) => {
-    if (x >= size || y >= size) {
+    if (x >= instance.size || y >= instance.size) {
       return; // out of scope
     }
     instance.grid = toggleCell(deepCopy(instance.grid), Math.abs(x), Math.abs(y));
@@ -112,7 +124,8 @@ function nextGeneration(grid, neighborCounts) {
 }
 
 const evolveGrid = (grid) => {
-  const neighborCounts = census(grid, size, size);
+  // assume square (grid.length)
+  const neighborCounts = census(grid, grid.length, grid.length);
   grid = nextGeneration(grid, neighborCounts);
   return grid;
 };

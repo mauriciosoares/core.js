@@ -6,8 +6,8 @@ import * as draw from "./draw.js";
 import * as status from "./status.js";
 import * as gameOfLife from "./gameOfLife.js";
 import * as input from "./input.js";
-// import * as loader from "./loader.js";
-// import * as saver from "./saver.js";
+import * as loader from "./loader.js";
+import * as saver from "./saver.js";
 import * as gameLoop from "./gameLoop.js";
 import * as timeModule from "./time.js";
 // import { deepCopy } from "./node_modules/utilsac/deep.js";
@@ -37,8 +37,8 @@ const restart = async () => {
 };
 
 const start  = async () => {
-    // await core.start(loader);
-    // await core.start(saver);
+    await core.start(loader);
+    await core.start(saver);
     await core.start(input);
     await core.start(gameLoop, {name: `gameLoop`});
     await core.start(status);
