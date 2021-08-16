@@ -94,16 +94,16 @@ function buildArray(w, h, pred) {
 function nextGeneration(grid, neighborCounts) {
   grid.forEach(function(rowArray, yIndex) {
     rowArray.forEach(function(cellState, xIndex) {
+      // const cellState = grid[yIndex][xIndex];
       const count = neighborCounts[yIndex][xIndex];
-      var cellState = grid[yIndex][xIndex];
       // If the cell has the proper number of neighbors to turn from dead to alive set
       // the cell to alive. Else, if the cell is currently alive and meets the
       // requirements to die, set the cell to dead. In all other cases do not update the
       // state of the cell.
       if (count === 3) {
-        grid[yIndex][xIndex] = 1;
+        grid[yIndex][xIndex] = alive;
       } else if (cellState === 1 && (count < 2 || count > 3)) {
-        grid[yIndex][xIndex] = 0;
+        grid[yIndex][xIndex] = dead;
       }
     });
   });

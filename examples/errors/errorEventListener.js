@@ -9,6 +9,6 @@ const start = function (emitter) {
     // console.log('successful start');
 };
 
-const stop = function (emitter) {
+const stop = function (/*startReturn*/) {
     // console.log('successful stop');
 };

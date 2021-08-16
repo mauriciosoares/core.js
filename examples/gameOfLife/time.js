@@ -10,8 +10,7 @@ const start = function (emitter, firstTick) {
         frame: 0,
         timePassed: 0,
     };
-    const paused = false;
-    const slider = document.getElementById(`slider`);
+    
     const timer = document.getElementById(`time`);
     const msPerS = 1000;
     emitter.on(TICK, () => {
@@ -34,8 +33,4 @@ const start = function (emitter, firstTick) {
 
 
 const stop = function (instance) {
-    const { 
-        // onpointerdown,
-    } = instance;
-    // canvas.removeEventListener(`pointerdown`, onpointerdown);
 };

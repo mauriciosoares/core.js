@@ -1,6 +1,6 @@
 export { start, stop, getState, restoreState };
 import { WANT_DRAW } from "./eventNames.js";
-import { alive, dead, size } from "./settings/grid.js";
+import { alive/*, dead, size*/ } from "./settings/grid.js";
 import { width, height, pixelSize } from "./settings/graphics.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
