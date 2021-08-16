@@ -13,7 +13,7 @@ const start = function (emitter) {
     startUiInput(emitter, instance);
     startDrawInput(emitter, instance);
     emitter.on(STATUS_CHANGED, (data) => {
-        if (data === "ready") {
+        if (data === `ready`) {
             enableAll(instance);
         }
     });

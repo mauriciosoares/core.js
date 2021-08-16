@@ -9,7 +9,7 @@ import * as input from "./input.js";
 // import * as loader from "./loader.js";
 // import * as saver from "./saver.js";
 import * as gameLoop from "./gameLoop.js";
-import * as time from "./time.js";
+import * as timeModule from "./time.js";
 // import { deepCopy } from "./node_modules/utilsac/deep.js";
 
 
@@ -30,7 +30,7 @@ const restart = async () => {
     eventRecording = startEventRecorder(core);
 
     moduleInstanceNamesToRestart = [
-        await core.start(time, {data: firstTick}),
+        await core.start(timeModule, {data: firstTick}),
         await core.start(draw, {name: `draw`}),
         await core.start(gameOfLife, {name: `gameOfLife`}),
     ];
@@ -73,9 +73,9 @@ core.on(TRAVEL_TIME, async (destination) => {
         return !metaEvents.includes(name);
     });
     await restart();
-    core.moduleEmit(STATUS_CHANGED, "replaying events");
+    core.moduleEmit(STATUS_CHANGED, `replaying events`);
     await replayEvents(core, withoutTimeEvents, { sameSpeed: true });
-    core.moduleEmit(STATUS_CHANGED, "ready");
+    core.moduleEmit(STATUS_CHANGED, `ready`);
     
     core.moduleEmit(RESUME);
 });

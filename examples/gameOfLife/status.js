@@ -1,4 +1,4 @@
-export { start, stop,  };
+export { start, stop  };
 import { STATUS_CHANGED } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";

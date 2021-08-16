@@ -24,7 +24,7 @@ core.start(tweetCounter, { name: `first counter`, data: initialTweetsInHtml });
 
 // extras
 // stop a module
-setTimeout(() => {
-    console.info(`stopping the second tweet counter`);
-    core.stop(`second counter`);
-}, 10 * 1000);
+// setTimeout(() => {
+//     console.info(`stopping the second tweet counter`);
+//     core.stop(`second counter`);
+// }, 10 * 1000);

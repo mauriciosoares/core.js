@@ -1,4 +1,4 @@
-const { Core, ALL } = require(`../dist/core.umd.cjs`);
+const { Core/*, ALL*/ } = require(`../dist/core.umd.cjs`);
 
 const createModuleMock = () => {
     const module = {

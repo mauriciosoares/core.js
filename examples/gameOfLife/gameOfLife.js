@@ -100,7 +100,7 @@ function nextGeneration(grid, neighborCounts) {
       // the cell to alive. Else, if the cell is currently alive and meets the
       // requirements to die, set the cell to dead. In all other cases do not update the
       // state of the cell.
-      if (count == 3) {
+      if (count === 3) {
         grid[yIndex][xIndex] = 1;
       } else if (cellState === 1 && (count < 2 || count > 3)) {
         grid[yIndex][xIndex] = 0;

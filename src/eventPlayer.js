@@ -13,10 +13,10 @@ const replayEvents = (core, events, options = {}) => {
 
     if (sameSpeed) {
         return replayEventsSameSpeed(core, events);
-    } else {
+    } 
         replayEventsInstantly(core, events);
         return Promise.resolve();
-    }
+    
 };
 
 const replayEventsInstantly = (core, events) => {    
@@ -43,5 +43,5 @@ const replayEventsSameSpeed = (core, events) => {
             resolve();
         };
         playNext();
-    })
+    });
 };
