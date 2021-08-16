@@ -177,7 +177,7 @@ Returns a new instance of core.
 
  * `module`  The module as a name-space ( `import * as exampleModule from "./exampleModule.js"` )
  * `options` optional object
-   * name optional, String or Symbol that become *moduleInstanceId*
+   * name optional, String or Symbol that becomes *moduleInstanceId*
    * data optional, will be passed as second argument to the start function of the module
 
 returns a promise that resolves with *moduleInstanceId* that can later be used to stop the module
