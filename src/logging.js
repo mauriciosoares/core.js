@@ -4,14 +4,12 @@ import {ALL, ERROR} from "./core.js";
 
 const useDefaultLogging = (core, { logger = console } = {}) => {
     // listen for all events
-    core.on(ALL, ({ name, data, time }) => {
-        const timeString = new Date(time).toISOString();
-        logger.debug(`${timeString} event ${String(name)} data`, data);
+    core.on(ALL, ({ name, data/*, time*/ }) => {
+        logger.debug(`event ${String(name)} data`, data);
     });
 
     
-    core.on(ERROR, ({ time, phase, error }) => {
-        const timeString = new Date(time).toISOString();
+    core.on(ERROR, ({ phase, error/*, time*/ }) => {
         console.error(`Error during phase ${phase} at ${timeString}`, error);
     });
 };
