@@ -1,4 +1,4 @@
-import { Core, useDefaultLogging } from "../../dist/core.es.js";
+import { createCore, useDefaultLogging } from "../../dist/core.es.js";
 
 import * as errorStart from "./errorStart.js";
 import * as errorStop from "./errorStop.js";
@@ -6,7 +6,7 @@ import * as errorRuntime from "./errorRuntime.js";
 import * as errorEventListener from "./errorEventListener.js";
 
 
-const core = new Core();
+const core = createCore();
 
 (async function () {
     useDefaultLogging(core);

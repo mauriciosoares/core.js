@@ -1,4 +1,4 @@
-import { Core, useDefaultLogging } from "../../dist/core.es.js";
+import { createCore, useDefaultLogging } from "../../dist/core.es.js";
 // import {  } from "./eventNames.js";
 // import { x, y } from "./dependencies.js";
 // import { configuration } from "./configuration.js";
@@ -8,7 +8,7 @@ import * as tweetList from "./tweet-list.js";
 import * as tweetCounter from "./tweet-counter.js";
 
 
-const core = new Core();
+const core = createCore();
 
 
 const initialTweetsInHtml = 1;

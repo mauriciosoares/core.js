@@ -1,5 +1,5 @@
 import { 
-    Core,
+    createCore,
     startEventRecorder,
     stopEventRecorder,
     replayEvents,
@@ -14,7 +14,7 @@ import * as tweetList from "../simple/tweet-list.js";
 import * as tweetCounter from "../simple/tweet-counter.js";
 
 
-const core = new Core();
+const core = createCore();
 
 // listen for all events
 useDefaultLogging(core);

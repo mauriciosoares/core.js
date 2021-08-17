@@ -1,4 +1,4 @@
-import { Core, useDefaultLogging } from "../../dist/core.es.js";
+import { createCore, useDefaultLogging } from "../../dist/core.es.js";
 
 import { LOAD, WANTS_SAVE, SAVE } from "./eventNames.js";
 
@@ -8,7 +8,7 @@ import * as loader from "./loader.js";
 import * as saver from "./saver.js";
 
 
-const core = new Core();
+const core = createCore();
 
 useDefaultLogging(core);
 

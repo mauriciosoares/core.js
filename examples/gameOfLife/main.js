@@ -1,4 +1,4 @@
-import { Core, useDefaultLogging, stopEventRecorder, startEventRecorder, replayEvents } from "../../dist/core.es.js";
+import { createCore, useDefaultLogging, stopEventRecorder, startEventRecorder, replayEvents } from "../../dist/core.es.js";
 
 import { LOAD, WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME, PAUSE, STATUS_CHANGED } from "./eventNames.js";
 
@@ -11,7 +11,7 @@ import * as saver from "./saver.js";
 import * as gameLoop from "./gameLoop.js";
 import * as timeModule from "./time.js";
 
-const core = new Core();
+const core = createCore();
 useDefaultLogging(core);
 
 

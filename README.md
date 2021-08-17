@@ -33,15 +33,15 @@ Everything inside a red square is a module, they work independently.
 
 Raw import
 
-`import { Core, ALL, ERROR } from "./node_modules/@eroc/core/dist/core.es.js";`
+`import { createCore, ALL, ERROR } from "./node_modules/@eroc/core/dist/core.es.js";`
 
 With node, rollup, webpack or parcel
 
-`import { Core, ALL, ERROR } from "@eroc/core";`
+`import { createCore, ALL, ERROR } from "@eroc/core";`
 
 With old NodeJs or Browserify
 
-`const { Core, ALL, ERROR } = require("@eroc/core/dist/core.umd.cjs");`
+`const { createCore, ALL, ERROR } = require("@eroc/core/dist/core.umd.cjs");`
 
 
 ### Building modules
@@ -85,10 +85,10 @@ const getState = function (startReturn) {
 To start this module in your core file:
 
 ```js
-import { Core } from "@eroc/core";
+import { createCore } from "@eroc/core";
 import * as exampleModule from "./exampleModule.js";
 
-const core = new Core();
+const core = createCore();
 core.start(exampleModule);
 ```
 
@@ -164,9 +164,9 @@ Cool right? If one of those modules stop working, then it will not break the oth
 
 ## API 
 
-### Core
+### createCore
 
-#### `new Core()`
+#### `createCore()`
 
 Returns a new instance of core.
 
@@ -222,10 +222,10 @@ Optional logging to get started
 #### `useDefaultLogging(core, logger=console)`
 
 ```js
-import { Core, useDefaultLogging } from "@eroc/core";
+import { createCore, useDefaultLogging } from "@eroc/core";
 
 
-const core = new Core();
+const core = createCore();
 
 // listen for all events
 useDefaultLogging(core);
@@ -244,10 +244,10 @@ returns an eventRecording. Access `eventRecording.events` to view all past event
 stops an eventRecording.
 
 ```js
-import { Core, useDefaultLogging } from "@eroc/core";
+import { createCore, useDefaultLogging } from "@eroc/core";
 
 
-const core = new Core();
+const core = createCore();
 let eventRecording = startEventRecorder(core);
 stopEventRecorder(core, eventRecording);
 ```
@@ -262,10 +262,10 @@ Will replay previousEvents on core. previousEvents could come from `eventRecordi
 
 
 ```js
-import { Core, replayEvents } from "@eroc/core";
+import { createCore, replayEvents } from "@eroc/core";
 
 
-const core = new Core();
+const core = createCore();
 // ... initialize modules
 const events = // get events
 replayEvents(core, events, { sameSpeed: true }); 
@@ -308,6 +308,11 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 3. `npm t`
 
 ## Changelog
+
+### 4.0.0
+
+ * Core class is replaced with createCore function
+ * The default logger no longer displays the time (you can create your own logger)
 
 ### 3.3.0
 
