@@ -4,6 +4,8 @@ __core__ is a concept introduced by Nicholas C. Zakas in this [video](https://ww
 
 It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
 
+By following the pattern, you will have loading, saving state, and replaying events for free.
+
 
 
 ## The Idea
