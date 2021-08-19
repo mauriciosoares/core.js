@@ -32,5 +32,5 @@ const start = function (emitter, firstTick) {
 
 
 
-const stop = function (instance) {
+const stop = function (/*instance*/) {
 };

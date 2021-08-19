@@ -51,9 +51,7 @@ const getState = function (instance) {
   return instance.drawn;
 };
 
-const restoreState = function (instance, state) {
-  stop(instance);
-
+const restoreState = function (/* instance, state */) {
 };
 
 const stop = function (instance) {

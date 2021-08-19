@@ -1,6 +1,6 @@
 import { createCore, useDefaultLogging, stopEventRecorder, startEventRecorder, replayEvents } from "../../dist/core.es.js";
 
-import { LOAD, WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME, PAUSE, STATUS_CHANGED } from "./eventNames.js";
+import { WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME, PAUSE, STATUS_CHANGED } from "./eventNames.js";
 
 import * as draw from "./draw.js";
 import * as status from "./status.js";
@@ -47,7 +47,8 @@ const start  = async () => {
 const metaEvents = [
     TRAVEL_TIME,
     WANTS_TRAVEL_TIME,
-    WANTS_SAVE, //todo all load and save
+    WANTS_SAVE,
+    SAVE,
     PAUSE,
     RESUME,
     STATUS_CHANGED,
@@ -57,8 +58,8 @@ core.on(TRAVEL_TIME, async (destination) => {
     core.moduleEmit(PAUSE);
     const previousEvents = eventRecording.events;
     const lastIndex = previousEvents.findIndex((event) => {
-        const { name, data, time } = event;
-        console.log(`${name} at ${time}`, time > destination);
+        const { /*name, data,*/ time } = event;
+        // console.log(`${name} at ${time}`, time > destination);
         return time > destination;
     }) ;
     if (lastIndex !== -1) {

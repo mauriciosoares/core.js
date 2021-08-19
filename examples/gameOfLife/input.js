@@ -1,5 +1,5 @@
 export { start, stop };
-import { STATUS_CHANGED, WANT_DRAW, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME, WANTS_TRAVEL_TIME, SAVE } from "./eventNames.js";
+import { STATUS_CHANGED, WANT_LOAD, WANTS_SAVE, WANTS_TOGGLE, PAUSE, RESUME, WANTS_TRAVEL_TIME } from "./eventNames.js";
 import { pixelSize } from "./settings/graphics.js";
 import { createThrottled } from "./node_modules/utilsac/utility.js";
 // import { x, y } from "./dependencies.js";
@@ -42,7 +42,7 @@ const startDrawInput = function (emitter, instance) {
 const startUiInput = function (emitter, instance) {
     let paused = false;
     const pauseButton = document.getElementById(`pause`);
-    const pauseAction = function (event) {
+    const pauseAction = function () {
         if (paused) {
             emitter.emit(RESUME);
         } else {
@@ -79,10 +79,10 @@ const startUiInput = function (emitter, instance) {
 
     const loaderDiv = document.getElementById(`loaders`);
     const loaders = [...loaderDiv.children].filter(x => {
-        return x?.tagName === "BUTTON";
+        return x?.tagName === `BUTTON`;
     });
     const loaderAction = function(event) {
-        const thingToLoad = event.target.getAttribute("data-id");
+        const thingToLoad = event.target.getAttribute(`data-id`);
         emitter.emit(WANT_LOAD, thingToLoad);
     };
     loaders.forEach(function (loader) {

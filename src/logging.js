@@ -10,6 +10,6 @@ const useDefaultLogging = (core, { logger = console } = {}) => {
 
     
     core.on(ERROR, ({ phase, error/*, time*/ }) => {
-        console.error(`Error during phase ${phase} at ${timeString}`, error);
+        console.error(`Error during phase ${phase}`, error);
     });
 };

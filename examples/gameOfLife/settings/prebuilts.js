@@ -12,7 +12,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       1,
@@ -26,7 +26,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       1,
@@ -40,7 +40,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -54,7 +54,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -68,7 +68,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -82,7 +82,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -96,7 +96,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -110,7 +110,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -124,7 +124,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -138,7 +138,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -152,7 +152,7 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -166,8 +166,8 @@ const leightWeightSpaceShip = [
       0,
       0,
       0,
-      0
-    ]
+      0,
+    ],
   ];
 
 const glider = [
@@ -183,7 +183,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -197,7 +197,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       1,
@@ -211,7 +211,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -225,7 +225,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -239,7 +239,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -253,7 +253,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -267,7 +267,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -281,7 +281,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -295,7 +295,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -309,7 +309,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -323,7 +323,7 @@ const glider = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -337,8 +337,8 @@ const glider = [
       0,
       0,
       0,
-      0
-    ]
+      0,
+    ],
   ];
 
 const blinker = [
@@ -354,7 +354,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -368,7 +368,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -382,7 +382,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -396,7 +396,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -410,7 +410,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -424,7 +424,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -438,7 +438,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -452,7 +452,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -466,7 +466,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -480,7 +480,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -494,7 +494,7 @@ const blinker = [
       0,
       0,
       0,
-      0
+      0,
     ],
     [
       0,
@@ -508,6 +508,6 @@ const blinker = [
       0,
       0,
       0,
-      0
-    ]
-  ]
+      0,
+    ],
+  ];

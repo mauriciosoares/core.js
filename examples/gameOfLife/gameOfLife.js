@@ -20,7 +20,7 @@ import {deepCopy} from "./dependencies.js";
 
 //     -1 % 15 === -1; // Desired result is 14
 //     actualModulo(-1, 15) === 14
-function actualModulo(divisor, dividend) {
+const actualModulo = function (divisor, dividend) {
   const fakeMod = divisor % dividend;
 
   if (fakeMod < 0) {
@@ -28,7 +28,7 @@ function actualModulo(divisor, dividend) {
   } 
     return fakeMod;
   
-}
+};
 
 const start = function (emitter) {
   const instance = {
@@ -67,17 +67,15 @@ const toggleCell = (grid, x, y) => {
   return grid;
 };
 
-//### sumNeighbors
 // Get the sum of the neighbors of a cell. Given the entire world array, width and
 // height precomputed to save on lenght lookups and the x and y coordinate of the cell.
 // Loops around the edges.
-function sumNeighbors(cells, w, h, x, y) {
+const sumNeighbors = function (cells, w, h, x, y) {
   return cells[y][actualModulo(x - 1, w)] + cells[y][actualModulo(x + 1, w)] + cells[actualModulo(y - 1, h)][x] + cells[actualModulo(y + 1, h)][x] + cells[actualModulo(y - 1, h)][actualModulo(x - 1, w)] + cells[actualModulo(y - 1, h)][actualModulo(x + 1, w)] + cells[actualModulo(y + 1, h)][actualModulo(x - 1, w)] + cells[actualModulo(y + 1, h)][actualModulo(x + 1, w)];
-}
+};
 
-//### census
 // Count up neighbors;
-function census(grid, width, height) {
+const census = function (grid, width, height) {
   const newNeighborCounts = buildArray(width, height, function() {
      return 0;
   });
@@ -88,11 +86,11 @@ function census(grid, width, height) {
   });
 
   return newNeighborCounts;
-}
-//### buildArray
+};
+
 // Create a two dimensional array given two dimensions and a function to fill the array
 // the predicate function is passed the x and y coordinates of the array position.
-function buildArray(w, h, pred) {
+const buildArray = function (w, h, pred) {
   const arr = Array(h);
   for (let i = 0; i < h; i += 1) {
     const arrRow = Array(w);
@@ -102,9 +100,9 @@ function buildArray(w, h, pred) {
     arr[i] = arrRow;
   }
   return arr;
-}
-//### nextGeneration
-function nextGeneration(grid, neighborCounts) {
+};
+
+const nextGeneration = function (grid, neighborCounts) {
   grid.forEach(function(rowArray, yIndex) {
     rowArray.forEach(function(cellState, xIndex) {
       // const cellState = grid[yIndex][xIndex];
@@ -122,7 +120,7 @@ function nextGeneration(grid, neighborCounts) {
   });
 
   return grid;
-}
+};
 
 const evolveGrid = (grid) => {
   // assume square (grid.length)
@@ -135,8 +133,8 @@ const getState = function (instance) {
   return instance;
 };
 
-const restoreState = function (instance, state) {
+const restoreState = function (/*instance, state*/) {
 };
 
-const stop = function (instance) {
+const stop = function (/* instance */) {
 };
