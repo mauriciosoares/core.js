@@ -1,11 +1,9 @@
 # core [![Build Status](https://travis-ci.org/mauriciosoares/core.js.svg?branch=master)](https://travis-ci.org/mauriciosoares/core.js) [![Coverage Status](https://img.shields.io/coveralls/mauriciosoares/core.js.svg)](https://coveralls.io/r/mauriciosoares/core.js) [![Code Climate](https://codeclimate.com/github/mauriciosoares/core.js/badges/gpa.svg)](https://codeclimate.com/github/mauriciosoares/core.js)
 
+
+core.js helps you create scalable applications written in JavaScript, giving you structure and patterns needed to keep everything separated, have loading, saving, replaying events and logging.
+
 __core__ is a concept introduced by Nicholas C. Zakas in this [video](https://www.youtube.com/watch?v=b5pFv9NB9fs)
-
-It helps you create scalable applications written in Javascript, giving you some structure and patterns to keep everything separated.
-
-By following the pattern, you will have loading, saving state, and replaying events for free.
-
 
 
 ## The Idea
@@ -41,7 +39,7 @@ With node, rollup, webpack or parcel
 
 `import { createCore, ALL, ERROR } from "@eroc/core";`
 
-With old NodeJs or Browserify
+With old Node.js or Browserify
 
 `const { createCore, ALL, ERROR } = require("@eroc/core/dist/core.umd.cjs");`
 
@@ -94,7 +92,7 @@ const core = createCore();
 core.start(exampleModule);
 ```
 
-Modules can only communicate via messages with other modules with the emitter received when start is called. It garantees that if a module tries to call something that doesn't exists or is broken, it won't break the module itself.
+Modules can only communicate via messages with other modules with the emitter received when start is called. It guarantees that if a module tries to call something that doesn't exists or is broken, it won't break the module itself.
 
 ```js
 emitter.on(EVENT_NAME, function (data) {
@@ -118,9 +116,9 @@ core.stop(exampleId);
 
 When you stop a module, the function `stop` will be called, if it exists.
 
-### Comunicating between modules
+### Communicating between modules
 
-Now, thinking about Twitter, everytime you tweet something, it should appear on your tweet list right? but since our modules don't talk directly to each other, let's use the emitter.
+Now, thinking about Twitter, every time you tweet something, it should appear on your tweet list right? But since our modules don't talk directly to each other, let's use the emitter.
 
 Our `tweet` module should notify other modules that something has happened.
 
@@ -345,7 +343,7 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ### 2.1.0
 
- * eventPlayer, eventRecorder optionals are importable directly from the core
+ * eventPlayer, eventRecorder extras are importable directly from the core
 
 ### 2.0.0
 
