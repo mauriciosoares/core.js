@@ -35,13 +35,17 @@ Raw import
 
 `import { createCore, ALL, ERROR } from "./node_modules/@eroc/core/dist/core.es.js";`
 
-With node, rollup, webpack or parcel
+With Node.js, rollup, webpack or parcel
 
 `import { createCore, ALL, ERROR } from "@eroc/core";`
 
 With old Node.js or Browserify
 
 `const { createCore, ALL, ERROR } = require("@eroc/core/dist/core.umd.cjs");`
+
+With Deno
+
+`import { createCore } from "https://unpkg.com/@eroc/core/dist/core.es.js";`
 
 
 ### Building modules
