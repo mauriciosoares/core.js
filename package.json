@@ -66,6 +66,8 @@
     "scalable",
     "modules",
     "architecture",
-    "structure"
+    "structure",
+    "actor",
+    "model"
   ]
 }
