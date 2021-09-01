@@ -195,7 +195,6 @@ const createCore = function () {
                 }
                 // todo CORE_GET_STATE set State
             });
-            // todo listen for errors
         },
 
         stop(name) {
