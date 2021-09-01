@@ -11,7 +11,7 @@ import {
     CORE_STOPPED,
     CORE_GET_STATE,
     CORE_SET_STATE,
-    error,
+    CORE_ERROR,
 }  from "./workers.js";
 
 let localEmitter;
@@ -27,7 +27,7 @@ self.addEventListener(`error`, function (errorEvent) {
         asString = String(errorEvent);
     }
     self.postMessage({
-        [CORE_ACTION_KEY]: error,
+        [CORE_ACTION_KEY]: CORE_ERROR,
         error: asString,
     });
 });
@@ -63,7 +63,7 @@ self.addEventListener(`message`, async function(messageEvent) {
             localInstance = instance;
         }).catch(errorModuleStart => {
             self.postMessage({
-                [CORE_ACTION_KEY]: error,
+                [CORE_ACTION_KEY]: CORE_ERROR,
                 time: Date.now(),
                 phase: `module.start`,
                 error: errorModuleStart,
@@ -86,7 +86,7 @@ self.addEventListener(`message`, async function(messageEvent) {
             }
         }).catch(errorModuleStop => {
             self.postMessage({
-                [CORE_ACTION_KEY]: error,
+                [CORE_ACTION_KEY]: CORE_ERROR,
                 time: Date.now(),
                 phase: `module.stop`,
                 error: errorModuleStop,
@@ -102,7 +102,7 @@ self.addEventListener(`message`, async function(messageEvent) {
 
     // todo CORE_GET_STATE, CORE_SET_STATE
     self.postMessage({
-        [CORE_ACTION_KEY]: error,
+        [CORE_ACTION_KEY]: CORE_ERROR,
         error: `action ${action} not implemented`,
     });
 });
