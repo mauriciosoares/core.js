@@ -180,6 +180,7 @@ Returns a new instance of core.
  * `options` optional object
    * name optional, String or Symbol that becomes *moduleInstanceId*
    * data optional, will be passed as second argument to the start function of the module
+   * worker optional, if true the module will be inside a worker see 4.1.0 limitations
 
 returns a promise that resolves with *moduleInstanceId* that can later be used to stop the module
 
@@ -312,6 +313,11 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 3. `npm t`
 
 ## Changelog
+
+
+### 4.1.0
+
+ * Modules without imports and export, and without setState and getState can run inside worker
 
 ### 4.0.0
 
