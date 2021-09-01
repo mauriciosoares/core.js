@@ -9,8 +9,11 @@
   "main": "src/core.js",
   "scripts": {
     "serve": "serve . -p 8080",
-    "bundle": "rollup --config tools/rollup.config.js",
-    "bundle-watch": "rollup --config tools/rollup.config.js --watch",
+    "bundle-glue": "rollup --config tools/glueRollup.config.js",
+    "export-glue-code-as-string": "node tools/glueAsExportedString.js",
+    "bundle-core": "rollup --config tools/rollup.config.js",
+    "bundle": "npm run bundle-glue && npm run export-glue-code-as-string && npm run bundle-core",
+    "bundle-watch": "todo",
     "lint": "eslint src tests examples",
     "lint-fix": "eslint src tests examples --fix",
     "prepublishOnly": "npm run bundle",
