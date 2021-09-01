@@ -44,11 +44,13 @@ self.addEventListener(`message`, async function(messageEvent) {
         if (!localInstance) {
             return;
         }
-        localEmitter.emit(message.name, message.data);
+        // avoid infinite loop
+        localEmitter.originalEmit(message.name, message.data);
         return;
     }
     if (action === CORE_START) {
         localEmitter = new EventEmitter();
+        localEmitter.originalEmit = localEmitter.emit;
         localEmitter.emit = function (eventName, data) {
             self.postMessage({
                 [CORE_ACTION_KEY]: CORE_EVENT,
