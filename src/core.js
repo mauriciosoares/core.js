@@ -177,7 +177,7 @@ const createCore = function () {
                     return;
                 }
                 if (action === CORE_EVENT) {
-                    core.moduleEmit(message.name, message.data);
+                    core.moduleEmit(message.name, message.data, worker);
                     return;
                 }
                 if (action === CORE_STOPPED) {
@@ -234,14 +234,14 @@ const createCore = function () {
             });
         },
 
-        moduleEmit(name, data) {
+        moduleEmit(name, data, worker) {
             if (core.paused) {
                 return;
             }
-            core.moduleEmitDirect(name, data);
+            core.moduleEmitDirect(name, data, worker);
         },
 
-        moduleEmitDirect(name, data) {
+        moduleEmitDirect(name, data, owner) {
             core.emit(name, data);
             core.emit(ALL, { name, data, time: Date.now() });
             core.moduleInstances.forEach(({ emitter, worker }) => {
@@ -257,12 +257,13 @@ const createCore = function () {
                     }
                     return;
                 }
-                worker.postMessage({
-                    [CORE_ACTION_KEY]: CORE_EVENT,
-                    name,
-                    data,
-                });
-                
+                if (worker !== owner) {
+                    worker.postMessage({
+                        [CORE_ACTION_KEY]: CORE_EVENT,
+                        name,
+                        data,
+                    });
+                }
             });
         },
     });

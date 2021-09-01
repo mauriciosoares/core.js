@@ -18,7 +18,6 @@ let localEmitter;
 let localInstance;
 
 self.addEventListener(`error`, function (errorEvent) {
-    console.log(errorEvent); // todo
     errorEvent.preventDefault();
     let asString;
     if (errorEvent.message) {
@@ -32,9 +31,7 @@ self.addEventListener(`error`, function (errorEvent) {
     });
 });
 
-
 self.addEventListener(`message`, async function(messageEvent) {
-    console.log(messageEvent)
     const message = messageEvent.data;
     if (!Object.prototype.hasOwnProperty.call(message, CORE_ACTION_KEY)) {
         return;
@@ -57,6 +54,7 @@ self.addEventListener(`message`, async function(messageEvent) {
                 name: eventName,
                 data,
             });
+            localEmitter.originalEmit(eventName, data);
         };
         
         Promise.resolve().then(() => {
