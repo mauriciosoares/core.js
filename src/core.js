@@ -8,15 +8,15 @@ import EventEmitter from "event-e3";
 import { deepCopyAdded } from "utilsac/deep.js";
 
 import {
-    actionKey,
-    event,
+    CORE_ACTION_KEY,
+    CORE_EVENT,
     CORE_START,
-    started,
-    stop,
-    stopped,
-    getState,
-    setState,
-    error,
+    CORE_STARTED,
+    CORE_STOP,
+    CORE_STOPPED,
+    CORE_GET_STATE,
+    CORE_SET_STATE,
+    CORE_ERROR,
 }  from "./workers.js";
 import {workerGlueCode} from "../dist/tempWorkerGlueCode.js";
 
@@ -145,7 +145,7 @@ const createCore = function () {
                     
                     core.listenForWorkerMessage(name, moduleInsideWorker, resolve);
                     moduleInsideWorker.postMessage({
-                        [actionKey]: CORE_START,
+                        [CORE_ACTION_KEY]: CORE_START,
                         data
                     });
                 }).catch(errorModuleStart => {
@@ -163,11 +163,11 @@ const createCore = function () {
         listenForWorkerMessage(name, worker, resolve) {
             worker.addEventListener(`message`, function (messageEvent)  {
                 const message = messageEvent.data;
-                if (!Object.prototype.hasOwnProperty.call(message, actionKey)) {
+                if (!Object.prototype.hasOwnProperty.call(message, CORE_ACTION_KEY)) {
                     return;
                 }
-                const action = message[actionKey];
-                if (action === started) {
+                const action = message[CORE_ACTION_KEY];
+                if (action === CORE_STARTED) {
                     core.moduleInstances.set(name, {
                         worker,
                         name,
@@ -176,11 +176,11 @@ const createCore = function () {
                     resolve();
                     return;
                 }
-                if (action === event) {
+                if (action === CORE_EVENT) {
                     core.moduleEmit(message.name, message.data);
                     return;
                 }
-                if (action === stopped) {
+                if (action === CORE_STOPPED) {
                     const wrapper = core.moduleInstances.get(name);
                     if (wrapper?.stopResolve) {
                         wrapper.stopResolve();
@@ -189,11 +189,11 @@ const createCore = function () {
                     }
                     return;
                 }
-                if (action === error) {
+                if (action === CORE_ERROR) {
                     core.emit(ERROR, message)
                     return;
                 }
-                // todo getState set State
+                // todo CORE_GET_STATE set State
             });
             // todo listen for errors
         },
@@ -230,7 +230,7 @@ const createCore = function () {
             return new Promise(function (resolve, reject) {
                 wrapper.stopResolve = resolve;
                 wrapper.worker.postMessage({
-                    [actionKey]: stop
+                    [CORE_ACTION_KEY]: CORE_STOP
                 });
             });
         },
@@ -259,7 +259,7 @@ const createCore = function () {
                     return;
                 }
                 worker.postMessage({
-                    [actionKey]: event,
+                    [CORE_ACTION_KEY]: CORE_EVENT,
                     name,
                     data,
                 });

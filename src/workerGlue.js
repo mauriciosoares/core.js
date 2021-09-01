@@ -3,14 +3,14 @@
 import EventEmitter from "event-e3";
 
 import {
-    actionKey,
-    event,
+    CORE_ACTION_KEY,
+    CORE_EVENT,
     CORE_START,
-    started,
-    stop,
-    stopped,
-    getState,
-    setState,
+    CORE_STARTED,
+    CORE_STOP,
+    CORE_STOPPED,
+    CORE_GET_STATE,
+    CORE_SET_STATE,
     error,
 }  from "./workers.js";
 
@@ -27,7 +27,7 @@ self.addEventListener(`error`, function (errorEvent) {
         asString = String(errorEvent);
     }
     self.postMessage({
-        [actionKey]: error,
+        [CORE_ACTION_KEY]: error,
         error: asString,
     });
 });
@@ -36,11 +36,11 @@ self.addEventListener(`error`, function (errorEvent) {
 self.addEventListener(`message`, async function(messageEvent) {
     console.log(messageEvent)
     const message = messageEvent.data;
-    if (!Object.prototype.hasOwnProperty.call(message, actionKey)) {
+    if (!Object.prototype.hasOwnProperty.call(message, CORE_ACTION_KEY)) {
         return;
     }
-    const action = message[actionKey];
-    if (action === event) {
+    const action = message[CORE_ACTION_KEY];
+    if (action === CORE_EVENT) {
         if (!localInstance) {
             return;
         }
@@ -51,7 +51,7 @@ self.addEventListener(`message`, async function(messageEvent) {
         localEmitter = new EventEmitter();
         localEmitter.emit = function (eventName, data) {
             self.postMessage({
-                [actionKey]: event,
+                [CORE_ACTION_KEY]: CORE_EVENT,
                 name: eventName,
                 data,
             });
@@ -63,19 +63,19 @@ self.addEventListener(`message`, async function(messageEvent) {
             localInstance = instance;
         }).catch(errorModuleStart => {
             self.postMessage({
-                [actionKey]: error,
+                [CORE_ACTION_KEY]: error,
                 time: Date.now(),
                 phase: `module.start`,
                 error: errorModuleStart,
             });
         }).then(() => {
             self.postMessage({
-                [actionKey]: started,
+                [CORE_ACTION_KEY]: CORE_STARTED,
             });
         });
         return;
     }
-    if (action === stop) {
+    if (action === CORE_STOP) {
         if (!localInstance) {
             // should never happen
             return;
@@ -86,7 +86,7 @@ self.addEventListener(`message`, async function(messageEvent) {
             }
         }).catch(errorModuleStop => {
             self.postMessage({
-                [actionKey]: error,
+                [CORE_ACTION_KEY]: error,
                 time: Date.now(),
                 phase: `module.stop`,
                 error: errorModuleStop,
@@ -94,15 +94,15 @@ self.addEventListener(`message`, async function(messageEvent) {
         }).then(() => {
             localInstance = undefined;
             self.postMessage({
-                [actionKey]: stopped,
+                [CORE_ACTION_KEY]: CORE_STOPPED,
             });
         });
         return;
     }
 
-    // todo getState, setState
+    // todo CORE_GET_STATE, CORE_SET_STATE
     self.postMessage({
-        [actionKey]: error,
+        [CORE_ACTION_KEY]: error,
         error: `action ${action} not implemented`,
     });
 });
