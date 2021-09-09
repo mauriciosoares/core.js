@@ -37,11 +37,23 @@ const createCore = function () {
             }
 
             const wrapper = core.moduleInstances.get(name);
+            if (wrapper.worker) {
+                return core.requestStateFromWorker(wrapper)
+            }
             if (!wrapper.module.getState) {
                 return Promise.resolve({});
             }
             return Promise.resolve().then(() => {
                 return wrapper.module.getState(wrapper.instance);
+            });
+        },
+
+        requestStateFromWorker(wrapper) {
+            return new Promise(function (resolve, reject) {
+                wrapper.getStateResolve = resolve;
+                wrapper.worker.postMessage({
+                    [CORE_ACTION_KEY]: CORE_GET_STATE,
+                });
             });
         },
 
@@ -72,6 +84,9 @@ const createCore = function () {
             }
 
             const wrapper = core.moduleInstances.get(name);
+            if (wrapper.worker) {
+                return core.restoreStateInWorker(wrapper);
+            }
             if (!wrapper.module.restoreState) {
                 return Promise.resolve();
             }
@@ -80,6 +95,15 @@ const createCore = function () {
                 return wrapper.module.restoreState(wrapper.instance, stateCopy);
             });
 
+        },
+        
+        restoreStateInWorker(wrapper) {
+            return new Promise(function (resolve, reject) {
+                wrapper.setStateResolve = resolve;
+                wrapper.worker.postMessage({
+                    [CORE_ACTION_KEY]: CORE_SET_STATE,
+                });
+            });
         },
 
         restoreAllStates(states) {
@@ -180,8 +204,12 @@ const createCore = function () {
                     core.moduleEmit(message.name, message.data, worker);
                     return;
                 }
+                if (action === CORE_ERROR) {
+                    core.emit(ERROR, message)
+                    return;
+                }
+                const wrapper = core.moduleInstances.get(name);
                 if (action === CORE_STOPPED) {
-                    const wrapper = core.moduleInstances.get(name);
                     if (wrapper?.stopResolve) {
                         wrapper.stopResolve();
                         wrapper.stopResolve = undefined;
@@ -189,11 +217,21 @@ const createCore = function () {
                     }
                     return;
                 }
-                if (action === CORE_ERROR) {
-                    core.emit(ERROR, message)
+                if (action === CORE_SET_STATE) {
+                    if (wrapper?.getStateResolve) {
+                        wrapper.getStateResolve(message.data || {});
+                        wrapper.getStateResolve = undefined;
+                    }
                     return;
                 }
-                // todo CORE_GET_STATE set State
+                if (action === CORE_GET_STATE) {
+                    if (wrapper?.setStateResolve) {
+                        wrapper.setStateResolve();
+                        wrapper.setStateResolve = undefined;
+                    }
+                    return;
+                }
+                
             });
         },
 

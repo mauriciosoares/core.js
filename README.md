@@ -314,10 +314,13 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 
 ## Changelog
 
+### 4.2.0
+
+ * Modules inside worker can use restoreState and getState
 
 ### 4.1.0
 
- * Modules without imports and export, and without setState and getState can run inside worker
+ * Modules without imports and export, without restoreState and getState can run inside worker
 
 ### 4.0.0
 

@@ -100,7 +100,46 @@ self.addEventListener(`message`, async function(messageEvent) {
         return;
     }
 
-    // todo CORE_GET_STATE, CORE_SET_STATE
+    if (action === CORE_SET_STATE) {
+        Promise.resolve().then(() => {
+            if (typeof restoreState === `function`) {
+                return restoreState(localInstance, message.data);
+            }
+        }).then(() => {
+            self.postMessage({
+                [CORE_ACTION_KEY]: CORE_GET_STATE,
+            });
+        }).catch(errorModuleRestoreState => {
+            self.postMessage({
+                [CORE_ACTION_KEY]: CORE_ERROR,
+                time: Date.now(),
+                phase: `module.restoreState`,
+                error: errorModuleRestoreState,
+            });
+        });
+        return;
+    }
+    if (action === CORE_GET_STATE) {
+        Promise.resolve().then(() => {
+            if (typeof getState === `function`) {
+                return getState(localInstance);
+            }
+        }).then((result) => {
+            self.postMessage({
+                [CORE_ACTION_KEY]: CORE_SET_STATE,
+                data: result, // core will handle undefined
+            });
+        }).catch(errorModuleRestoreState => {
+            self.postMessage({
+                [CORE_ACTION_KEY]: CORE_ERROR,
+                time: Date.now(),
+                phase: `module.restoreState`,
+                error: errorModuleRestoreState,
+            });
+        });
+        return;
+    }
+
     self.postMessage({
         [CORE_ACTION_KEY]: CORE_ERROR,
         error: `action ${action} not implemented`,

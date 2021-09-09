@@ -5,6 +5,7 @@ export {
     CORE_STARTED,
     CORE_STOP,
     CORE_STOPPED,
+    // symmetry
     CORE_GET_STATE,
     CORE_SET_STATE,
     CORE_ERROR,
