@@ -1,5 +1,5 @@
 // @ts-check
-export { createCore, ALL, ERROR };
+export { createCore, ALL, ERROR, prepareWorkerCode };
 export { startEventRecorder, stopEventRecorder } from "./eventRecorder.js";
 export { replayEvents } from "./eventPlayer.js";
 export { useDefaultLogging } from "./logging.js";
@@ -23,6 +23,10 @@ import {workerGlueCode} from "../dist/tempWorkerGlueCode.js";
 const ALL = Symbol();
 const ERROR = Symbol();
 const JS_MIME = { type: `text/javascript` };
+
+const prepareWorkerCode = function (moduleCodeAsIIFE) {
+    return `${workerGlueCode};${moduleCodeAsIIFE}`;
+};
 
 const createCore = function () {
     const core = {};
@@ -115,7 +119,8 @@ const createCore = function () {
         start(module, { 
             name = Symbol(),
             data = undefined,
-            worker = false
+            worker = false,
+            workerReady = false,
         } = {}) {
 
             if (core.moduleInstances.has(name)) {
@@ -123,7 +128,7 @@ const createCore = function () {
             }
 
             if (worker) {
-                return core.startWorker(module, name, data);
+                return core.startWorker(module, name, data, workerReady);
             }
 
             if (!module.start) {
@@ -154,15 +159,24 @@ const createCore = function () {
             });
         },
 
-        startWorker(moduleUrl, name, data) {
+        startWorker(moduleUrl, name, data, workerReady) {
             return new Promise(function (resolve, reject) {
-                fetch(moduleUrl).then(response => {
-                    return response.text();
-                }).then(moduleCode => {
-                    const workerCode = `${workerGlueCode};${moduleCode}`;
-                    const workerBlob = new Blob([workerCode], JS_MIME);
-                    const workerObjectURL = URL.createObjectURL(workerBlob);
-                    const moduleInsideWorker = new Worker(workerObjectURL, {
+                let workerRessourcePromise;
+                if (workerReady) {
+                    workerRessourcePromise = Promise.resolve(moduleUrl);
+                } else {
+                    workerRessourcePromise = fetch(moduleUrl).then(response => {
+                        return response.text();
+                    }).then(moduleCode => {
+                        const workerCode = prepareWorkerCode(moduleCode);
+                        const workerBlob = new Blob([workerCode], JS_MIME);
+                        const workerObjectURL = URL.createObjectURL(workerBlob);
+                        return workerObjectURL
+                    })
+                }
+                workerRessourcePromise.then(workerRessource => {
+                    
+                    const moduleInsideWorker = new Worker(workerRessource, {
                         type: "module",
                         name: String(name), // help debugging
                     });
