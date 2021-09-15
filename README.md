@@ -181,6 +181,7 @@ Returns a new instance of core.
    * name optional, String or Symbol that becomes *moduleInstanceId*
    * data optional, will be passed as second argument to the start function of the module
    * worker optional, if true the module will be inside a worker see 4.1.0 limitations
+   * workerReady, mark as true if the url has code prepared with storeWorkerCodeFromIIFEFile or prepareWorkerCode
 
 returns a promise that resolves with *moduleInstanceId* that can later be used to stop the module
 
@@ -290,6 +291,19 @@ Returns all states. Resolved value is the same shape as what `core.restoreAllSta
 
 Ideally neither restoreAllState nor eventPlayer are used alone to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
 
+## Preparing worker code with prepareWorkerCode.js
+
+```js
+import {prepareWorkerCode, storeWorkerCodeFromIIFEFile} from "@eroc/core";
+
+// source has to be an IIFE that exposes start and stop
+const source = "./examples/gameOfLife/gameOfLife.js";
+const destination = "./examples/gameOfLife/gameOfLifeWorkerReady.js";
+storeWorkerCodeFromIIFEFile(source, destination);
+```
+
+This code can then be used with the workerReady option
+
 ## Maintainers
 
 - Mauricio Soares - https://github.com/mauriciosoares
@@ -313,6 +327,11 @@ You need [NodeJS](https://nodejs.org/) installed on your machine
 3. `npm t`
 
 ## Changelog
+
+### 4.3.0
+
+ * core.js and prepareWorkerCode.js  export a function prepareWorkerCode
+ * prepareWorkerCode.js exports a function storeWorkerCodeFromIIFEFile
 
 ### 4.2.0
 
