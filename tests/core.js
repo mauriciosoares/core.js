@@ -84,6 +84,16 @@ describe(`Testing Core`, function () {
         ).toBeRejected();
     });
 
+    it(`start multiple instances with the same name should throw without a-waiting`, async function () {
+        const name = `myName`;
+        const module = createModuleMock();
+        core.start(module, { name });
+        
+        await expectAsync(
+            core.start(module, { name }),
+        ).toBeRejected();
+    });
+
     it(`should silently proceed if stop is called on something already stopped`, async function () {
         const module = createModuleMock();
         const id = await core.start(module);
