@@ -126,14 +126,21 @@ const createCore = function () {
             if (core.moduleInstances.has(name)) {
                 return Promise.reject(`module with name ${String(name)} already started`);
             }
-
+            
             if (worker) {
                 return core.startWorker(module, name, data, workerReady);
             }
-
+            
             if (!module.start) {
                 return Promise.reject(`module must have start defined`);
             }
+            
+            const earlyWrapper = {
+                module,
+                name,
+            };
+            core.moduleInstances.set(name, earlyWrapper);
+            
 
             const emitter = new EventEmitter();
 
@@ -142,15 +149,14 @@ const createCore = function () {
             return Promise.resolve().then(() => {
                 return module.start(emitter, data);
             }).then(instance => {
-                core.moduleInstances.set(name, {
-                    module,
+                Object.assign(earlyWrapper, {
                     instance,
-                    name,
                     emitter,
                 });
             }).then(() => {
                 return name;
             }).catch(errorModuleStart => {
+                core.moduleInstances.delete(name);
                 core.emit(ERROR, {
                     time: Date.now(),
                     phase: `module.start`,
@@ -160,6 +166,13 @@ const createCore = function () {
         },
 
         startWorker(moduleUrl, name, data, workerReady) {
+            
+            const earlyWrapper = {
+                module: moduleUrl,
+                name,
+            };
+            core.moduleInstances.set(name, earlyWrapper);
+            
             return new Promise(function (resolve, reject) {
                 let workerRessourcePromise;
                 if (workerReady) {
@@ -181,12 +194,13 @@ const createCore = function () {
                         name: String(name), // help debugging
                     });
                     
-                    core.listenForWorkerMessage(name, moduleInsideWorker, resolve);
+                    core.listenForWorkerMessage(name, moduleInsideWorker, resolve, earlyWrapper);
                     moduleInsideWorker.postMessage({
                         [CORE_ACTION_KEY]: CORE_START,
                         data
                     });
                 }).catch(errorModuleStart => {
+                    core.moduleInstances.delete(name);
                     core.emit(ERROR, {
                         time: Date.now(),
                         phase: `module.CORE_START`,
@@ -198,7 +212,7 @@ const createCore = function () {
             
         },
 
-        listenForWorkerMessage(name, worker, resolve) {
+        listenForWorkerMessage(name, worker, resolve, earlyWrapper) {
             worker.addEventListener(`message`, function (messageEvent)  {
                 const message = messageEvent.data;
                 if (!Object.prototype.hasOwnProperty.call(message, CORE_ACTION_KEY)) {
@@ -206,7 +220,7 @@ const createCore = function () {
                 }
                 const action = message[CORE_ACTION_KEY];
                 if (action === CORE_STARTED) {
-                    core.moduleInstances.set(name, {
+                    Object.assign(earlyWrapper, {
                         worker,
                         name,
                         stopResolve: undefined,
