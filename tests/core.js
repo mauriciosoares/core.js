@@ -92,6 +92,7 @@ describe(`Testing Core`, function () {
         await expectAsync(
             core.start(module, { name }),
         ).toBeRejected();
+        expect(module.started).toBe(1);
     });
 
     it(`should silently proceed if stop is called on something already stopped`, async function () {
