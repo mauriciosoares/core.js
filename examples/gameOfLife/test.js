@@ -13,8 +13,8 @@ const start = function (emitter) {
 
   };
 
-  emitter.emit("x", "from test.js")
-  emitter.on("WANT_DRAW", console.log)
+  emitter.emit(`x`, `from test.js`);
+  emitter.on(`WANT_DRAW`, console.log);
   return instance;
 };
 

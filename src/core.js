@@ -42,7 +42,7 @@ const createCore = function () {
 
             const wrapper = core.moduleInstances.get(name);
             if (wrapper.worker) {
-                return core.requestStateFromWorker(wrapper)
+                return core.requestStateFromWorker(wrapper);
             }
             if (!wrapper.module.getState) {
                 return Promise.resolve({});
@@ -184,20 +184,20 @@ const createCore = function () {
                         const workerCode = prepareWorkerCode(moduleCode);
                         const workerBlob = new Blob([workerCode], JS_MIME);
                         const workerObjectURL = URL.createObjectURL(workerBlob);
-                        return workerObjectURL
-                    })
+                        return workerObjectURL;
+                    });
                 }
                 workerRessourcePromise.then(workerRessource => {
                     
                     const moduleInsideWorker = new Worker(workerRessource, {
-                        type: "module",
+                        type: `module`,
                         name: String(name), // help debugging
                     });
                     
                     core.listenForWorkerMessage(name, moduleInsideWorker, resolve, earlyWrapper);
                     moduleInsideWorker.postMessage({
                         [CORE_ACTION_KEY]: CORE_START,
-                        data
+                        data,
                     });
                 }).catch(errorModuleStart => {
                     core.moduleInstances.delete(name);
@@ -233,7 +233,7 @@ const createCore = function () {
                     return;
                 }
                 if (action === CORE_ERROR) {
-                    core.emit(ERROR, message)
+                    core.emit(ERROR, message);
                     return;
                 }
                 const wrapper = core.moduleInstances.get(name);
@@ -295,7 +295,7 @@ const createCore = function () {
             return new Promise(function (resolve, reject) {
                 wrapper.stopResolve = resolve;
                 wrapper.worker.postMessage({
-                    [CORE_ACTION_KEY]: CORE_STOP
+                    [CORE_ACTION_KEY]: CORE_STOP,
                 });
             });
         },

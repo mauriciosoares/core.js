@@ -2,7 +2,7 @@ import { createCore, useDefaultLogging, stopEventRecorder, startEventRecorder, r
 
 import { WANTS_SAVE, SAVE, TRAVEL_TIME, RESUME, WANTS_TRAVEL_TIME, PAUSE, STATUS_CHANGED } from "./eventNames.js";
 
-const simplestModule = "./test.js";
+const simplestModule = `./test.js`;
 import * as gameOfLife from "./gameOfLife.js";
 // const gameOfLife = "./gameOfLife.js";
 import * as draw from "./draw.js";
