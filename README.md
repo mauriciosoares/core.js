@@ -14,6 +14,29 @@ The central piece is the core.
 
 A module should never talks directly to another module, for that you use a combination of listeners and notifications.
 
+## Framework
+
+The Core creates instances of modules.
+
+Every module should work independently, have a specific, well-defined purpose.
+
+Most modules will do nothing on their own. You, as application designer, are responsible for combining different modules to achieve the objective.
+
+Modules are not bound to be 1 file or one computational unit. They can be split into multiple files, import different functions, etc.
+
+Modules should not communicate directly with one another. Instead they broadcast messages, that are picked up by other modules for follow up tasks.
+
+If two modules are sending messages for each other constantly then it might be a sign that it should have been designed as one module all along.
+
+One big module might be organized as a core having sub modules.
+
+### Messages
+
+Also one thing to note: If a message sent is a non primitive type, the receiver might mutate the original, and cause side effect to the sender if it is still using the same object. To avoid this situation
+
+ - deep clone before sending 
+ - or deep clone before mutating after receiving
+
 ## Getting Started
 
 So let's think about the twitter page, and how we could re-build it using the __core__ concept
@@ -172,7 +195,7 @@ Cool right? If one of those modules stop working, then it will not break the oth
 
 #### `createCore()`
 
-Returns a new instance of core.
+Returns a new instance of core. core is an event emitter, however `.emit` is not supposed to be used directly.
 
 #### `core.start(module, options)`
 
@@ -289,7 +312,7 @@ Returns all states. Resolved value is the same shape as what `core.restoreAllSta
 
 ## Fast load with restoreAllState + eventPlayer
 
-Ideally neither restoreAllState nor eventPlayer are used alone to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them 1  by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
+Ideally neither restoreAllState nor eventPlayer are used alone to load a given state. EventPlayer alone would require to store all events from the beginning and replaying them one by one which can take huge overhead in both memory and time. And restoreAll state would lose precision, because not every state is saved. So the ideal is to periodically save state and capture the events from there on. 
 
 ## Preparing worker code with prepareWorkerCode.js
 
