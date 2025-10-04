@@ -32,10 +32,17 @@ One big module might be organized as a core having sub modules.
 
 ### Messages
 
-Also one thing to note: If a message sent is a non primitive type, the receiver might mutate the original, and cause side effect to the sender if it is still using the same object. To avoid this situation
+Ideally messages are not direct orders to another module, but rather a broadcast of a recent change of state or recent event.
+
+For example a rocket should rather say "fuel capacity 10/100", rather than "need refueling 10/100". In both cases the information is the same, but it one case it is purely informational, while in the other case it is giving an indirect order to get new fuel. This "order/serve" schema is not what core.js is promoting.
+
+While designing messages for your application, try to not put the intent in the message name, even if as a designer you know what happens next.
+
+Also one thing to note: If a message payload sent is a non primitive type, the receiver might mutate the original, and cause side effect to the sender if it is still using the same object. To avoid this situation
 
  - deep clone before sending 
  - or deep clone before mutating after receiving
+ - or send immutable data
 
 ## Getting Started
 
